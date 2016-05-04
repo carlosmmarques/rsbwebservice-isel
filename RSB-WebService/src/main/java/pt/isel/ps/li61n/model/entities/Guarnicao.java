@@ -3,7 +3,9 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.ManyToOne;
 
 /**
- * Guarnicao - Description
+ * Guarnicao - Entidade que representa a dotação de meios às Unidades Operacionais, em termos das 
+ * quantidades mínimas e máximas de representantes com capacidade de Responsabilidade Operacional.
+ * 
  * Created on 03/05/2016.
  *
  * @author
@@ -11,10 +13,11 @@ import javax.persistence.ManyToOne;
  * Tiago Venturinha - tventurinha@gmail.com
  */
 public class Guarnicao {
-    //TODO: Estudar a questão dos mapeamentos de chaves compostas usando JPA
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "unidadeOperacional_id")
     private UnidadeOperacional unidadeOperacional;
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "responsabilidadeOperacional_id")
     private ResponsabilidadeOperacional responsabilidadeOperacional;
     private Integer minimo;
     private Integer maximo;
