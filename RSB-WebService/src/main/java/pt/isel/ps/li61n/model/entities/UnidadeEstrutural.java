@@ -8,6 +8,7 @@ import javax.persistence.*;
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
  */
+@Entity
 public class UnidadeEstrutural {
 
     @Id
@@ -15,8 +16,11 @@ public class UnidadeEstrutural {
     private Long id;
     private String designacao;
     @ManyToOne(optional = true)
-    @JoinColumn(name = "unidadeEstruturalMae_id")
+    //@JoinColumn(name = "unidadeEstruturalMae_id")
     private UnidadeEstrutural unidadeEstruturalMae;
+    @ManyToOne(optional = false)
+    //@JoinColumn(name = "tipoUnidadeEstrutural_id")
+    private TipoUnidadeEstrutural tipoUnidadeEstrutural;
 
     public Long getId() {
         return id;
@@ -41,4 +45,13 @@ public class UnidadeEstrutural {
     public void setUnidadeEstruturalMae(UnidadeEstrutural unidadeEstruturalMae) {
         this.unidadeEstruturalMae = unidadeEstruturalMae;
     }
+
+    public TipoUnidadeEstrutural getTipoUnidadeEstrutural() {
+        return tipoUnidadeEstrutural;
+    }
+
+    public void setTipoUnidadeEstrutural(TipoUnidadeEstrutural tipoUnidadeEstrutural) {
+        this.tipoUnidadeEstrutural = tipoUnidadeEstrutural;
+    }
+
 }

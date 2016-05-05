@@ -15,4 +15,9 @@ public class RsbWebserviceApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void testGetInstalacaoFromUnidade(){
+
+	}
+
 }

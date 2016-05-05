@@ -1,7 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Guarnicao - Entidade que representa a dotação de meios às Unidades Operacionais, em termos das 
@@ -13,7 +12,12 @@ import javax.persistence.ManyToOne;
  * Carlos Marques - carlosmmarques@gmail.com
  * Tiago Venturinha - tventurinha@gmail.com
  */
+@Entity
 public class Guarnicao {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn (name= "unidadeOperacional_id")

@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
  */
+@Entity
 public class TipoUnidadeEstrutural {
 
     @Id

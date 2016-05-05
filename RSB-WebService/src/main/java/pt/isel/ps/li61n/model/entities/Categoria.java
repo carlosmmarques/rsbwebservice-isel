@@ -13,18 +13,6 @@ import javax.persistence.*;
 @Entity
 public class Categoria {
 
-    /**
-     * Quadro - Enumerado com as entradas para o tipo de quadro (COMANDO / BOMBEIRO / OUTRO)
-     * Created on 03/05/2016.
-     *
-     * @author
-     * Carlos Marques - carlosmmarques@gmail.com
-     * Tiago Venturinha - tventurinha@gmail.com
-     */
-    public static enum Quadro {
-        COMANDO, BOMBEIRO, OUTRO
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;

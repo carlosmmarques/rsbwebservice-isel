@@ -1,8 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Instalacao - Description
@@ -12,12 +10,18 @@ import javax.persistence.Id;
  * Carlos Marques - carlosmmarques@gmail.com
  * Tiago Venturinha - tventurinha@gmail.com
  */
+@Entity
 public class Instalacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(optional = false)
+    //@JoinColumn(name = "unidadeEstrutural_id")
+    private UnidadeEstrutural unidadeEstrutural;
     private String designacao;
+    private String descricao;
+    private String localizacao;
 
     public Long getId() {
         return id;
@@ -51,7 +55,5 @@ public class Instalacao {
         this.localizacao = localizacao;
     }
 
-    private String descricao;
-    private String localizacao;
 
 }

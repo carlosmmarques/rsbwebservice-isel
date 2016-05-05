@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
  * Carlos Marques - carlosmmarques@gmail.com
  * Tiago Venturinha - tventurinha@gmail.com
  */
+@Entity
 public class Formacao {
 
     @Id
