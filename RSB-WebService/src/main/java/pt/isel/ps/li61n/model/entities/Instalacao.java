@@ -11,25 +11,14 @@ import javax.persistence.*;
  * Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Instalacao {
+public class Instalacao extends RsbAbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     @ManyToOne(optional = false)
-    //@JoinColumn(name = "unidadeEstrutural_id")
+    @JoinColumn(name = "unidadeEstrutural_id")
     private UnidadeEstrutural unidadeEstrutural;
     private String designacao;
     private String descricao;
     private String localizacao;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDesignacao() {
         return designacao;

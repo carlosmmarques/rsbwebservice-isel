@@ -13,11 +13,7 @@ import javax.persistence.*;
  * Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Guarnicao {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Guarnicao extends RsbAbstractEntity{
 
     @ManyToOne(optional = false)
     @JoinColumn (name= "unidadeOperacional_id")

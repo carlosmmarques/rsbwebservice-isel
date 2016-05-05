@@ -11,22 +11,11 @@ import javax.persistence.*;
  * Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Categoria {
+public class Categoria extends RsbAbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
     @Enumerated(EnumType.STRING)
     private Quadro quadro;
     private String abreviatura;
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
 
     public Quadro getQuadro() {
         return quadro;
@@ -64,4 +53,15 @@ public class Categoria {
     private Integer nivelHierarquico;
 
 
+    /**
+     * Quadro - Enumerado com as entradas para o tipo de quadro (COMANDO / BOMBEIRO / OUTRO)
+     * Created on 03/05/2016.
+     *
+     * @author
+     * Carlos Marques - carlosmmarques@gmail.com
+     * Tiago Venturinha - tventurinha@gmail.com
+     */
+    public enum Quadro {
+        COMANDO, BOMBEIRO, OUTRO
+    }
 }

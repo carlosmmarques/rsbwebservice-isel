@@ -1,9 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  * Formacao - Description
@@ -14,22 +11,11 @@ import javax.persistence.Id;
  * Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Formacao {
+public class Formacao extends RsbAbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private Integer validade;
     private String designacao;
     private String descricao;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getValidade() {
         return validade;

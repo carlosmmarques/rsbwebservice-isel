@@ -23,8 +23,8 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
-//	maven { url "https://repo.spring.io/snapshot" }
-//	maven { url "https://repo.spring.io/milestone" }
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
 }
 
 
@@ -39,11 +39,11 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-//dependencyManagement {
-//	imports {
-//		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.RC2"
-//	}
-//}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.RC2"
+	}
+}
 
 
 eclipse {
