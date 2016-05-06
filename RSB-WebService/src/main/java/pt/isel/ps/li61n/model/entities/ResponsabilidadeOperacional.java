@@ -1,8 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 /**
  * ResponsabilidadeOperacional - Description
@@ -13,6 +11,12 @@ import javax.persistence.Enumerated;
  */
 @Entity
 public class ResponsabilidadeOperacional extends RsbAbstractEntity{
+    @ManyToOne
+    @JoinColumn(name = "tipoPresenca_id")
+    private TipoPresenca tipoPresenca;
+    @ManyToOne
+    @JoinColumn(name = "formacao_id")
+    private Formacao formacao;
     private String sigla;
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;

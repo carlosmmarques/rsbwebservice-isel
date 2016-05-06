@@ -1,7 +1,7 @@
 package pt.isel.ps.li61n.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
+import pt.isel.ps.li61n.model.entities.Pessoal;
 
 /**
  * UnidadeEstruturalRepository - Description
@@ -10,5 +10,5 @@ import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public interface UnidadeEstruturalRepository extends JpaRepository<UnidadeEstrutural, Long>{
+public interface PessoalRepository extends JpaRepository<Pessoal, Long>{
 }
