@@ -14,13 +14,28 @@ import javax.persistence.*;
 @Entity
 public class Guarnicao extends RsbAbstractEntity{
 
+    /**
+     * A unidade operacional a guarnecer com elementos de reponsabilidade operacional determinada
+     * em seguida
+     */
     @ManyToOne(optional = false)
     @JoinColumn (name= "unidadeOperacional_id")
     private UnidadeOperacional unidadeOperacional;
+    /**
+     * A responsabilidade operacional dos elementos que se destinam a guarnecer a unidade operacional
+     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "responsabilidadeOperacional_id")
     private ResponsabilidadeOperacional responsabilidadeOperacional;
+    /**
+     * O número mínimo de elementos com a responsabilidade operacional determinada a guarnecer a unidade
+     * operacional
+     */
     private Integer minimo;
+    /**
+     * O número máximo de elementos com a responsabilidade operacional determinada a guarnecer a unidade
+     * operacional
+     */
     private Integer maximo;
 
     public UnidadeOperacional getUnidadeOperacional() {

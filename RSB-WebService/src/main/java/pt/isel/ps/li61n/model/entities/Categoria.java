@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.*;
 
 /**
- * Categoria - Categoria de um membro do Pessoal do Corpo de Bombeiros
+ * Categoria - Categoria profissional de um membro do Pessoal do Corpo de Bombeiros
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -12,9 +12,23 @@ import javax.persistence.*;
 @Entity
 public class Categoria extends RsbAbstractEntity{
 
+    /**
+     * O enumerado (interno a esta classe) que identifica o tipo de quadro (Bombeiro, Comando ou Outro)
+     */
     @Enumerated(EnumType.STRING)
     private Quadro quadro;
+    /**
+     * A abreviatura dada a esta categoria
+     */
     private String abreviatura;
+    /**
+     * A descrição, texto mais completo, a dar a esta categoria
+     */
+    private String descrição;
+    /**
+     * O nível Hierarquico de uma categoria (inteiro que determina a ordem de preferencia de Comando)
+     */
+    private Integer nivelHierarquico;
 
     public Quadro getQuadro() {
         return quadro;
@@ -47,9 +61,6 @@ public class Categoria extends RsbAbstractEntity{
     public void setNivelHierarquico(Integer nivelHierarquico) {
         this.nivelHierarquico = nivelHierarquico;
     }
-
-    private String descrição;
-    private Integer nivelHierarquico;
 
 
     /**

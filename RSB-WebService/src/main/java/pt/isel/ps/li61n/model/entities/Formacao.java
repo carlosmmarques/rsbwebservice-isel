@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.Entity;
 
 /**
- * Formacao - Description
+ * Formacao - Registo de Formação de Elementos do Pessoal
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -12,15 +12,24 @@ import javax.persistence.Entity;
 @Entity
 public class Formacao extends RsbAbstractEntity{
 
-    private Integer validade;
+    /**
+     * Validade da formação (numero de anos - Fraccionario)
+     */
+    private Float validade;
+    /**
+     * Designação da Formação
+     */
     private String designacao;
+    /**
+     * Descrição da Formação
+     */
     private String descricao;
 
-    public Integer getValidade() {
+    public Float getValidade() {
         return validade;
     }
 
-    public void setValidade(Integer validade) {
+    public void setValidade(Float validade) {
         this.validade = validade;
     }
 
