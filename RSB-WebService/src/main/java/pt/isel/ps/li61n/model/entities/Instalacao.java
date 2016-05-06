@@ -6,9 +6,8 @@ import javax.persistence.*;
  * Instalacao - Description
  * Created on 03/05/2016.
  *
- * @author
- * Carlos Marques - carlosmmarques@gmail.com
- * Tiago Venturinha - tventurinha@gmail.com
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
 public class Instalacao extends RsbAbstractEntity{

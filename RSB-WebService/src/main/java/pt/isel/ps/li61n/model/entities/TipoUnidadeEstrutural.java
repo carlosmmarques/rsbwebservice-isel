@@ -1,32 +1,19 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  * TipoUnidadeEstrutural - Description
  * Created on 03/05/2016.
  *
- * @author Carlos Marques - carlosmmarques@gmail.com
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoUnidadeEstrutural {
+public class TipoUnidadeEstrutural extends RsbAbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String designacao;
     private String descricao;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDesignacao() {
         return designacao;

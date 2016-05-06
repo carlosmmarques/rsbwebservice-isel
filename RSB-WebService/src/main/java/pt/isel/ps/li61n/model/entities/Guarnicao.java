@@ -8,9 +8,8 @@ import javax.persistence.*;
  * 
  * Created on 03/05/2016.
  *
- * @author
- * Carlos Marques - carlosmmarques@gmail.com
- * Tiago Venturinha - tventurinha@gmail.com
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
 public class Guarnicao extends RsbAbstractEntity{

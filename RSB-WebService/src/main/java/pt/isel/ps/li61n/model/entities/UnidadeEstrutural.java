@@ -6,14 +6,12 @@ import javax.persistence.*;
  * UnidadeEstrutural - Description
  * Created on 03/05/2016.
  *
- * @author Carlos Marques - carlosmmarques@gmail.com
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class UnidadeEstrutural {
+public class UnidadeEstrutural extends RsbAbstractEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String designacao;
     @ManyToOne(optional = true)
     //@JoinColumn(name = "unidadeEstruturalMae_id")
@@ -21,14 +19,6 @@ public class UnidadeEstrutural {
     @ManyToOne(optional = false)
     //@JoinColumn(name = "tipoUnidadeEstrutural_id")
     private TipoUnidadeEstrutural tipoUnidadeEstrutural;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDesignacao() {
         return designacao;

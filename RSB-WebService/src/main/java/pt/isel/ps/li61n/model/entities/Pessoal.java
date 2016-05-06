@@ -1,16 +1,14 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Pessoal - Description
  * Created on 03/05/2016.
  *
- * @author Carlos Marques - carlosmmarques@gmail.com
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
 public class Pessoal extends RsbAbstractEntity{
@@ -35,6 +33,18 @@ public class Pessoal extends RsbAbstractEntity{
     @Enumerated(EnumType.STRING)
     private TipoDocIdentificacao docIdentificacao;
     private Float factorElegibilidade;
+    @ManyToOne
+    @JoinColumn(name = "postoFuncional_id")
+    private PostoFuncional postoFuncional;
+    @ManyToOne
+    @JoinColumn(name = "tipoPresenca_id")
+    private TipoPresenca tipoPresenca;
+    @ManyToOne
+    @JoinColumn(name = "turno_id")
+    private Turno turno;
+    @ManyToOne
+    @JoinColumn(name = "instalacao_id")
+    private Instalacao instalacao;
 
     public String getIdInterno() {
         return idInterno;
@@ -138,6 +148,38 @@ public class Pessoal extends RsbAbstractEntity{
 
     public void setFactorElegibilidade(Float factorElegibilidade) {
         this.factorElegibilidade = factorElegibilidade;
+    }
+
+    public PostoFuncional getPostoFuncional() {
+        return postoFuncional;
+    }
+
+    public void setPostoFuncional(PostoFuncional postoFuncional) {
+        this.postoFuncional = postoFuncional;
+    }
+
+    public TipoPresenca getTipoPresenca() {
+        return tipoPresenca;
+    }
+
+    public void setTipoPresenca(TipoPresenca tipoPresenca) {
+        this.tipoPresenca = tipoPresenca;
+    }
+
+    public Turno getTurno() {
+        return turno;
+    }
+
+    public void setTurno(Turno turno) {
+        this.turno = turno;
+    }
+
+    public Instalacao getInstalacao() {
+        return instalacao;
+    }
+
+    public void setInstalacao(Instalacao instalacao) {
+        this.instalacao = instalacao;
     }
 
     /**
