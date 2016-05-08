@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- * PessoalPossuiCategoria - Description
+ * PessoalPossuiCategoria - Entidade Relação entre os elementos e as categorias, e a sua caracterização.
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com

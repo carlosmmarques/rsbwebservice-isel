@@ -12,36 +12,91 @@ import java.util.Date;
  */
 @Entity
 public class Pessoal extends RsbAbstractEntity{
+    /**
+     * Identificador interno do elemento do pessoal
+     */
     @Column(nullable = false)
     private String idInterno;
+    /**
+     * Numero de Matricula do elemento do pessoal
+     */
     @Column(nullable = false)
     private String Matricula;
+    /**
+     * Número mecanográfico. Identificador unico global do elemento
+     */
     @Column(unique = true, nullable = false)
     private String numMecanografico;
+    /**
+     * Abreviatura - Um nome curto para o elemento
+     */
     @Column(nullable = false)
     private String abreviatura;
+    /**
+     * Nome - Nome Completo do elemento do pessoal
+     */
     @Column(nullable = false)
     private String nome;
+    /**
+     * Data de Nascimento - Data de Nascimento do elemento do pessoal
+     */
     @Column(nullable = false)
     private Date dataNascimento;
+    /**
+     * Telefone1 - Um número de telefone (obrigatório)
+     */
     @Column(nullable = false)
     private String telefone1;
+    /**
+     * Telefone2 - Um numero de telefone facultativo
+     */
     private String telefone2;
+    /**
+     * email - Endereço de email do elemento
+     */
     private String eMail;
+    /**
+     * NIF - Numero de Identificação Fiscal do Elemento
+     */
     private String nif;
+    /**
+     * Data de Ingresso - Data de Admissão do elemento no corpo de bombeiros
+     */
     private Date dataIngresso;
+    /**
+     * Tipo de documento de Identificação - Bilhete de Identidade ou Cartão de Cidadão
+     */
     @Enumerated(EnumType.STRING)
-    private TipoDocIdentificacao docIdentificacao;
+    private TipoDocIdentificacao tipoDocIdentificacao;
+    /**
+     * Numero do documento de Identificação
+     */
+    private String numDocIdentificação;
+    /**
+     * Factor de Elegibilidade - Factor calculado para a atribuição de responsabilidades operacionais
+     */
     private Float factorElegibilidade;
+    /**
+     * Posto Funcional - Identificador do Posto Funcional ocupado por omissão pelo elemento
+     */
     @ManyToOne
     @JoinColumn(name = "postoFuncional_id")
     private PostoFuncional postoFuncional;
+    /**
+     * Tipo de Presença - Caracteriza o tipo de ausencia, ou a função desempenhada em caso de presença
+     */
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")
     private TipoPresenca tipoPresenca;
+    /**
+     * Turno - Identificador do Turno a que o elemento está atribuido por omissão
+     */
     @ManyToOne
     @JoinColumn(name = "turno_id")
     private Turno turno;
+    /**
+     * Instalação - Identificador da Instalação em que o elemento está instalado por omissão
+     */
     @ManyToOne
     @JoinColumn(name = "instalacao_id")
     private Instalacao instalacao;
@@ -134,12 +189,20 @@ public class Pessoal extends RsbAbstractEntity{
         this.dataIngresso = dataIngresso;
     }
 
-    public TipoDocIdentificacao getDocIdentificacao() {
-        return docIdentificacao;
+    public TipoDocIdentificacao getTipoDocIdentificacao() {
+        return tipoDocIdentificacao;
     }
 
-    public void setDocIdentificacao(TipoDocIdentificacao docIdentificacao) {
-        this.docIdentificacao = docIdentificacao;
+    public void setTipoDocIdentificacao(TipoDocIdentificacao tipoDocIdentificacao) {
+        this.tipoDocIdentificacao = tipoDocIdentificacao;
+    }
+
+    public String getNumDocIdentificação() {
+        return numDocIdentificação;
+    }
+
+    public void setNumDocIdentificação(String numDocIdentificação) {
+        this.numDocIdentificação = numDocIdentificação;
     }
 
     public Float getFactorElegibilidade() {
