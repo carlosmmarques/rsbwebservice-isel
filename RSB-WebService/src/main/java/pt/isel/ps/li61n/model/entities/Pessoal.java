@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Pessoal - Description
+ * Pessoal - Elementos do Pessoal do Corpo de Bombeiros
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -12,9 +12,9 @@ import java.util.Date;
  */
 @Entity
 public class Pessoal extends RsbAbstractEntity{
-    //@Column(unique = true)
+    @Column(nullable = false)
     private String idInterno;
-    //@Column(unique = true)
+    @Column(nullable = false)
     private String Matricula;
     @Column(unique = true, nullable = false)
     private String numMecanografico;
