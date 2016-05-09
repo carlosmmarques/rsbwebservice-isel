@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.Entity;
 
 /**
- * PostoFuncional - Description
+ * PostoFuncional - Posto Funcional ocupado por elementos no ambito do serviço operacional
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -11,8 +11,13 @@ import javax.persistence.Entity;
  */
 @Entity
 public class PostoFuncional extends RsbAbstractEntity{
-
+    /**
+     * Designação - Designaçao do Posto Funcional (e.g., CPO, Chefe, etc.)
+     */
     private String designacao;
+    /**
+     * Descrição - Descrição extensa do Posto Funcional.
+     */
     private String descricao;
 
     public String getDesignacao() {

@@ -6,7 +6,8 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- * PessoalPossuiCategoria - Entidade Relação entre os elementos e as categorias, e a sua caracterização.
+ * PessoalPossuiCategoria - Entidade Relação entre os elementos do pessoa, suas categorias, e a caracterização desta
+ * associação.
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -14,13 +15,25 @@ import java.util.Date;
  */
 @Entity
 public class PessoalPossuiCategoria extends RsbAbstractEntity{
+    /**
+     * Elemento do Pessoal
+     */
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
     private Pessoal pessoal;
+    /**
+     * Categoria associada ao elemento do pessoal
+     */
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+    /**
+     * Data de atribuição de categoria
+     */
     private Date dataAtribuicaoCategoria;
+    /**
+     * Classificação na Formação que confere a atribuição da categoria
+     */
     private Float classificacaoFormacao;
 
     public Pessoal getPessoal() {

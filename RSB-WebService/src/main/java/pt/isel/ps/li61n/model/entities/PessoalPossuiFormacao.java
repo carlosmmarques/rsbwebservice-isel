@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- * PessoalPossuiFormacao - Description
+ * PessoalPossuiFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -14,13 +14,25 @@ import java.util.Date;
  */
 @Entity
 public class PessoalPossuiFormacao extends RsbAbstractEntity{
+    /**
+     * Elemento do Pessoal
+     */
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
     private Pessoal pessoal;
+    /**
+     * Formação do elemento do pessoal
+     */
     @ManyToOne
     @JoinColumn(name = "formacao_id")
     private Formacao formacao;
+    /**
+     * Data de aquisição da formação
+     */
     private Date dataAquisicaoFormacao;
+    /**
+     * data de caducidade da formação
+     */
     private Date dataCaducidadeFormacao;
 
     public Pessoal getPessoal() {
