@@ -15,7 +15,7 @@ public class Pessoal extends RsbAbstractEntity{
     /**
      * Identificador interno do elemento do pessoal
      */
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String idInterno;
     /**
      * Numero de Matricula do elemento do pessoal
