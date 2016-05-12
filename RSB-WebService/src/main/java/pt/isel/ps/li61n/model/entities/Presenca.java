@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- * Presenca - Description
+ * Presenca - Caracterização da Presença.
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -47,90 +47,156 @@ public class Presenca extends RsbAbstractEntity{
     @JoinColumn(name = "elementoReforcado_id")
     private Pessoal elementoReforcado;
 
+    /**
+     * @return data da presença
+     */
     public Date getData() {
         return data;
     }
 
+    /**
+     * @param data data da presença
+     */
     public void setData(Date data) {
         this.data = data;
     }
 
+    /**
+     * @return hora de inicio.
+     */
     public Date getHoraInicio() {
         return horaInicio;
     }
 
+    /**
+     * @param horaInicio hora de inicio.
+     */
     public void setHoraInicio(Date horaInicio) {
         this.horaInicio = horaInicio;
     }
 
+    /**
+     * @return numero de horas da presença.
+     */
     public Float getNumHoras() {
         return numHoras;
     }
 
+    /**
+     * @param numHoras numero de horas da presença.
+     */
     public void setNumHoras(Float numHoras) {
         this.numHoras = numHoras;
     }
 
+    /**
+     * @return periodo em que se enquadra esta presença.
+     */
     public Periodo getPeriodo() {
         return periodo;
     }
 
+    /**
+     * @param periodo periodo em que se enquadra esta presença.
+     */
     public void setPeriodo(Periodo periodo) {
         this.periodo = periodo;
     }
 
+    /**
+     * @return elemento do pessoal a que diz respeito esta presença.
+     */
     public Pessoal getPessoal() {
         return pessoal;
     }
 
+    /**
+     * @param pessoal elemento do pessoal a que diz respeito esta presença.
+     */
     public void setPessoal(Pessoal pessoal) {
         this.pessoal = pessoal;
     }
 
+    /**
+     * @return posto funcional efectivo ocupado pelo elemento do pessoal nesta presença
+     */
     public PostoFuncional getPostoFuncionalEfectivo() {
         return postoFuncionalEfectivo;
     }
 
+    /**
+     * @param postoFuncionalEfectivo posto funcional efectivo ocupado pelo elemento do pessoal nesta presença
+     */
     public void setPostoFuncionalEfectivo(PostoFuncional postoFuncionalEfectivo) {
         this.postoFuncionalEfectivo = postoFuncionalEfectivo;
     }
 
+    /**
+     * @return instalação em que o elemento do pessoal esteve efectivamente presente.
+     */
     public Instalacao getInstalacaoEfectiva() {
         return instalacaoEfectiva;
     }
 
+    /**
+     * @param instalacaoEfectiva instalação em que o elemento do pessoal esteve efectivamente presente.
+     */
     public void setInstalacaoEfectiva(Instalacao instalacaoEfectiva) {
         this.instalacaoEfectiva = instalacaoEfectiva;
     }
 
+    /**
+     * @return turno em que o elemento realizou efectivamente a presença.
+     */
     public Turno getTurnoEfectivo() {
         return turnoEfectivo;
     }
 
+    /**
+     * @param turnoEfectivo turno em que o elemento realizou efectivamente a presença.
+     */
     public void setTurnoEfectivo(Turno turnoEfectivo) {
         this.turnoEfectivo = turnoEfectivo;
     }
 
+    /**
+     * @return tipo efectivo da presença
+     */
     public TipoPresenca getTipoPresencaEfectiva() {
         return tipoPresencaEfectiva;
     }
 
+    /**
+     * @param tipoPresencaEfectiva tipo efectivo da presença
+     */
     public void setTipoPresencaEfectiva(TipoPresenca tipoPresencaEfectiva) {
         this.tipoPresencaEfectiva = tipoPresencaEfectiva;
     }
 
+    /**
+     * @return elemento do pessoal de reforço (em caso de ausencia).
+     */
     public Pessoal getElementoReforco() {
         return elementoReforco;
     }
 
+    /**
+     * @param elementoReforco elemento do pessoal de reforço (em caso de ausencia).
+     */
     public void setElementoReforco(Pessoal elementoReforco) {
         this.elementoReforco = elementoReforco;
     }
 
+    /**
+     * @return elemento que está a ser reforçado (no caso desta presença ser de reforço).
+     */
     public Pessoal getElementoReforcado() {
         return elementoReforcado;
     }
 
+    /**
+     * @param elementoReforcado elemento que está a ser reforçado (no caso desta presença ser de reforço).
+     */
     public void setElementoReforcado(Pessoal elementoReforcado) {
         this.elementoReforcado = elementoReforcado;
     }

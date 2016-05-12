@@ -12,48 +12,66 @@ import javax.persistence.*;
 @Entity
 public class Instalacao extends RsbAbstractEntity{
 
-    /**
-     * A unidade estrutural a que esta instalação é adstrita
-     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "unidadeEstrutural_id")
     private UnidadeEstrutural unidadeEstrutural;
-    /**
-     * A designação desta instalação (ex.: Quartel de Alvalade)
-     */
     private String designacao;
-    /**
-     * A descrição desta Instalação (texto mais extenso)
-     */
     private String descricao;
-    /**
-     * A localização. Para já é uma simples String de texto com a identificação da localização.
-     */
     private String localizacao;
 
+    /**
+     * @return unidade estrutural a que esta instalação é adstrita.
+     */
+    public UnidadeEstrutural getUnidadeEstrutural() {
+        return unidadeEstrutural;
+    }
+
+    /**
+     * @param unidadeEstrutural unidade estrutural a que esta instalação é adstrita.
+     */
+    public void setUnidadeEstrutural(UnidadeEstrutural unidadeEstrutural) {
+        this.unidadeEstrutural = unidadeEstrutural;
+    }
+
+    /**
+     * @return designação desta instalação (texto curto, e.g., Quartel de Alvalade).
+     */
     public String getDesignacao() {
         return designacao;
     }
 
+    /**
+     * @param designacao designação desta instalação (texto curto, e.g., Quartel de Alvalade).
+     */
     public void setDesignacao(String designacao) {
         this.designacao = designacao;
     }
 
+    /**
+     * @return descrição desta Instalação (texto mais extenso).
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * @param descricao descrição desta Instalação (texto mais extenso).
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
+    /**
+     * @return identificação da localização.
+     */
     public String getLocalizacao() {
         return localizacao;
     }
 
+    /**
+     * @param localizacao identificação da localização.
+     */
     public void setLocalizacao(String localizacao) {
         this.localizacao = localizacao;
     }
-
-
 }

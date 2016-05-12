@@ -14,58 +14,69 @@ import java.util.Date;
  */
 @Entity
 public class PessoalPossuiFormacao extends RsbAbstractEntity{
-    /**
-     * Elemento do Pessoal
-     */
+
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
     private Pessoal pessoal;
-    /**
-     * Formação do elemento do pessoal
-     */
     @ManyToOne
     @JoinColumn(name = "formacao_id")
     private Formacao formacao;
-    /**
-     * Data de aquisição da formação
-     */
     private Date dataAquisicaoFormacao;
-    /**
-     * data de caducidade da formação
-     */
     private Date dataCaducidadeFormacao;
 
+    /**
+     * @return Elemento do Pessoal
+     */
     public Pessoal getPessoal() {
         return pessoal;
     }
 
+    /**
+     * @param pessoal Elemento do Pessoal
+     */
     public void setPessoal(Pessoal pessoal) {
         this.pessoal = pessoal;
     }
 
+    /**
+     * @return Formação do elemento do pessoal
+     */
     public Formacao getFormacao() {
         return formacao;
     }
 
+    /**
+     * @param formacao Formação do elemento do pessoal
+     */
     public void setFormacao(Formacao formacao) {
         this.formacao = formacao;
     }
 
+    /**
+     * @return Data de aquisição da formação
+     */
     public Date getDataAquisicaoFormacao() {
         return dataAquisicaoFormacao;
     }
 
+    /**
+     * @param dataAquisicaoFormacao Data de aquisição da formação
+     */
     public void setDataAquisicaoFormacao(Date dataAquisicaoFormacao) {
         this.dataAquisicaoFormacao = dataAquisicaoFormacao;
     }
 
+    /**
+     * @return data de caducidade da formação
+     */
     public Date getDataCaducidadeFormacao() {
         return dataCaducidadeFormacao;
     }
 
+    /**
+     * @param dataCaducidadeFormacao data de caducidade da formação
+     */
     public void setDataCaducidadeFormacao(Date dataCaducidadeFormacao) {
         this.dataCaducidadeFormacao = dataCaducidadeFormacao;
     }
-
-
 }

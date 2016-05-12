@@ -11,27 +11,34 @@ import javax.persistence.Entity;
  */
 @Entity
 public class PostoFuncional extends RsbAbstractEntity{
-    /**
-     * Designação - Designaçao do Posto Funcional (e.g., CPO, Chefe, etc.)
-     */
+
     private String designacao;
-    /**
-     * Descrição - Descrição extensa do Posto Funcional.
-     */
     private String descricao;
 
+    /**
+     * @return Designaçao do Posto Funcional (e.g., CPO, Chefe, etc.)
+     */
     public String getDesignacao() {
         return designacao;
     }
 
+    /**
+     * @param designacao Designaçao do Posto Funcional (e.g., CPO, Chefe, etc.)
+     */
     public void setDesignacao(String designacao) {
         this.designacao = designacao;
     }
 
+    /**
+     * @return Descrição extensa do Posto Funcional.
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * @param descricao Descrição extensa do Posto Funcional.
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }

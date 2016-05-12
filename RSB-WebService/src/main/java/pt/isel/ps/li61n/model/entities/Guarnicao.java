@@ -14,60 +14,68 @@ import javax.persistence.*;
 @Entity
 public class Guarnicao extends RsbAbstractEntity{
 
-    /**
-     * A unidade operacional a guarnecer com elementos de reponsabilidade operacional determinada
-     * em seguida
-     */
     @ManyToOne(optional = false)
     @JoinColumn (name= "unidadeOperacional_id")
     private UnidadeOperacional unidadeOperacional;
-    /**
-     * A responsabilidade operacional dos elementos que se destinam a guarnecer a unidade operacional
-     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "responsabilidadeOperacional_id")
     private ResponsabilidadeOperacional responsabilidadeOperacional;
-    /**
-     * O número mínimo de elementos com a responsabilidade operacional determinada a guarnecer a unidade
-     * operacional
-     */
     private Integer minimo;
-    /**
-     * O número máximo de elementos com a responsabilidade operacional determinada a guarnecer a unidade
-     * operacional
-     */
     private Integer maximo;
 
+    /**
+     * @return unidade operacional a guarnecer.
+     */
     public UnidadeOperacional getUnidadeOperacional() {
         return unidadeOperacional;
     }
 
+    /**
+     * @param unidadeOperacional unidade operacional a guarnecer.
+     */
     public void setUnidadeOperacional(UnidadeOperacional unidadeOperacional) {
         this.unidadeOperacional = unidadeOperacional;
     }
 
+    /**
+     * @return responsabilidade operacional dos elementos.
+     */
     public ResponsabilidadeOperacional getResponsabilidadeOperacional() {
         return responsabilidadeOperacional;
     }
 
+    /**
+     * @param responsabilidadeOperacional responsabilidade operacional dos elementos.
+     */
     public void setResponsabilidadeOperacional(ResponsabilidadeOperacional responsabilidadeOperacional) {
         this.responsabilidadeOperacional = responsabilidadeOperacional;
     }
 
+    /**
+     * @return número mínimo de elementos com a responsabilidade operacional determinada.
+     */
     public Integer getMinimo() {
         return minimo;
     }
 
+    /**
+     * @param minimo número mínimo de elementos com a responsabilidade operacional determinada.
+     */
     public void setMinimo(Integer minimo) {
         this.minimo = minimo;
     }
 
+    /**
+     * @return número máximo de elementos com a responsabilidade operacional determinada.
+     */
     public Integer getMaximo() {
         return maximo;
     }
 
+    /**
+     * @param maximo número máximo de elementos com a responsabilidade operacional determinada.
+     */
     public void setMaximo(Integer maximo) {
         this.maximo = maximo;
     }
-
 }

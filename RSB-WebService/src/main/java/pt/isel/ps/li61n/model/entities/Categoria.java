@@ -12,52 +12,65 @@ import javax.persistence.*;
 @Entity
 public class Categoria extends RsbAbstractEntity{
 
-    /**
-     * O enumerado (interno a esta classe) que identifica o tipo de quadro (Bombeiro, Comando ou Outro)
-     */
     @Enumerated(EnumType.STRING)
     private Quadro quadro;
-    /**
-     * A abreviatura dada a esta categoria
-     */
     private String abreviatura;
-    /**
-     * A descrição, texto mais completo, a dar a esta categoria
-     */
     private String descrição;
-    /**
-     * O nível Hierarquico de uma categoria (inteiro que determina a ordem de preferencia de Comando)
-     */
     private Integer nivelHierarquico;
 
+    /**
+     * @return enumerado (interno a esta classe) que identifica o tipo de quadro (Bombeiro, Comando ou Outro)
+     */
     public Quadro getQuadro() {
         return quadro;
     }
 
+    /**
+     * @param quadro enumerado (interno a esta classe) que identifica o tipo de quadro (Bombeiro, Comando ou Outro)
+     */
     public void setQuadro(Quadro quadro) {
         this.quadro = quadro;
     }
 
+    /**
+     * @return abreviatura dada a esta categoria (texto curto).
+     */
     public String getAbreviatura() {
         return abreviatura;
     }
 
+    /**
+     * @param abreviatura abreviatura dada a esta categoria (texto curto).
+     */
     public void setAbreviatura(String abreviatura) {
         this.abreviatura = abreviatura;
     }
 
+    /**
+     * @return descrição, texto mais completo, a dar a esta categoria.
+     */
     public String getDescrição() {
         return descrição;
     }
 
+    /**
+     * @param descrição descrição, texto mais completo, a dar a esta categoria.
+     */
     public void setDescrição(String descrição) {
         this.descrição = descrição;
     }
 
+    /**
+     * @return nível Hierarquico de uma categoria (inteiro que determina a ordem de preferencia de Comando).
+     */
     public Integer getNivelHierarquico() {
         return nivelHierarquico;
     }
 
+    /**
+     * @param nivelHierarquico nível Hierarquico de uma categoria (inteiro que determina a ordem de preferencia de
+     *                         Comando).
+     */
     public void setNivelHierarquico(Integer nivelHierarquico) {
         this.nivelHierarquico = nivelHierarquico;
     }

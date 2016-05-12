@@ -14,29 +14,35 @@ import java.util.Date;
 @Entity
 public class Periodo extends RsbAbstractEntity{
 
-    /**
-     * Data de inicio do Periodo
-     */
     @Column(nullable = false)
     private Date dtInicio;
-    /**
-     * Data de fim do periodo
-     */
     @Column(nullable = false)
     private Date dtFim;
 
+    /**
+     * @return Data de inicio do Periodo.
+     */
     public Date getDtInicio() {
         return dtInicio;
     }
 
+    /**
+     * @param dtInicio Data de inicio do Periodo.
+     */
     public void setDtInicio(Date dtInicio) {
         this.dtInicio = dtInicio;
     }
 
+    /**
+     * @return Data de fim do periodo.
+     */
     public Date getDtFim() {
         return dtFim;
     }
 
+    /**
+     * @param dtFim Data de fim do periodo.
+     */
     public void setDtFim(Date dtFim) {
         this.dtFim = dtFim;
     }

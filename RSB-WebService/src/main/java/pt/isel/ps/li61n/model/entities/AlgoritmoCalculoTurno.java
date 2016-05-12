@@ -14,52 +14,68 @@ import java.util.Set;
  */
 @Entity
 public class AlgoritmoCalculoTurno extends RsbAbstractEntity{
-    /**
-     * A designação do Algoritmo de Calculo de Turno (12horas; 8horas; Horário Normal; etc.)
-     */
+
     private String designacao;
-    /**
-     * Descrição do Algoritmo de Calculo de Turno.
-     */
     private String descricao;
-    /**
-     * Identifica se se trata de um algoritmo de cálculo para turnos de garantia de serviço permanente
-     */
     private Boolean servicoPermanente;
-    /**
-     * Os Ciclos de Turno que dizem respeito a este turno.
-     */
     @OneToMany(mappedBy = "algoritmoCalculoTurno")
     private Set<CicloTurno> ciclosTurno;
 
+    /**
+     * @return designação do algoritmo de calculo de turno (texto curto)
+     */
     public String getDesignacao() {
         return designacao;
     }
 
+    /**
+     * @param designacao designação do algoritmo de calculo de turno (texto curto).
+     */
     public void setDesignacao(String designacao) {
         this.designacao = designacao;
     }
 
+    /**
+     * @return descrição do algoritmo de calculo de turno.
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * @param descricao descrição do algoritmo de calculo de turno.
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
+    /**
+     * Identifica se se trata de um algoritmo de cálculo para turnos de garantia de serviço permanente
+     * @return true se o algoritmo é de serviço permanente ou false caso contrário
+     */
     public Boolean getServicoPermanente() {
         return servicoPermanente;
     }
 
+    /**
+     * Define se se trata de um algoritmo de cálculo para turnos de garantia de serviço permanente
+     * @param servicoPermanente true se o algoritmo é de serviço permanente
+     *                          false caso contrário
+     */
     public void setServicoPermanente(Boolean servicoPermanente) {
         this.servicoPermanente = servicoPermanente;
     }
 
+    /**
+     * @return periodos de ciclos de turno que definem este algoritmo de turno.
+     */
     public Set<CicloTurno> getCiclos() {
         return ciclosTurno;
     }
 
+    /**
+     * @param ciclosTurno periodos de ciclos de turno que definem este algoritmo de turno.
+     */
     public void setCiclos(Set<CicloTurno> ciclosTurno) {
         this.ciclosTurno = ciclosTurno;
     }

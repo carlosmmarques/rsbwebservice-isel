@@ -5,7 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * UnidadeOperacional - Description
+ * UnidadeOperacional - Unidades de operação das Instalações (Viaturas, equipamentos, etc.)
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -13,43 +13,69 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class UnidadeOperacional extends RsbAbstractEntity{
+
     private String designacao;
     private Boolean operacional;
     @ManyToOne
     @JoinColumn(name = "instalacao_id")
-    private UnidadeOperacional unidadeOperacional;
+    private Instalacao instalacao;
     @ManyToOne
     @JoinColumn(name = "tipoUnidadeOperacional_id")
     private TipoUnidadeOperacional tipoUnidadeOperacional;
 
+    /**
+     * @return designação da unidade operacional
+     */
     public String getDesignacao() {
         return designacao;
     }
 
+    /**
+     * @param designacao designação da unidade operacional
+     */
     public void setDesignacao(String designacao) {
         this.designacao = designacao;
     }
 
+    /**
+     * @return verdadeiro se a unidade está em condições de operacionalidade, falso caso contrário.
+     */
     public Boolean getOperacional() {
         return operacional;
     }
 
+    /**
+     * @param operacional verdadeiro se a unidade está em condições de operacionalidade,
+     *                    falso caso contrário.
+     */
     public void setOperacional(Boolean operacional) {
         this.operacional = operacional;
     }
 
-    public UnidadeOperacional getUnidadeOperacional() {
-        return unidadeOperacional;
+    /**
+     * @return instalação a que a unidade operacional pertence
+     */
+    public Instalacao getInstalacao() {
+        return instalacao;
     }
 
-    public void setUnidadeOperacional(UnidadeOperacional unidadeOperacional) {
-        this.unidadeOperacional = unidadeOperacional;
+    /**
+     * @param instalacao instalação a que a unidade operacional pertence
+     */
+    public void setInstalacao(Instalacao instalacao) {
+        this.instalacao = instalacao;
     }
 
+    /**
+     * @return tipo de unidade operacional
+     */
     public TipoUnidadeOperacional getTipoUnidadeOperacional() {
         return tipoUnidadeOperacional;
     }
 
+    /**
+     * @param tipoUnidadeOperacional tipo de unidade operacional
+     */
     public void setTipoUnidadeOperacional(TipoUnidadeOperacional tipoUnidadeOperacional) {
         this.tipoUnidadeOperacional = tipoUnidadeOperacional;
     }

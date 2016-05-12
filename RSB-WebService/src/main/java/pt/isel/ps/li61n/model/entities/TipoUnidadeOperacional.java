@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.Entity;
 
 /**
- * TipoUnidadeOperacional - Description
+ * TipoUnidadeOperacional - Tipo de unidade operacional (Viaturas como VUCI, VOPE, etc., ou outros equipamentos)
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
@@ -11,21 +11,34 @@ import javax.persistence.Entity;
  */
 @Entity
 public class TipoUnidadeOperacional extends RsbAbstractEntity{
+
     private String designacao;
     private String descricao;
 
+    /**
+     * @return designação do tipo de unidade operacional (texto curto).
+     */
     public String getDesignacao() {
         return designacao;
     }
 
+    /**
+     * @param designacao designação do tipo de unidade operacional (texto curto).
+     */
     public void setDesignacao(String designacao) {
         this.designacao = designacao;
     }
 
+    /**
+     * @return descrição do tipo de unidade operacional.
+     */
     public String getDescricao() {
         return descricao;
     }
 
+    /**
+     * @param descricao descrição do tipo de unidade operacional.
+     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }

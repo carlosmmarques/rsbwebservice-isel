@@ -16,67 +16,67 @@ import java.io.Serializable;
 @IdClass(CicloTurno.CicloTurnoId.class) //A chave é composta e representada pela classe CicloTurnoId
 public class CicloTurno{
 
-    /**
-     * O identificador do Ciclo
-     */
-    @Id
-    private Long id;
-    /**
-     * O identificador do sub-periodo que compõe o ciclo (reinicia para cada novo ciclo)
-     */
-    @Id
-    private Integer numPeriodoCiclo;
-    /**
-     * Identifica o sub-periodo como sendo de descanso (caso contrário será um periodo de trabalho)
-     */
-    private Boolean periodoDescanso;
-    /**
-     * O número (fraccionário) de horas de que é composto o sub-periodo
-     */
-    private Float numHoras;
-    /**
-     * O Algoritmo de Calculo de Turno a que diz respeito este Ciclo
-     */
     @ManyToOne
     @JoinColumn(name = "algoritmoCalculoTurno_id")
     private AlgoritmoCalculoTurno algoritmoCalculoTurno;
+    @Id
+    private Integer ordemPeriodoCiclo;
+    private Boolean periodoDescanso;
+    private Float numHoras;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    /**
+     * @return algoritmo de calculo de turno a que diz respeito este periodo de ciclo.
+     */
     public AlgoritmoCalculoTurno getAlgoritmoCalculoTurno() {
         return algoritmoCalculoTurno;
     }
 
+    /**
+     * @param algoritmoCalculoTurno algoritmo de calculo de turno a que diz respeito este periodo de ciclo.
+     */
     public void setAlgoritmoCalculoTurno(AlgoritmoCalculoTurno algoritmoCalculoTurno) {
         this.algoritmoCalculoTurno = algoritmoCalculoTurno;
     }
 
-    public Integer getNumPeriodoCiclo() {
-        return numPeriodoCiclo;
+    /**
+     * @return identificador da ordem do sub-periodo que compõe o ciclo (reinicia para cada novo ciclo).
+     */
+    public Integer getOrdemPeriodoCiclo() {
+        return ordemPeriodoCiclo;
     }
 
-    public void setNumPeriodoCiclo(Integer numPeriodoCiclo) {
-        this.numPeriodoCiclo = numPeriodoCiclo;
+    /**
+     * @param ordemPeriodoCiclo identificador da ordem do sub-periodo que compõe o ciclo (reinicia para cada novo ciclo).
+     */
+    public void setOrdemPeriodoCiclo(Integer ordemPeriodoCiclo) {
+        this.ordemPeriodoCiclo = ordemPeriodoCiclo;
     }
 
+    /**
+     * @return verdadeiro se o sub-periodo é de de descanso, falso se for um periodo de trabalho.
+     */
     public Boolean getPeriodoDescanso() {
         return periodoDescanso;
     }
 
+    /**
+     * @param periodoDescanso verdadeiro se o sub-periodo é de de descanso
+     *                        falso se for um periodo de trabalho.
+     */
     public void setPeriodoDescanso(Boolean periodoDescanso) {
         this.periodoDescanso = periodoDescanso;
     }
 
+    /**
+     * @return número (fraccionário) de horas de que é composto o sub-periodo.
+     */
     public Float getNumHoras() {
         return numHoras;
     }
 
+    /**
+     * @param numHoras número (fraccionário) de horas de que é composto o sub-periodo.
+     */
     public void setNumHoras(Float numHoras) {
         this.numHoras = numHoras;
     }
@@ -91,16 +91,15 @@ public class CicloTurno{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CicloTurno)) return false;
 
         CicloTurno that = (CicloTurno) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!numPeriodoCiclo.equals(that.numPeriodoCiclo)) return false;
+        if (!algoritmoCalculoTurno.equals(that.algoritmoCalculoTurno)) return false;
+        if (!ordemPeriodoCiclo.equals(that.ordemPeriodoCiclo)) return false;
         if (periodoDescanso != null ? !periodoDescanso.equals(that.periodoDescanso) : that.periodoDescanso != null)
             return false;
-        if (!numHoras.equals(that.numHoras)) return false;
-        return algoritmoCalculoTurno.equals(that.algoritmoCalculoTurno);
+        return numHoras.equals(that.numHoras);
 
     }
 
@@ -110,11 +109,10 @@ public class CicloTurno{
      */
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + numPeriodoCiclo.hashCode();
+        int result = algoritmoCalculoTurno.hashCode();
+        result = 31 * result + ordemPeriodoCiclo.hashCode();
         result = 31 * result + (periodoDescanso != null ? periodoDescanso.hashCode() : 0);
         result = 31 * result + numHoras.hashCode();
-        result = 31 * result + algoritmoCalculoTurno.hashCode();
         return result;
     }
 
@@ -122,28 +120,30 @@ public class CicloTurno{
      * Chave composta
      */
     protected class CicloTurnoId implements Serializable{
-        private Long id;
-        private Integer numPeriodoCiclo;
+        private Integer ordemPeriodoCiclo;
+        private AlgoritmoCalculoTurno algoritmoCalculoTurno;
 
-        public CicloTurnoId(Long id, Integer numPeriodoCiclo) {
-            this.id = id;
-            this.numPeriodoCiclo = numPeriodoCiclo;
+        public CicloTurnoId(Integer ordemPeriodoCiclo, AlgoritmoCalculoTurno algoritmoCalculoTurno) {
+            this.ordemPeriodoCiclo = ordemPeriodoCiclo;
+            this.algoritmoCalculoTurno = algoritmoCalculoTurno;
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (!(o instanceof CicloTurnoId)) return false;
 
             CicloTurnoId that = (CicloTurnoId) o;
 
-            return (id.equals(that.id)) && numPeriodoCiclo.equals(that.numPeriodoCiclo);
+            if (!ordemPeriodoCiclo.equals(that.ordemPeriodoCiclo)) return false;
+            return algoritmoCalculoTurno.equals(that.algoritmoCalculoTurno);
+
         }
 
         @Override
         public int hashCode() {
-            int result = id.hashCode();
-            result = 31 * result + numPeriodoCiclo.hashCode();
+            int result = ordemPeriodoCiclo.hashCode();
+            result = 31 * result + algoritmoCalculoTurno.hashCode();
             return result;
         }
     }

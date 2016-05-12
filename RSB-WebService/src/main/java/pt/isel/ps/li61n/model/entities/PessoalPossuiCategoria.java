@@ -15,58 +15,69 @@ import java.util.Date;
  */
 @Entity
 public class PessoalPossuiCategoria extends RsbAbstractEntity{
-    /**
-     * Elemento do Pessoal
-     */
+
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
     private Pessoal pessoal;
-    /**
-     * Categoria associada ao elemento do pessoal
-     */
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
-    /**
-     * Data de atribuição de categoria
-     */
     private Date dataAtribuicaoCategoria;
-    /**
-     * Classificação na Formação que confere a atribuição da categoria
-     */
     private Float classificacaoFormacao;
 
+    /**
+     * @return Elemento do Pessoal
+     */
     public Pessoal getPessoal() {
         return pessoal;
     }
 
+    /**
+     * @param pessoal Elemento do Pessoal
+     */
     public void setPessoal(Pessoal pessoal) {
         this.pessoal = pessoal;
     }
 
+    /**
+     * @return Categoria associada ao elemento do pessoal
+     */
     public Categoria getCategoria() {
         return categoria;
     }
 
+    /**
+     * @param categoria Categoria associada ao elemento do pessoal
+     */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
+    /**
+     * @return Data de atribuição de categoria
+     */
     public Date getDataAtribuicaoCategoria() {
         return dataAtribuicaoCategoria;
     }
 
+    /**
+     * @param dataAtribuicaoCategoria Data de atribuição de categoria
+     */
     public void setDataAtribuicaoCategoria(Date dataAtribuicaoCategoria) {
         this.dataAtribuicaoCategoria = dataAtribuicaoCategoria;
     }
 
+    /**
+     * @return Classificação na Formação que confere a atribuição da categoria
+     */
     public Float getClassificacaoFormacao() {
         return classificacaoFormacao;
     }
 
+    /**
+     * @param classificacaoFormacao Classificação na Formação que confere a atribuição da categoria
+     */
     public void setClassificacaoFormacao(Float classificacaoFormacao) {
         this.classificacaoFormacao = classificacaoFormacao;
     }
-
-
 }
