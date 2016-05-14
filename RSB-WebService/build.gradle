@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'spring-boot' 
 
 jar {
@@ -33,17 +32,12 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.session:spring-session')
+	//compile('org.springframework.session:spring-session')
 	compile('org.springframework.boot:spring-boot-starter-logging')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.RC2"
-	}
-}
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'

@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pt.isel.ps.li61n.model.repository.UnidadeEstruturalRepository;
+import pt.isel.ps.li61n.model.repository.UnidadeEstrutural_IRepository;
 
 /**
  * RootController - Description
@@ -14,10 +14,10 @@ import pt.isel.ps.li61n.model.repository.UnidadeEstruturalRepository;
 @RestController
 public class RootController {
 
-    private UnidadeEstruturalRepository unidadeEstruturalRepository;
+    private UnidadeEstrutural_IRepository unidadeEstruturalRepository;
 
 //    @Autowired
-//    public RootController(UnidadeEstruturalRepository unidadeEstruturalRepository) {
+//    public RootController(UnidadeEstrutural_IRepository unidadeEstruturalRepository) {
 //        this.unidadeEstruturalRepository = unidadeEstruturalRepository;
 //    }
 
