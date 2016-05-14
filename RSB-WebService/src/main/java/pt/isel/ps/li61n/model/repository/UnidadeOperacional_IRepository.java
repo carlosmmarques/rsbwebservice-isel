@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface UnidadeOperacional_IRepository extends JpaRepository<UnidadeOperacional, Long>{
+public interface UnidadeOperacional_IRepository extends JpaRepository<UnidadeOperacional, Long> {
 }

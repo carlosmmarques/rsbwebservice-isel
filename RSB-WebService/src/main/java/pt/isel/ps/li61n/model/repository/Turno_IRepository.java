@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.Turno;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Turno_IRepository extends JpaRepository<Turno, Long>{
+public interface Turno_IRepository extends JpaRepository<Turno, Long> {
 }

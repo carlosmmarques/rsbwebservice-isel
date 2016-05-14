@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.Pessoal;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Pessoal_IRepository extends JpaRepository<Pessoal, Long>{
+public interface Pessoal_IRepository extends JpaRepository<Pessoal, Long> {
 }

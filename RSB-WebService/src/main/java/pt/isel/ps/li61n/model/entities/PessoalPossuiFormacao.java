@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * PessoalPossuiFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação

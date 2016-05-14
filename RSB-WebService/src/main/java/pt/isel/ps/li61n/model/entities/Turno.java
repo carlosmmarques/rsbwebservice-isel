@@ -1,9 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Time;
 
 /**
  * Turno - Turno de trabalho a que os elementos podem ser destacados
@@ -17,7 +16,7 @@ public class Turno extends RsbAbstractEntity{
 
     private String designacao;
     private Date dtInicioCiclo;
-    private Date hrInicioCiclo;
+    private Time hrInicioCiclo;
     @ManyToOne
     @JoinColumn(name = "algoritmoCalculoTurno_id")
     private AlgoritmoCalculoTurno algoritmoCalculoTurno;
@@ -53,14 +52,14 @@ public class Turno extends RsbAbstractEntity{
     /**
      * @return hora de inicio do ciclo.
      */
-    public Date getHrInicioCiclo() {
+    public Time getHrInicioCiclo() {
         return hrInicioCiclo;
     }
 
     /**
      * @param hrInicioCiclo hora de inicio do ciclo.
      */
-    public void setHrInicioCiclo(Date hrInicioCiclo) {
+    public void setHrInicioCiclo(Time hrInicioCiclo) {
         this.hrInicioCiclo = hrInicioCiclo;
     }
 

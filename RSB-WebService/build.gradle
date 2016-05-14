@@ -28,11 +28,17 @@ repositories {
 
 
 dependencies {
+    // Dependencias de base para qualqeur serviço Web
 	compile('org.springframework.boot:spring-boot-starter-web')
+    // Flyway - Sistema de migraçao de bases de dados.
+    compile('org.flyway:flyway-core')
+    // Java Persistence API
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    // View Engine - ThymeLeaf
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    // Basic Security
 	compile('org.springframework.boot:spring-boot-starter-security')
-	//compile('org.springframework.session:spring-session')
+	compile('org.springframework.session:spring-session')
 	compile('org.springframework.boot:spring-boot-starter-logging')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

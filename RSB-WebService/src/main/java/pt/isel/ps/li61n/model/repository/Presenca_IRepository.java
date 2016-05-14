@@ -13,7 +13,7 @@ import pt.isel.ps.li61n.model.entities.Presenca;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Presenca_IRepository extends JpaRepository<Presenca, Long>{
+public interface Presenca_IRepository extends JpaRepository<Presenca, Long> {
 
 //    /**
 //     * Obtem Lista de Periodos

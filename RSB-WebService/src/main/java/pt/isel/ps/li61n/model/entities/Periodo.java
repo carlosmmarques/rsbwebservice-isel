@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Periodo - Representação do Periodo

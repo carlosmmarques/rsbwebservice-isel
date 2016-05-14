@@ -4,7 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 
 /**
  * Presenca - Caracterização da Presença.
@@ -19,7 +20,7 @@ public class Presenca extends RsbAbstractEntity{
     @Column(nullable = false)
     private Date data;
     @Column(nullable = false)
-    private Date horaInicio;
+    private Time horaInicio;
     @Column(nullable = false)
     private Float numHoras;
     @ManyToOne
@@ -64,14 +65,14 @@ public class Presenca extends RsbAbstractEntity{
     /**
      * @return hora de inicio.
      */
-    public Date getHoraInicio() {
+    public Time getHoraInicio() {
         return horaInicio;
     }
 
     /**
      * @param horaInicio hora de inicio.
      */
-    public void setHoraInicio(Date horaInicio) {
+    public void setHoraInicio(Time horaInicio) {
         this.horaInicio = horaInicio;
     }
 

@@ -1,7 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Pessoal - Elementos do Pessoal do Corpo de Bombeiros
