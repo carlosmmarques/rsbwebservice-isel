@@ -16,10 +16,10 @@ public class UnidadeEstrutural extends RsbAbstractEntity{
 
     private String designacao;
     @ManyToOne(optional = true)
-    @JoinColumn(name = "unidadeestruturalmae_id")
+    @JoinColumn(name = "unidadeEstruturalMae_id")
     private UnidadeEstrutural unidadeEstruturalMae;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "tipounidadeestrutural_id")
+    @JoinColumn(name = "tipoUnidadeEstrutural_id")
     private TipoUnidadeEstrutural tipoUnidadeEstrutural;
     private Integer nivelHierarquico;
 

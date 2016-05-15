@@ -1,6 +1,9 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * TipoPresenca - Caracteriza o tipo de presença. Permite apurar se se trata de uma ausencia, ou em caso de presença,
@@ -11,12 +14,32 @@ import javax.persistence.Entity;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoPresenca extends RsbAbstractEntity{
+public class TipoPresenca{
 
+    @Id
+    private String id;
     private Boolean ausencia;
     private Boolean reforco;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "tipoPresencaEmReforco_id")
+    private TipoPresenca tipoPresencaEmReforco;
     private String abreviatura;
     private String descricao;
+
+
+    /**
+     * @return identificador do tipo de presença
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id identificador do tipo de presença
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * @return verdadeiro se se trata de uma ausencia, falso em caso contrário.
@@ -46,6 +69,20 @@ public class TipoPresenca extends RsbAbstractEntity{
      */
     public void setReforco(Boolean reforco) {
         this.reforco = reforco;
+    }
+
+    /**
+     * @return tipo de presença quando a executar a mesma função em reforço
+     */
+    public TipoPresenca getTipoPresencaEmReforco() {
+        return tipoPresencaEmReforco;
+    }
+
+    /**
+     * @param tipoPresencaEmReforco tipo de presença quando a executar a mesma função em reforço
+     */
+    public void setTipoPresencaEmReforco(TipoPresenca tipoPresencaEmReforco) {
+        this.tipoPresencaEmReforco = tipoPresencaEmReforco;
     }
 
     /**

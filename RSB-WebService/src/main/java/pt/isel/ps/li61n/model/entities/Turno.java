@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
@@ -15,7 +17,9 @@ import java.sql.Time;
 public class Turno extends RsbAbstractEntity{
 
     private String designacao;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dtInicioCiclo;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private Time hrInicioCiclo;
     @ManyToOne
     @JoinColumn(name = "algoritmoCalculoTurno_id")

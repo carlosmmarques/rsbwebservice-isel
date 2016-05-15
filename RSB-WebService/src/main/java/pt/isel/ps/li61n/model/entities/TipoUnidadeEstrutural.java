@@ -14,7 +14,7 @@ public class TipoUnidadeEstrutural extends RsbAbstractEntity{
 
     private String designacao;
     private String descricao;
-    private Integer nivelHierarquicoMaximo;
+    private Integer nivelHierarquicoMaximoMae;
 
     /**
      * @return designação do tipo de Unidade Estrutural (nome curto).
@@ -47,14 +47,14 @@ public class TipoUnidadeEstrutural extends RsbAbstractEntity{
     /**
      * @return nível hierarquico máximo que um tipo de Unidade Estrutural pode aceitar.
      */
-    public Integer getNivelHierarquicoMaximo() {
-        return nivelHierarquicoMaximo;
+    public Integer getNivelHierarquicoMaximoMae() {
+        return nivelHierarquicoMaximoMae;
     }
 
     /**
-     * @param nivelHierarquicoMaximo nível hierarquico máximo que um tipo de Unidade Estrutural pode aceitar.
+     * @param nivelHierarquicoMaximoMae nível hierarquico máximo que um tipo de Unidade Estrutural pode aceitar.
      */
-    public void setNivelHierarquicoMaximo(Integer nivelHierarquicoMaximo) {
-        this.nivelHierarquicoMaximo = nivelHierarquicoMaximo;
+    public void setNivelHierarquicoMaximoMae(Integer nivelHierarquicoMaximoMae) {
+        this.nivelHierarquicoMaximoMae = nivelHierarquicoMaximoMae;
     }
 }

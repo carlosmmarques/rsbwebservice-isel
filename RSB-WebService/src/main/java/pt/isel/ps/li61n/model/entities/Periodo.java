@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.sql.Date;
@@ -15,8 +17,10 @@ import java.sql.Date;
 public class Periodo extends RsbAbstractEntity{
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dtInicio;
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dtFim;
 
     /**

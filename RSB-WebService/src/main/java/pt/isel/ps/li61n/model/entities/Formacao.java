@@ -1,6 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 /**
  * Formacao - Registo de Formação de Elementos do Pessoal
@@ -15,6 +17,8 @@ public class Formacao extends RsbAbstractEntity{
     private Float validade;
     private String designacao;
     private String descricao;
+    @ManyToMany(mappedBy = "formacoes")
+    private List<ResponsabilidadeOperacional> responsabilidadesOperacionais;
 
     /**
      * @return validade da formação (numero de anos - Fraccionario)
@@ -56,5 +60,19 @@ public class Formacao extends RsbAbstractEntity{
      */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    /**
+     * @return lista de responsabilidades operacionais dependentes desta formação
+     */
+    public List<ResponsabilidadeOperacional> getResponsabilidadesOperacionais() {
+        return responsabilidadesOperacionais;
+    }
+
+    /**
+     * @param responsabilidadesOperacionais lista de responsabilidades operacionais dependentes desta formação
+     */
+    public void setResponsabilidadesOperacionais(List<ResponsabilidadeOperacional> responsabilidadesOperacionais) {
+        this.responsabilidadesOperacionais = responsabilidadesOperacionais;
     }
 }

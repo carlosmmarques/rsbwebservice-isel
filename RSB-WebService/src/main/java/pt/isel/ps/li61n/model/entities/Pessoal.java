@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -24,12 +26,14 @@ public class Pessoal extends RsbAbstractEntity{
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dataNascimento;
     @Column(nullable = false)
     private String telefone1;
     private String telefone2;
     private String eMail;
     private String nif;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
     private TipoDocIdentificacao tipoDocIdentificacao;

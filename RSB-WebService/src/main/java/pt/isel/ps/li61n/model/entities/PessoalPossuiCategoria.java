@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,6 +24,7 @@ public class PessoalPossuiCategoria extends RsbAbstractEntity{
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dataAtribuicaoCategoria;
     private Float classificacaoFormacao;
 

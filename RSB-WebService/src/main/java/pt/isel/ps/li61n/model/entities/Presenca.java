@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,8 +20,10 @@ import java.sql.Time;
 public class Presenca extends RsbAbstractEntity{
 
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date data;
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private Time horaInicio;
     @Column(nullable = false)
     private Float numHoras;

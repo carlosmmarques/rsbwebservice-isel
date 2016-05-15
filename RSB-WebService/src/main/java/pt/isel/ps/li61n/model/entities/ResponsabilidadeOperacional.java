@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * ResponsabilidadeOperacional - Responsabilidade operacional assumida por um elemento do pessoal.
@@ -15,14 +16,48 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")
     private TipoPresenca tipoPresenca;
-    @ManyToOne
-    @JoinColumn(name = "formacao_id")
-    private Formacao formacao;
+//    @ManyToOne
+//    @JoinColumn(name = "formacao_id")
+//    private Formacao formacoes;
+    @ManyToMany
+    @JoinTable(
+            name = "responsabilidade_formacao",
+            joinColumns = @JoinColumn(name = "responsabilidade_operacional_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
+    private List<Formacao> formacoes;
     private String sigla;
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
     private Boolean dependeFactorElegibilidade;
     private String designacao;
+
+    /**
+     * @return tipo de presença em que o elemento assume esta responsabilidade operacional
+     */
+    public TipoPresenca getTipoPresenca() {
+        return tipoPresenca;
+    }
+
+    /**
+     * @param tipoPresenca tipo de presença em que o elemento assume esta responsabilidade operacional
+     */
+    public void setTipoPresenca(TipoPresenca tipoPresenca) {
+        this.tipoPresenca = tipoPresenca;
+    }
+
+    /**
+     * @return lista de formações que habilitam o desempenho de tarefas desta responsabilidade operacional
+     */
+    public List<Formacao> getFormacoes() {
+        return formacoes;
+    }
+
+    /**
+     * @param formacoes lista de formações que habilitam o desempenho de tarefas desta responsabilidade operacional
+     */
+    public void setFormacoes(List<Formacao> formacoes) {
+        this.formacoes = formacoes;
+    }
 
     /**
      * @return sigla da responsabilidade operacional.
