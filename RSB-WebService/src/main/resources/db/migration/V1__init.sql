@@ -96,7 +96,6 @@ INSERT INTO tipo_presenca(id, abreviatura, ausencia, descricao, reforco) VALUES
   ('6S', 'Mg/Mac/Nisac  (Reforço)', FALSE, 'Mergulhadores / Maqueiros / Apoio Especializado', TRUE),
   ('9S', 'Formaçãpo  (Reforço)', FALSE, 'FAORMAÇÃO', TRUE)
 ;
-
 INSERT INTO tipo_presenca(id, abreviatura, ausencia, descricao, reforco, tipo_presenca_em_reforco_id) VALUES
   ('S1', 'CPO / CH CIDADE', FALSE, 'Comandante de Permanencia às Operações / Chefe de Serviço à Cidade', FALSE, '1S'),
   ('S2', 'Ch. 1ª Interv.', FALSE, 'Chefe de 1ª Intervenção', FALSE, '2S'),
@@ -105,5 +104,53 @@ INSERT INTO tipo_presenca(id, abreviatura, ausencia, descricao, reforco, tipo_pr
   ('S5', 'Motoristas', FALSE, 'Motoristas', FALSE, '5S'),
   ('S6', 'Mg/Mac/Nisac', FALSE, 'Mergulhadores / Maqueiros / Apoio Especializado', FALSE, '6S'),
   ('S9', 'Formação', FALSE, 'Formação', FALSE, '9S')
+;
+
+-- TIPOS DE UNIDADES ESTRUTURAIS
+INSERT INTO tipo_unidade_estrutural(id, descricao, designacao, nivel_hierarquico_maximo_mae) VALUES
+  ('1', 'unidade composta por dois ou mais batalhões', 'Regimento', '0'),
+  ('2', 'subdivisão de um regimento, formada por um número determinado de companhias', 'Batalhão', '1'),
+  ('3', 'subunidade de nível inferior ao batalhão', 'Companhia', '2'),
+  ('4', 'subunidade de nível inferior à companhia', 'Secção', '3')
+;
+
+-- UNIDADES ESTRUTURAIS
+INSERT INTO unidade_estrutural(id, designacao, nivel_hierarquico, tipo_unidade_estrutural_id) VALUES
+  ('1','Regimento Sapadores Bombeiros','1','1')
+;
+INSERT INTO unidade_estrutural(id, designacao, nivel_hierarquico, tipo_unidade_estrutural_id, unidade_estrutural_mae_id) VALUES
+  ('2','2º Batalhão','2','2','1'),
+  ('3','3ª Companhia','3','3','2')
+;
+
+-- INSTALAÇÕES
+INSERT INTO instalacao (id, descricao, designacao, localizacao, unidade_estrutural_id) VALUES
+  ('1', 'Quartel - Sede', 'S', 'Av. Rio de Janeiro', '3'),
+  ('2', 'Quartel - Externo', 'E', 'Colombo', '3')
+;
+
+-- FORMAÇÃO
+INSERT INTO formacao(id, descricao, designacao, validade) VALUES
+  ('1', 'Carta Condução +3500Kg', 'Condução de Pesados', '20'),
+  ('2', 'Curso Mecanica geral', 'Mecânica geral', '-1'),
+  ('3', 'Torneiro mecancico', 'Torneiro', '-1'),
+  ('4', 'Curso de cozinha', 'Cozinheiro', '-1'),
+  ('5', 'Não disponível', 'N/D', '-1')
+;
+
+-- TIPOS DE UNIDADES OPERACIONAIS
+INSERT INTO  tipo_unidade_operacional(id, descricao, designacao) VALUES
+  ('1', 'VLCI', ''),
+  ('2', 'VUCI', ''),
+  ('3', 'VE', ''),
+  ('4', 'VTTU', ''),
+  ('5', 'VOPE', ''),
+  ('6', 'VCOT', ''),
+  ('7', 'OPDAE', ''),
+  ('8', 'COZINHA', ''),
+  ('9', 'BAR', ''),
+  ('10', 'PLANTÃO GARAGEM', '')
+
+
 ;
 
