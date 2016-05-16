@@ -1,7 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * CicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbAbstractEntity, uma vez que a chave é
@@ -13,9 +12,10 @@ import java.io.Serializable;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-@IdClass(CicloTurno.CicloTurnoId.class) //A chave é composta e representada pela classe CicloTurnoId
+@IdClass(value = CicloTurnoPK.class) //A chave é composta e representada pela classe CicloTurnoPK
 public class CicloTurno{
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "algoritmoCalculoTurno_id")
     private AlgoritmoCalculoTurno algoritmoCalculoTurno;
@@ -23,6 +23,12 @@ public class CicloTurno{
     private Integer ordemPeriodoCiclo;
     private Boolean periodoDescanso;
     private Float numHoras;
+
+    /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public CicloTurno() {
+    }
 
     /**
      * @return algoritmo de calculo de turno a que diz respeito este periodo de ciclo.
@@ -114,37 +120,5 @@ public class CicloTurno{
         result = 31 * result + (periodoDescanso != null ? periodoDescanso.hashCode() : 0);
         result = 31 * result + numHoras.hashCode();
         return result;
-    }
-
-    /**
-     * Chave composta
-     */
-    protected class CicloTurnoId implements Serializable{
-        private Integer ordemPeriodoCiclo;
-        private AlgoritmoCalculoTurno algoritmoCalculoTurno;
-
-        public CicloTurnoId(Integer ordemPeriodoCiclo, AlgoritmoCalculoTurno algoritmoCalculoTurno) {
-            this.ordemPeriodoCiclo = ordemPeriodoCiclo;
-            this.algoritmoCalculoTurno = algoritmoCalculoTurno;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CicloTurnoId)) return false;
-
-            CicloTurnoId that = (CicloTurnoId) o;
-
-            if (!ordemPeriodoCiclo.equals(that.ordemPeriodoCiclo)) return false;
-            return algoritmoCalculoTurno.equals(that.algoritmoCalculoTurno);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = ordemPeriodoCiclo.hashCode();
-            result = 31 * result + algoritmoCalculoTurno.hashCode();
-            return result;
-        }
     }
 }

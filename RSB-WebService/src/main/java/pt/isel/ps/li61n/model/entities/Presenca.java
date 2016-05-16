@@ -53,6 +53,12 @@ public class Presenca extends RsbAbstractEntity{
     private Pessoal elementoReforcado;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Presenca() {
+    }
+
+    /**
      * @return data da presença
      */
     public Date getData() {

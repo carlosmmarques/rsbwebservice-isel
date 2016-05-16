@@ -26,6 +26,11 @@ public class TipoPresenca{
     private String abreviatura;
     private String descricao;
 
+    /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public TipoPresenca() {
+    }
 
     /**
      * @return identificador do tipo de presença

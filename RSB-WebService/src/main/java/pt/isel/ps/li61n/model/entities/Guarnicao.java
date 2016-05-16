@@ -24,6 +24,12 @@ public class Guarnicao extends RsbAbstractEntity{
     private Integer maximo;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Guarnicao() {
+    }
+
+    /**
      * @return unidade operacional a guarnecer.
      */
     public UnidadeOperacional getUnidadeOperacional() {

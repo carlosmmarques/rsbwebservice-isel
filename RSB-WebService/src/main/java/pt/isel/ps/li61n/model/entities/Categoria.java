@@ -19,6 +19,12 @@ public class Categoria extends RsbAbstractEntity{
     private Integer nivelHierarquico;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Categoria() {
+    }
+
+    /**
      * @return enumerado (interno a esta classe) que identifica o tipo de quadro (Bombeiro, Comando ou Outro)
      */
     public Quadro getQuadro() {

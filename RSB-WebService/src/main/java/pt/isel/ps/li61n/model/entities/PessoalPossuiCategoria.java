@@ -29,6 +29,12 @@ public class PessoalPossuiCategoria extends RsbAbstractEntity{
     private Float classificacaoFormacao;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public PessoalPossuiCategoria() {
+    }
+
+    /**
      * @return Elemento do Pessoal
      */
     public Pessoal getPessoal() {

@@ -16,6 +16,12 @@ public class TipoUnidadeOperacional extends RsbAbstractEntity{
     private String descricao;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public TipoUnidadeOperacional() {
+    }
+
+    /**
      * @return designação do tipo de unidade operacional (texto curto).
      */
     public String getDesignacao() {

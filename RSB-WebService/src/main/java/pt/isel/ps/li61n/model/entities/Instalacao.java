@@ -20,6 +20,12 @@ public class Instalacao extends RsbAbstractEntity{
     private String localizacao;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Instalacao() {
+    }
+
+    /**
      * @return unidade estrutural a que esta instalação é adstrita.
      */
     public UnidadeEstrutural getUnidadeEstrutural() {

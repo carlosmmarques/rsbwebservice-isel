@@ -53,6 +53,12 @@ public class Pessoal extends RsbAbstractEntity{
     private Instalacao instalacao;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Pessoal() {
+    }
+
+    /**
      * @return Identificador interno do elemento do pessoal
      */
     public String getIdInterno() {

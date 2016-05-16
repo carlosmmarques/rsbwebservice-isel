@@ -21,6 +21,12 @@ public class Formacao extends RsbAbstractEntity{
     private List<ResponsabilidadeOperacional> responsabilidadesOperacionais;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Formacao() {
+    }
+
+    /**
      * @return validade da formação (numero de anos - Fraccionario)
      */
     public Float getValidade() {

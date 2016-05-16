@@ -26,6 +26,12 @@ public class Turno extends RsbAbstractEntity{
     private AlgoritmoCalculoTurno algoritmoCalculoTurno;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Turno() {
+    }
+
+    /**
      * @return designação do Turno.
      */
     public String getDesignacao() {

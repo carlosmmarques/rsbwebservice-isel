@@ -32,6 +32,12 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
     private String designacao;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public ResponsabilidadeOperacional() {
+    }
+
+    /**
      * @return tipo de presença em que o elemento assume esta responsabilidade operacional
      */
     public TipoPresenca getTipoPresenca() {

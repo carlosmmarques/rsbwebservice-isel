@@ -1,8 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.Set;
 
 /**
  * AlgoritmoCalculoTurno - Algoritmo de Cálculo do Turno. O Algoritmo é algo que define a sequencia de periodos
@@ -18,8 +16,14 @@ public class AlgoritmoCalculoTurno extends RsbAbstractEntity{
     private String designacao;
     private String descricao;
     private Boolean servicoPermanente;
-    @OneToMany(mappedBy = "algoritmoCalculoTurno")
-    private Set<CicloTurno> ciclosTurno;
+//    @OneToMany(mappedBy = "algoritmoCalculoTurno")
+//    private Set<CicloTurno> ciclosTurno;
+
+    /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public AlgoritmoCalculoTurno() {
+    }
 
     /**
      * @return designação do algoritmo de calculo de turno (texto curto)
@@ -66,17 +70,17 @@ public class AlgoritmoCalculoTurno extends RsbAbstractEntity{
         this.servicoPermanente = servicoPermanente;
     }
 
-    /**
-     * @return periodos de ciclos de turno que definem este algoritmo de turno.
-     */
-    public Set<CicloTurno> getCiclos() {
-        return ciclosTurno;
-    }
-
-    /**
-     * @param ciclosTurno periodos de ciclos de turno que definem este algoritmo de turno.
-     */
-    public void setCiclos(Set<CicloTurno> ciclosTurno) {
-        this.ciclosTurno = ciclosTurno;
-    }
+//    /**
+//     * @return periodos de ciclos de turno que definem este algoritmo de turno.
+//     */
+//    public Set<CicloTurno> getCiclos() {
+//        return ciclosTurno;
+//    }
+//
+//    /**
+//     * @param ciclosTurno periodos de ciclos de turno que definem este algoritmo de turno.
+//     */
+//    public void setCiclos(Set<CicloTurno> ciclosTurno) {
+//        this.ciclosTurno = ciclosTurno;
+//    }
 }

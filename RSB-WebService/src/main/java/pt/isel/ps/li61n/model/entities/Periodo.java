@@ -24,6 +24,12 @@ public class Periodo extends RsbAbstractEntity{
     private Date dtFim;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public Periodo() {
+    }
+
+    /**
      * @return Data de inicio do Periodo.
      */
     public Date getDtInicio() {

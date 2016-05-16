@@ -24,6 +24,12 @@ public class UnidadeEstrutural extends RsbAbstractEntity{
     private Integer nivelHierarquico;
 
     /**
+     * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
+     */
+    public UnidadeEstrutural() {
+    }
+
+    /**
      * @return designação da unidade estrutural (nome curto)
      */
     public String getDesignacao() {
