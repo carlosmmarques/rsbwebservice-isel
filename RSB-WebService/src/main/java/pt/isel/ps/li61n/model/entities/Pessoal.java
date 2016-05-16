@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -16,28 +17,42 @@ import java.sql.Date;
 public class Pessoal extends RsbAbstractEntity{
 
     @Column(nullable = true)
+    @JsonView(View.Summary.class)
     private String idInterno;
     @Column(nullable = false)
+    @JsonView(View.Summary.class)
     private String Matricula;
     @Column(unique = true, nullable = false)
+    @JsonView(View.Summary.class)
     private String numMecanografico;
     @Column(nullable = false)
+    @JsonView(View.Summary.class)
     private String abreviatura;
     @Column(nullable = false)
+    @JsonView(View.Summary.class)
     private String nome;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView(View.Summary.class)
     private Date dataNascimento;
     @Column(nullable = false)
+    @JsonView(View.Summary.class)
     private String telefone1;
+    @JsonView(View.Summary.class)
     private String telefone2;
+    @JsonView(View.Summary.class)
     private String eMail;
+    @JsonView(View.Summary.class)
     private String nif;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView(View.Summary.class)
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
+    @JsonView(View.Summary.class)
     private TipoDocIdentificacao tipoDocIdentificacao;
+    @JsonView(View.Summary.class)
     private String numDocIdentificação;
+    @JsonView(View.Summary.class)
     private Float factorElegibilidade;
     @ManyToOne
     @JoinColumn(name = "postoFuncional_id")
