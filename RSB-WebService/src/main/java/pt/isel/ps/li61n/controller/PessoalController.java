@@ -3,10 +3,9 @@ package pt.isel.ps.li61n.controller;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.model.entities.Pessoal;
 import pt.isel.ps.li61n.model.entities.View;
 import pt.isel.ps.li61n.model.repository.Pessoal_IRepository;
@@ -75,57 +74,110 @@ public class PessoalController extends RsbBaseController<Pessoal>{
             }
         }
 
+        /**
+         * @return id do elemento do pessoal
+         */
         public Long getId() { return id; }
 
+        /**
+         * @param id id do elemento do pessoal
+         */
         public void setId(Long id) { this.id = id; }
 
+        /**
+         * @return mapa chave valor com as propriedades anotadas como sumárias
+         */
         @JsonAnyGetter
         public Map<String, String> getPessoa_map() {
             return pessoa_map;
         }
 
+        /**
+         * @param pessoa_map mapa chave valor com as propriedades anotadas como sumárias
+         */
         public void setPessoa_map(Map<String, String> pessoa_map) {
             this.pessoa_map = pessoa_map;
         }
 
+        /**
+         * @return Uri do recurso pessoa especifica
+         */
         public String getUri_pessoa() {
             return uri_pessoa;
         }
 
+        /**
+         * @param uri_pessoa Uri do recurso pessoa especifica
+         */
         public void setUri_pessoa(String uri_pessoa) {
             this.uri_pessoa = uri_pessoa;
         }
 
+        /**
+         * @return Uri da Instalação por omissão do elemento
+         */
         public String getUri_instalacaoPorOmissao() {
             return uri_instalacaoPorOmissao;
         }
 
+        /**
+         * @param uri_instalacaoPorOmissao Uri da Instalação por omissão do elemento
+         */
         public void setUri_instalacaoPorOmissao(String uri_instalacaoPorOmissao) {
             this.uri_instalacaoPorOmissao = uri_instalacaoPorOmissao;
         }
 
+        /**
+         * @return Uri do Posto Funcional por omissão do elemento
+         */
         public String getUri_postoFuncionalPorOmissao() {
             return uri_postoFuncionalPorOmissao;
         }
 
+        /**
+         * @param uri_postoFuncionalPorOmissao Uri do Posto Funcional por omissão do elemento
+         */
         public void setUri_postoFuncionalPorOmissao(String uri_postoFuncionalPorOmissao) {
             this.uri_postoFuncionalPorOmissao = uri_postoFuncionalPorOmissao;
         }
 
+        /**
+         * @return Uri do tipo de presença por omissão do elemento
+         */
         public String getUri_tipoPresencaPorOmissao() {
             return uri_tipoPresencaPorOmissao;
         }
 
+        /**
+         * @param uri_tipoPresencaPorOmissao Uri do tipo de presença por omissão do elemento
+         */
         public void setUri_tipoPresencaPorOmissao(String uri_tipoPresencaPorOmissao) {
             this.uri_tipoPresencaPorOmissao = uri_tipoPresencaPorOmissao;
         }
 
+        /**
+         * @return Uri do Turno por omissão do elemento
+         */
         public String getUri_turnoPorOmissao() {
             return uri_turnoPorOmissao;
         }
 
+        /**
+         * @param uri_turnoPorOmissao Uri do Turno por omissão do elemento
+         */
         public void setUri_turnoPorOmissao(String uri_turnoPorOmissao) {
             this.uri_turnoPorOmissao = uri_turnoPorOmissao;
+        }
+    }
+
+    /**
+     * Classe para tratamento de excepções via HTTP
+     */
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Este elemento do pessoal não existe")
+    public class PessoalNotFoundException extends RuntimeException{
+        private static final long serialVersionUID = 1L;
+        public PessoalNotFoundException(String id){
+            super(String.format("Elemento com id %s não existe no repositório", id));
         }
     }
 
@@ -135,9 +187,9 @@ public class PessoalController extends RsbBaseController<Pessoal>{
     /**
      * @return Lista de pessoal
      */
-    @JsonView(View.Summary.class)
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
     public List<PessoalDTO> listaPessoal(){
 
         List<PessoalDTO> pessoalDTOs = new LinkedList<>();
@@ -145,5 +197,19 @@ public class PessoalController extends RsbBaseController<Pessoal>{
                 pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal)));
         return pessoalDTOs;
     }
+
+    /**
+     * @return Um elemento do pessoal
+     */
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
+    public PessoalDTO pessoal(@PathVariable String id){
+        final Pessoal pessoal = repo.findOne(Long.parseLong(id));
+        if (pessoal != null)
+            return new PessoalDTO(pessoal);
+        throw new PessoalNotFoundException(id);
+    }
+
 
 }
