@@ -54,16 +54,16 @@ public class Pessoal extends RsbAbstractEntity{
     private String numDocIdentificação;
     @JsonView(View.Summary.class)
     private Float factorElegibilidade;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postoFuncional_id")
     private PostoFuncional postoFuncional;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoPresenca_id")
     private TipoPresenca tipoPresenca;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turno_id")
     private Turno turno;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instalacao_id")
     private Instalacao instalacao;
 
