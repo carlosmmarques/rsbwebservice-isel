@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -190,9 +191,9 @@ public class PessoalController extends RsbBaseController<Pessoal>{
     @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Responsebody em JSON
-    public List<PessoalDTO> listaPessoal(){
+    public List<PessoalDTO> obterListaTotalDoPessoal(){
 
-        List<PessoalDTO> pessoalDTOs = new LinkedList<>();
+        final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
         repo.findAll().stream().forEach(
                 pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal)));
         return pessoalDTOs;
@@ -204,12 +205,37 @@ public class PessoalController extends RsbBaseController<Pessoal>{
     @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Responsebody em JSON
-    public PessoalDTO pessoal(@PathVariable String id){
+    public PessoalDTO obterElementoDoPessoal(@PathVariable String id){
         final Pessoal pessoal = repo.findOne(Long.parseLong(id));
         if (pessoal != null)
             return new PessoalDTO(pessoal);
         throw new PessoalNotFoundException(id);
     }
 
+    /**
+     * @return lista de elemntos filtrada por parametros
+     */
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
+    public List<PessoalDTO> obterListaPessoalPorParams(
+            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id") Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id") Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id") Optional<Long> responsabilidadeoperacional_id
+    ){
+
+        final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
+        repo.findAll().stream().filter(
+                pessoa -> {
+                    return  postofuncional_id.map(v -> v == pessoa.getPostoFuncional().getId()).orElse(true);
+                    //TODO Testar a restante lista de parametros opcionais
+                }
+        );
+        return pessoalDTOs;
+
+    }
 
 }
