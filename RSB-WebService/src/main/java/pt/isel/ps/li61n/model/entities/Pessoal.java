@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Pessoal - Elementos do Pessoal do Corpo de Bombeiros
@@ -66,6 +67,10 @@ public class Pessoal extends RsbAbstractEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instalacao_id")
     private Instalacao instalacao;
+    @OneToMany(mappedBy = "pessoal")
+    private List<PessoalPossuiCategoria> categorias;
+    @OneToMany(mappedBy = "pessoal")
+    private List<PessoalPossuiFormacao> formacoes;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -323,6 +328,34 @@ public class Pessoal extends RsbAbstractEntity{
      */
     public void setInstalacao(Instalacao instalacao) {
         this.instalacao = instalacao;
+    }
+
+    /**
+     * @return Lista de categorias do elemento
+     */
+    public List<PessoalPossuiCategoria> getCategorias() {
+        return categorias;
+    }
+
+    /**
+     * @param categorias Lista de categorias do elemento
+     */
+    public void setCategorias(List<PessoalPossuiCategoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    /**
+     * @return Lista de formações do elemento
+     */
+    public List<PessoalPossuiFormacao> getFormacoes() {
+        return formacoes;
+    }
+
+    /**
+     * @param formacoes Lista de formações do elemento
+     */
+    public void setFormacoes(List<PessoalPossuiFormacao> formacoes) {
+        this.formacoes = formacoes;
     }
 
     /**

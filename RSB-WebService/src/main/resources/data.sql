@@ -545,6 +545,28 @@ INSERT INTO pessoal_possui_categoria (id, classificacao_formacao, data_atribuica
 ON CONFLICT DO NOTHING
 ;
 
+-- FORMAÇÃO DO PESSOAL
+INSERT INTO pessoal_possui_formacao(id, data_aquisicao_formacao, data_caducidade_formacao, formacao_id, pessoal_id) VALUES
+  ('1', '01-01-1970', '01-01-2020', '1', '1'),
+  ('2', '01-01-1970', '01-01-2020', '2', '1'),
+  ('3', '01-01-1970', '01-01-2020', '3', '1'),
+  ('4', '01-01-1970', '01-01-2020', '4', '1'),
+  ('5', '01-01-1970', '01-01-2020', '5', '5'),
+  ('6', '01-01-1970', '01-01-2020', '5', '6'),
+  ('7', '01-01-1970', '01-01-2020', '5', '7'),
+  ('8', '01-01-1970', '01-01-2020', '5', '8'),
+  ('9', '01-01-1970', '01-01-2020', '5', '9'),
+  ('10', '01-01-1970', '01-01-2020', '1', '10'),
+  ('11', '01-01-1970', '01-01-2020', '2', '10'),
+  ('12', '01-01-1970', '01-01-2020', '3', '10'),
+  ('13', '01-01-1970', '01-01-2020', '4', '10'),
+  ('14', '01-01-1970', '01-01-2020', '1', '11'),
+  ('15', '01-01-1970', '01-01-2020', '4', '12'),
+  ('16', '01-01-1970', '01-01-2020', '3', '13'),
+  ('17', '01-01-1970', '01-01-2020', '5', '13')
+ON CONFLICT DO NOTHING
+;
+
 -- PRESENÇAS
 INSERT INTO presenca (id, data, hora_inicio, num_horas, instalacao_efectiva_id, periodo_id, pessoal_id, posto_funcional_efectivo_id, tipo_presenca_efectiva_id, turno_efectivo_id) VALUES
   ('1', '01-12-2015', '20:00', '12', '1', '1', '111', '6', 'X', '2'),

@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.repository;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,8 +21,9 @@ public interface Pessoal_IRepository extends JpaRepository<Pessoal, Long> {
 
     @Query(value =
             "SELECT * FROM pessoal " +
-            "  INNER JOIN pessoal_possui_categoria " +
-            "    ON (pessoal.id = pessoal_possui_categoria.pessoal_id)",
-    nativeQuery = true)
-    List<Pessoal> obtemPessoalPorCategoria();
+                    "INNER JOIN pessoal_possui_categoria " +
+                    "ON (pessoal.id = pessoal_possui_categoria.pessoal_id) " +
+            "WHERE pessoal_possui_categoria.categoria_id = ?1",
+            nativeQuery = true)
+    List<Pessoal> obtemPessoalPorCategoria(Long categoria_id);
 }
