@@ -3,18 +3,15 @@ package pt.isel.ps.li61n.controller;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.model.entities.Pessoal;
 import pt.isel.ps.li61n.model.entities.View;
 import pt.isel.ps.li61n.model.repository.Pessoal_IRepository;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -75,75 +72,169 @@ public class PessoalController extends RsbBaseController<Pessoal>{
             }
         }
 
+        /**
+         * @return id do elemento do pessoal
+         */
         public Long getId() { return id; }
 
+        /**
+         * @param id id do elemento do pessoal
+         */
         public void setId(Long id) { this.id = id; }
 
+        /**
+         * @return mapa chave valor com as propriedades anotadas como sumárias
+         */
         @JsonAnyGetter
         public Map<String, String> getPessoa_map() {
             return pessoa_map;
         }
 
+        /**
+         * @param pessoa_map mapa chave valor com as propriedades anotadas como sumárias
+         */
         public void setPessoa_map(Map<String, String> pessoa_map) {
             this.pessoa_map = pessoa_map;
         }
 
+        /**
+         * @return Uri do recurso pessoa especifica
+         */
         public String getUri_pessoa() {
             return uri_pessoa;
         }
 
+        /**
+         * @param uri_pessoa Uri do recurso pessoa especifica
+         */
         public void setUri_pessoa(String uri_pessoa) {
             this.uri_pessoa = uri_pessoa;
         }
 
+        /**
+         * @return Uri da Instalação por omissão do elemento
+         */
         public String getUri_instalacaoPorOmissao() {
             return uri_instalacaoPorOmissao;
         }
 
+        /**
+         * @param uri_instalacaoPorOmissao Uri da Instalação por omissão do elemento
+         */
         public void setUri_instalacaoPorOmissao(String uri_instalacaoPorOmissao) {
             this.uri_instalacaoPorOmissao = uri_instalacaoPorOmissao;
         }
 
+        /**
+         * @return Uri do Posto Funcional por omissão do elemento
+         */
         public String getUri_postoFuncionalPorOmissao() {
             return uri_postoFuncionalPorOmissao;
         }
 
+        /**
+         * @param uri_postoFuncionalPorOmissao Uri do Posto Funcional por omissão do elemento
+         */
         public void setUri_postoFuncionalPorOmissao(String uri_postoFuncionalPorOmissao) {
             this.uri_postoFuncionalPorOmissao = uri_postoFuncionalPorOmissao;
         }
 
+        /**
+         * @return Uri do tipo de presença por omissão do elemento
+         */
         public String getUri_tipoPresencaPorOmissao() {
             return uri_tipoPresencaPorOmissao;
         }
 
+        /**
+         * @param uri_tipoPresencaPorOmissao Uri do tipo de presença por omissão do elemento
+         */
         public void setUri_tipoPresencaPorOmissao(String uri_tipoPresencaPorOmissao) {
             this.uri_tipoPresencaPorOmissao = uri_tipoPresencaPorOmissao;
         }
 
+        /**
+         * @return Uri do Turno por omissão do elemento
+         */
         public String getUri_turnoPorOmissao() {
             return uri_turnoPorOmissao;
         }
 
+        /**
+         * @param uri_turnoPorOmissao Uri do Turno por omissão do elemento
+         */
         public void setUri_turnoPorOmissao(String uri_turnoPorOmissao) {
             this.uri_turnoPorOmissao = uri_turnoPorOmissao;
         }
     }
 
+    /**
+     * Classe para tratamento de excepções via HTTP
+     */
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Este elemento do pessoal não existe")
+    public class PessoalNotFoundException extends RuntimeException{
+        private static final long serialVersionUID = 1L;
+        public PessoalNotFoundException(String id){
+            super(String.format("Elemento com id %s não existe no repositório", id));
+        }
+    }
+
     @Autowired
-    Pessoal_IRepository repo;
+    Pessoal_IRepository pessoal_Repository;
+
 
     /**
      * @return Lista de pessoal
      */
-    @JsonView(View.Summary.class)
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public List<PessoalDTO> listaPessoal(){
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
+    public List<PessoalDTO> obterListaTotalDoPessoal(
+            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id", required = false) Optional<Long> responsabilidadeoperacional_id
+    ){
 
-        List<PessoalDTO> pessoalDTOs = new LinkedList<>();
-        repo.findAll().stream().forEach(
-                pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal)));
+        final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
+        pessoal_Repository.findAll().stream()
+                .filter( pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
+                .filter( pessoa -> turno_id.map( v -> v.equals(pessoa.getTurno().getId())).orElse(true))
+                .filter( pessoa -> instalacao_id.map( v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
+                .filter( pessoa ->
+                        categoria_id.map( v ->
+                            pessoa.getCategorias().stream().sorted(
+                                    (c1, c2) -> c2.getDataAtribuicaoCategoria().compareTo(c1.getDataAtribuicaoCategoria())
+                            ).findFirst().map(c -> c.getCategoria().getId().equals(v))
+                        ).orElse(Optional.of(true)).get())
+                .filter( pessoa ->
+                        formacao_id.map( v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                    f -> f.getFormacao().getId().equals(v))
+                        ).orElse(true))
+                .filter( pessoa ->
+                        responsabilidadeoperacional_id.map( v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                        f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
+                                                r -> r.getId().equals(v)))
+                        ).orElse(true))
+                .forEach( pessoal -> pessoalDTOs.add( new PessoalDTO(pessoal)) );
         return pessoalDTOs;
+    }
+
+    /**
+     * @return Um elemento do pessoal
+     */
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
+    public PessoalDTO obterElementoDoPessoal(@PathVariable String id){
+        final Pessoal pessoal = pessoal_Repository.findOne(Long.parseLong(id));
+        if (pessoal != null)
+            return new PessoalDTO(pessoal);
+        throw new PessoalNotFoundException(id);
     }
 
 }

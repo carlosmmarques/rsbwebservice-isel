@@ -16,9 +16,6 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")
     private TipoPresenca tipoPresenca;
-//    @ManyToOne
-//    @JoinColumn(name = "formacao_id")
-//    private Formacao formacoes;
     @ManyToMany
     @JoinTable(
             name = "responsabilidade_formacao",
