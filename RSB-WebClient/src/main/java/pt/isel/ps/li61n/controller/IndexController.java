@@ -1,4 +1,4 @@
-package pt.isel.ps.li61n;
+package pt.isel.ps.li61n.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
