@@ -9,5 +9,5 @@ package pt.isel.ps.li61n.controller;
  */
 public class RsbBaseController<T> {
 //    @Autowired
-//    public JpaRepository<T, Long> repo;
+//    public JpaRepository<T, Long> pessoal_Repository;
 }

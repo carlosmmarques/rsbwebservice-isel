@@ -11,10 +11,7 @@ import pt.isel.ps.li61n.model.entities.View;
 import pt.isel.ps.li61n.model.repository.Pessoal_IRepository;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -183,7 +180,8 @@ public class PessoalController extends RsbBaseController<Pessoal>{
     }
 
     @Autowired
-    Pessoal_IRepository repo;
+    Pessoal_IRepository pessoal_Repository;
+
 
     /**
      * @return Lista de pessoal
@@ -195,21 +193,34 @@ public class PessoalController extends RsbBaseController<Pessoal>{
             @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
             @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
             @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
-            @RequestParam(value = "categoria_id") Optional<Long> categoria_id,
-            @RequestParam(value = "formacao_id") Optional<Long> formacao_id,
-            @RequestParam(value = "responsabilidadeoperacional_id") Optional<Long> responsabilidadeoperacional_id
+            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id", required = false) Optional<Long> responsabilidadeoperacional_id
     ){
 
         final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
-        repo.findAll().stream()
+        pessoal_Repository.findAll().stream()
+                .filter( pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
+                .filter( pessoa -> turno_id.map( v -> v.equals(pessoa.getTurno().getId())).orElse(true))
+                .filter( pessoa -> instalacao_id.map( v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
                 .filter( pessoa ->
-                        postofuncional_id.map(v -> v == pessoa.getPostoFuncional().getId()).orElse(
-                        turno_id.map( v -> v == pessoa.getTurno().getId()).orElse(
-                        instalacao_id.map( v -> v == pessoa.getInstalacao().getId()).orElse(
-                        true // TODO falta solução para categoria, formação, responsabilidadeOperacional
-
-                ))))
-                .forEach( pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal)) );
+                        categoria_id.map( v ->
+                            pessoa.getCategorias().stream().sorted(
+                                    (c1, c2) -> c2.getDataAtribuicaoCategoria().compareTo(c1.getDataAtribuicaoCategoria())
+                            ).findFirst().map(c -> c.getCategoria().getId().equals(v))
+                        ).orElse(Optional.of(true)).get())
+                .filter( pessoa ->
+                        formacao_id.map( v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                    f -> f.getFormacao().getId().equals(v))
+                        ).orElse(true))
+                .filter( pessoa ->
+                        responsabilidadeoperacional_id.map( v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                        f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
+                                                r -> r.getId().equals(v)))
+                        ).orElse(true))
+                .forEach( pessoal -> pessoalDTOs.add( new PessoalDTO(pessoal)) );
         return pessoalDTOs;
     }
 
@@ -220,7 +231,7 @@ public class PessoalController extends RsbBaseController<Pessoal>{
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Responsebody em JSON
     public PessoalDTO obterElementoDoPessoal(@PathVariable String id){
-        final Pessoal pessoal = repo.findOne(Long.parseLong(id));
+        final Pessoal pessoal = pessoal_Repository.findOne(Long.parseLong(id));
         if (pessoal != null)
             return new PessoalDTO(pessoal);
         throw new PessoalNotFoundException(id);
