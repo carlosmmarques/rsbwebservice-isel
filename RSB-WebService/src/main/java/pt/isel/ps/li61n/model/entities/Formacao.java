@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.List;
@@ -14,8 +16,11 @@ import java.util.List;
 @Entity
 public class Formacao extends RsbAbstractEntity{
 
+    @JsonView(View.Summary.class)
     private Float validade;
+    @JsonView(View.Summary.class)
     private String designacao;
+    @JsonView(View.Summary.class)
     private String descricao;
     @ManyToMany(mappedBy = "formacoes")
     private List<ResponsabilidadeOperacional> responsabilidadesOperacionais;

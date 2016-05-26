@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -22,10 +23,13 @@ public class PessoalPossuiFormacao extends RsbAbstractEntity{
     private Pessoal pessoal;
     @ManyToOne
     @JoinColumn(name = "formacao_id")
+    @JsonView(View.Summary.class)
     private Formacao formacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView(View.Summary.class)
     private Date dataAquisicaoFormacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView(View.Summary.class)
     private Date dataCaducidadeFormacao;
 
     /**
