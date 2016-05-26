@@ -10,8 +10,12 @@ import pt.isel.ps.li61n.model.entities.Pessoal;
 import pt.isel.ps.li61n.model.entities.View;
 import pt.isel.ps.li61n.model.repository.Pessoal_IRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,14 +27,109 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Controller
 @RequestMapping(value = "/pessoal")
-public class PessoalController extends RsbBaseController<Pessoal>{
+public class PessoalController extends RsbBaseController<Pessoal> {
+
+    /**
+     * Instância do repositório de elementos do pessoal
+     */
+    @Autowired
+    Pessoal_IRepository pessoal_Repository;
+
+    /**
+     * @param postofuncional_id              Opcional - O identificador (Id) do Posto Funcional
+     * @param turno_id                       Opcional - O identificador (Id) do turno
+     * @param instalacao_id                  Opcional - O identificador (Id) da instalação a que o elemento está atribuido
+     * @param categoria_id                   Opcional - O identificador (Id) da categoria do elemento
+     * @param formacao_id                    Opcional - O identificador (Id) de uma formação que o elemento tenha adquirido
+     * @param responsabilidadeoperacional_id Opcional - O identificador (Id) de uma responsabilidade operacional
+     *                                       que o elemento possa desempenhar
+     * @return Lista de Pessoal global ou filtrada através dos parametros acima designados.
+     */
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
+    @ResponseBody //Responsebody em JSON
+    public List<PessoalDTO> obterListaTotalDoPessoal(
+            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id", required = false)
+            Optional<Long> responsabilidadeoperacional_id,
+            HttpServletRequest request
+    ) {
+
+        final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
+        pessoal_Repository.findAll().stream()
+                .filter(pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
+                .filter(pessoa -> turno_id.map(v -> v.equals(pessoa.getTurno().getId())).orElse(true))
+                .filter(pessoa -> instalacao_id.map(v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
+                .filter(pessoa ->
+                        categoria_id.map(v ->
+                                pessoa.getCategorias().stream().sorted(
+                                        (c1, c2) ->
+                                                c2.getDataAtribuicaoCategoria()
+                                                        .compareTo(c1.getDataAtribuicaoCategoria())
+                                ).findFirst().map(c -> c.getCategoria().getId().equals(v))
+                        ).orElse(Optional.of(true)).get())
+                .filter(pessoa ->
+                        formacao_id.map(v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                        f -> f.getFormacao().getId().equals(v))
+                        ).orElse(true))
+                .filter(pessoa ->
+                        responsabilidadeoperacional_id.map(v ->
+                                pessoa.getFormacoes().stream().anyMatch(
+                                        f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
+                                                r -> r.getId().equals(v)))
+                        ).orElse(true))
+                .forEach(pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal, request)));
+        return pessoalDTOs;
+    }
+
+    /**
+     * @return Um elemento do pessoal
+     */
+    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Responsebody em JSON
+    public PessoalDTO obterElementoDoPessoal(@PathVariable String id,
+                                             HttpServletRequest request
+    ) {
+        final Pessoal pessoal = pessoal_Repository.findOne(Long.parseLong(id));
+        if (pessoal != null)
+            return new PessoalDTO(pessoal, request);
+        throw new PessoalNotFoundException(id);
+    }
+
+    /**
+     * ************************************************************************************************************
+     * Classes auxiliares:
+     * ************************************************************************************************************
+     */
+
+    /**
+     * Classe para tratamento de excepções via HTTP relativos a Pessoal
+     * static - Este modificador só e aplica a classes internas de outra classe JAVA, na medida em que permite que
+     * a classe seja instanciada por si só, sem necessidade de uma instancia da classe que a alberga.
+     */
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Este elemento do pessoal não existe")
+    public static class PessoalNotFoundException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+
+        public PessoalNotFoundException(String id) {
+            super(String.format("Elemento com id %s não existe no repositório", id));
+        }
+    }
 
     /**
      * Classe de representação dos elementos do pessoal.
+     * static - Este modificador só e aplica a classes internas de outra classe JAVA, na medida em que permite que
+     * a classe seja instanciada por si só, sem necessidade de uma instancia da classe que a alberga.
      */
-    public class PessoalDTO{
-        private Pessoal pessoa;
+    public static class PessoalDTO {
         Map<String, String> pessoa_map = new ConcurrentHashMap<>();
+        private String baseUrl;
         @JsonView(View.Summary.class)
         private Long id;
         @JsonView(View.Summary.class)
@@ -45,19 +144,40 @@ public class PessoalController extends RsbBaseController<Pessoal>{
         private String uri_turnoPorOmissao;
 
         /**
-         * Construtor
-         * @param pessoa pessoa a representar
+         * parameterless constructor
          */
-        public PessoalDTO(Pessoal pessoa){
-            this.pessoa = pessoa;
+        public PessoalDTO() {
+        }
+
+        /**
+         * Construtor
+         *
+         * @param pessoa  pessoa a representar
+         * @param request
+         */
+        public PessoalDTO(Pessoal pessoa, HttpServletRequest request) {
+            baseUrl = String.format("%s://%s:%s",
+                    request.getScheme(),
+                    request.getServerName(),
+                    request.getServerPort());
             this.id = pessoa.getId();
-            this.uri_pessoa = String.format("/pessoal/%d", this.id);
-            this.uri_instalacaoPorOmissao = String.format("/unidadeestrutural/%s/instalacao/%s",
-                    pessoa.getInstalacao().getUnidadeEstrutural().getId(), pessoa.getInstalacao().getId());
-            this.uri_postoFuncionalPorOmissao = String.format("/pessoal/postofuncional/%s", pessoa.getPostoFuncional().getId());
-            this.uri_tipoPresencaPorOmissao = String.format("/presenca/tipo/%s", pessoa.getTipoPresenca().getId());
-            this.uri_turnoPorOmissao = String.format("/turno/%s", pessoa.getTurno().getId());
-            for (Field field : pessoa.getClass().getDeclaredFields()){
+            this.uri_pessoa = String.format("%s/pessoal/%s",
+                    this.baseUrl,
+                    this.id);
+            this.uri_instalacaoPorOmissao = String.format("%s/unidadeestrutural/%s/instalacao/%s",
+                    this.baseUrl,
+                    pessoa.getInstalacao().getUnidadeEstrutural().getId(),
+                    pessoa.getInstalacao().getId());
+            this.uri_postoFuncionalPorOmissao = String.format("%s/pessoal/postofuncional/%s",
+                    this.baseUrl,
+                    pessoa.getPostoFuncional().getId());
+            this.uri_tipoPresencaPorOmissao = String.format("%s/presenca/tipo/%s",
+                    this.baseUrl,
+                    pessoa.getTipoPresenca().getId());
+            this.uri_turnoPorOmissao = String.format("%s/turno/%s",
+                    this.baseUrl,
+                    pessoa.getTurno().getId());
+            for (Field field : pessoa.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(JsonView.class))
                     if (View.Summary.class.equals(field.getAnnotation(JsonView.class).value()[0])) {
                         try {
@@ -75,12 +195,16 @@ public class PessoalController extends RsbBaseController<Pessoal>{
         /**
          * @return id do elemento do pessoal
          */
-        public Long getId() { return id; }
+        public Long getId() {
+            return id;
+        }
 
         /**
          * @param id id do elemento do pessoal
          */
-        public void setId(Long id) { this.id = id; }
+        public void setId(Long id) {
+            this.id = id;
+        }
 
         /**
          * @return mapa chave valor com as propriedades anotadas como sumárias
@@ -167,74 +291,4 @@ public class PessoalController extends RsbBaseController<Pessoal>{
             this.uri_turnoPorOmissao = uri_turnoPorOmissao;
         }
     }
-
-    /**
-     * Classe para tratamento de excepções via HTTP
-     */
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Este elemento do pessoal não existe")
-    public class PessoalNotFoundException extends RuntimeException{
-        private static final long serialVersionUID = 1L;
-        public PessoalNotFoundException(String id){
-            super(String.format("Elemento com id %s não existe no repositório", id));
-        }
-    }
-
-    @Autowired
-    Pessoal_IRepository pessoal_Repository;
-
-
-    /**
-     * @return Lista de pessoal
-     */
-    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
-    @RequestMapping(method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public List<PessoalDTO> obterListaTotalDoPessoal(
-            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
-            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
-            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
-            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
-            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
-            @RequestParam(value = "responsabilidadeoperacional_id", required = false) Optional<Long> responsabilidadeoperacional_id
-    ){
-
-        final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
-        pessoal_Repository.findAll().stream()
-                .filter( pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
-                .filter( pessoa -> turno_id.map( v -> v.equals(pessoa.getTurno().getId())).orElse(true))
-                .filter( pessoa -> instalacao_id.map( v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
-                .filter( pessoa ->
-                        categoria_id.map( v ->
-                            pessoa.getCategorias().stream().sorted(
-                                    (c1, c2) -> c2.getDataAtribuicaoCategoria().compareTo(c1.getDataAtribuicaoCategoria())
-                            ).findFirst().map(c -> c.getCategoria().getId().equals(v))
-                        ).orElse(Optional.of(true)).get())
-                .filter( pessoa ->
-                        formacao_id.map( v ->
-                                pessoa.getFormacoes().stream().anyMatch(
-                                    f -> f.getFormacao().getId().equals(v))
-                        ).orElse(true))
-                .filter( pessoa ->
-                        responsabilidadeoperacional_id.map( v ->
-                                pessoa.getFormacoes().stream().anyMatch(
-                                        f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
-                                                r -> r.getId().equals(v)))
-                        ).orElse(true))
-                .forEach( pessoal -> pessoalDTOs.add( new PessoalDTO(pessoal)) );
-        return pessoalDTOs;
-    }
-
-    /**
-     * @return Um elemento do pessoal
-     */
-    @JsonView(View.Summary.class) // A representação incluirá apenas campos com esta anotação
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public PessoalDTO obterElementoDoPessoal(@PathVariable String id){
-        final Pessoal pessoal = pessoal_Repository.findOne(Long.parseLong(id));
-        if (pessoal != null)
-            return new PessoalDTO(pessoal);
-        throw new PessoalNotFoundException(id);
-    }
-
 }
