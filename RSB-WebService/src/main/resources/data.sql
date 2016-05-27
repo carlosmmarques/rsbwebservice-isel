@@ -546,7 +546,7 @@ ON CONFLICT DO NOTHING
 ;
 
 -- FORMAÇÃO DO PESSOAL
-INSERT INTO pessoal_possui_formacao(id, data_aquisicao_formacao, data_caducidade_formacao, formacao_id, pessoal_id) VALUES
+INSERT INTO registo_formacao(id, data_aquisicao_formacao, data_caducidade_formacao, formacao_id, pessoal_id) VALUES
   ('1', '01-01-1970', '01-01-2020', '1', '1'),
   ('2', '01-01-1970', '01-01-2020', '2', '1'),
   ('3', '01-01-1970', '01-01-2020', '3', '1'),

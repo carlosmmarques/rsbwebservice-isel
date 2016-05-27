@@ -9,14 +9,14 @@ import javax.persistence.ManyToOne;
 import java.sql.Date;
 
 /**
- * PessoalPossuiFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
+ * RegistoFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class PessoalPossuiFormacao extends RsbAbstractEntity{
+public class RegistoFormacao extends RsbAbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
@@ -35,7 +35,7 @@ public class PessoalPossuiFormacao extends RsbAbstractEntity{
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
      */
-    public PessoalPossuiFormacao() {
+    public RegistoFormacao() {
     }
 
     /**

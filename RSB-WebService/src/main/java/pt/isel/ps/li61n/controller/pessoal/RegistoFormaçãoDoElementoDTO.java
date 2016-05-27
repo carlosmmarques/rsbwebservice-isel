@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.controller.pessoal;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonView;
 import pt.isel.ps.li61n.model.entities.Formacao;
-import pt.isel.ps.li61n.model.entities.PessoalPossuiFormacao;
+import pt.isel.ps.li61n.model.entities.RegistoFormacao;
 import pt.isel.ps.li61n.model.entities.View;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class RegistoFormaçãoDoElementoDTO {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      */
-    public RegistoFormaçãoDoElementoDTO(PessoalPossuiFormacao registoFormação, HttpServletRequest request) {
+    public RegistoFormaçãoDoElementoDTO(RegistoFormacao registoFormação, HttpServletRequest request) {
         baseUrl = String.format("%s://%s:%s",
                 request.getScheme(),
                 request.getServerName(),

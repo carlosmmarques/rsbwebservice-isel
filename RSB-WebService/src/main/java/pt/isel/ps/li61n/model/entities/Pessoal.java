@@ -70,7 +70,7 @@ public class Pessoal extends RsbAbstractEntity{
     @OneToMany(mappedBy = "pessoal")
     private List<PessoalPossuiCategoria> categorias;
     @OneToMany(mappedBy = "pessoal")
-    private List<PessoalPossuiFormacao> formacoes;
+    private List<RegistoFormacao> formacoes;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -347,14 +347,14 @@ public class Pessoal extends RsbAbstractEntity{
     /**
      * @return Lista de formações do elemento
      */
-    public List<PessoalPossuiFormacao> getFormacoes() {
+    public List<RegistoFormacao> getFormacoes() {
         return formacoes;
     }
 
     /**
      * @param formacoes Lista de formações do elemento
      */
-    public void setFormacoes(List<PessoalPossuiFormacao> formacoes) {
+    public void setFormacoes(List<RegistoFormacao> formacoes) {
         this.formacoes = formacoes;
     }
 
