@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Detalhe de pessoa</title>
+</head>
+<body>
+    <!-- Detalhes de uma pessoa -->
+    <div>
+        <h2><span th:text="${pessoa.name}">Nome do Bombeiro</span></h2>
+        <!--
+            "id": ​0,
+            "uri_pessoa": "",
+            "uri_instalacaoPorOmissao": "",
+            "uri_postoFuncionalPorOmissao": "",
+            "uri_tipoPresencaPorOmissao": "",
+            "uri_turnoPorOmissao": "",
+            "telefone1": "",
+            "abreviatura": "",
+            "Matricula": "",
+            "nif": "",
+            "nome": "",
+            "numMecanografico": "",
+            "factorElegibilidade": "0.0",
+            "telefone2": "",
+            "eMail": "",
+            "idInterno": "",
+            "numDocIdentificação": "",
+            "dataIngresso": "",
+            "tipoDocIdentificacao":"BilheteIdentidade",
+            "dataNascimento": "1970-01-01"
+        -->
+    </div>
+
+    <!-- Operações -->
+    <div>
+        <h3>Nesta página poderá fazer:</h3>
+        <ul>
+            <li><!-- Editar detalhes -->
+                <a href="details.html">
+                    Editar detalhes.
+                </a>
+            </li>
+            <li><!-- Marcar Férias -->
+                <a href="details.html">
+                    Marcar Férias.
+                </a>
+            </li>
+            <li><!-- Fazer Troca -->
+                <a href="details.html">
+                    Fazer troca.
+                </a>
+            </li>
+            <li><!-- Pedir dispensa -->
+                <a href="details.html">
+                    Pedir dispensa.
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+
+</body>
+</html>
