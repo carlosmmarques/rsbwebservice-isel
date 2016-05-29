@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.controller.pessoal;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonView;
-import pt.isel.ps.li61n.model.entities.Pessoal;
+import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.View;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class PessoalDTO {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      */
-    public PessoalDTO(Pessoal pessoa, HttpServletRequest request) {
+    public PessoalDTO(ElementoDoPessoal pessoa, HttpServletRequest request) {
         baseUrl = String.format("%s://%s:%s",
                 request.getScheme(),
                 request.getServerName(),

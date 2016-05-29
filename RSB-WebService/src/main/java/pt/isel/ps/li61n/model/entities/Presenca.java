@@ -32,7 +32,7 @@ public class Presenca extends RsbAbstractEntity{
     private Periodo periodo;
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
-    private Pessoal pessoal;
+    private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "postoFuncionalEfectivo_id")
     private PostoFuncional postoFuncionalEfectivo;
@@ -47,10 +47,10 @@ public class Presenca extends RsbAbstractEntity{
     private TipoPresenca tipoPresencaEfectiva;
     @ManyToOne
     @JoinColumn(name = "elementoReforco_id")
-    private Pessoal elementoReforco;
+    private ElementoDoPessoal elementoReforco;
     @ManyToOne
     @JoinColumn(name = "elementoReforcado_id")
-    private Pessoal elementoReforcado;
+    private ElementoDoPessoal elementoReforcado;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -115,42 +115,42 @@ public class Presenca extends RsbAbstractEntity{
     }
 
     /**
-     * @return elemento do pessoal a que diz respeito esta presença.
+     * @return elemento do elementoDoPessoal a que diz respeito esta presença.
      */
-    public Pessoal getPessoal() {
-        return pessoal;
+    public ElementoDoPessoal getElementoDoPessoal() {
+        return elementoDoPessoal;
     }
 
     /**
-     * @param pessoal elemento do pessoal a que diz respeito esta presença.
+     * @param elementoDoPessoal elemento do elementoDoPessoal a que diz respeito esta presença.
      */
-    public void setPessoal(Pessoal pessoal) {
-        this.pessoal = pessoal;
+    public void setElementoDoPessoal(ElementoDoPessoal elementoDoPessoal) {
+        this.elementoDoPessoal = elementoDoPessoal;
     }
 
     /**
-     * @return posto funcional efectivo ocupado pelo elemento do pessoal nesta presença
+     * @return posto funcional efectivo ocupado pelo elemento do elementoDoPessoal nesta presença
      */
     public PostoFuncional getPostoFuncionalEfectivo() {
         return postoFuncionalEfectivo;
     }
 
     /**
-     * @param postoFuncionalEfectivo posto funcional efectivo ocupado pelo elemento do pessoal nesta presença
+     * @param postoFuncionalEfectivo posto funcional efectivo ocupado pelo elemento do elementoDoPessoal nesta presença
      */
     public void setPostoFuncionalEfectivo(PostoFuncional postoFuncionalEfectivo) {
         this.postoFuncionalEfectivo = postoFuncionalEfectivo;
     }
 
     /**
-     * @return instalação em que o elemento do pessoal esteve efectivamente presente.
+     * @return instalação em que o elemento do elementoDoPessoal esteve efectivamente presente.
      */
     public Instalacao getInstalacaoEfectiva() {
         return instalacaoEfectiva;
     }
 
     /**
-     * @param instalacaoEfectiva instalação em que o elemento do pessoal esteve efectivamente presente.
+     * @param instalacaoEfectiva instalação em que o elemento do elementoDoPessoal esteve efectivamente presente.
      */
     public void setInstalacaoEfectiva(Instalacao instalacaoEfectiva) {
         this.instalacaoEfectiva = instalacaoEfectiva;
@@ -185,30 +185,30 @@ public class Presenca extends RsbAbstractEntity{
     }
 
     /**
-     * @return elemento do pessoal de reforço (em caso de ausencia).
+     * @return elemento do elementoDoPessoal de reforço (em caso de ausencia).
      */
-    public Pessoal getElementoReforco() {
+    public ElementoDoPessoal getElementoReforco() {
         return elementoReforco;
     }
 
     /**
-     * @param elementoReforco elemento do pessoal de reforço (em caso de ausencia).
+     * @param elementoReforco elemento do elementoDoPessoal de reforço (em caso de ausencia).
      */
-    public void setElementoReforco(Pessoal elementoReforco) {
+    public void setElementoReforco(ElementoDoPessoal elementoReforco) {
         this.elementoReforco = elementoReforco;
     }
 
     /**
      * @return elemento que está a ser reforçado (no caso desta presença ser de reforço).
      */
-    public Pessoal getElementoReforcado() {
+    public ElementoDoPessoal getElementoReforcado() {
         return elementoReforcado;
     }
 
     /**
      * @param elementoReforcado elemento que está a ser reforçado (no caso desta presença ser de reforço).
      */
-    public void setElementoReforcado(Pessoal elementoReforcado) {
+    public void setElementoReforcado(ElementoDoPessoal elementoReforcado) {
         this.elementoReforcado = elementoReforcado;
     }
 }

@@ -2,15 +2,15 @@ package pt.isel.ps.li61n.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
+import pt.isel.ps.li61n.model.entities.Categoria;
 
 /**
- * UnidadeEstrutural_IRepository - Description
- * Created on 04/05/2016.
+ * Categoria_IRepository - Description
+ * Created on 27/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Pessoal_IRepository extends JpaRepository<ElementoDoPessoal, Long> {
+public interface Categoria_IRepository extends JpaRepository<Categoria, Long> {
 }

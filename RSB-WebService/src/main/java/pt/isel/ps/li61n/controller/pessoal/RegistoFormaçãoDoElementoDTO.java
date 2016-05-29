@@ -49,7 +49,7 @@ public class RegistoFormaçãoDoElementoDTO {
         this.id = registoFormação.getId();
         this.uri_registoFormacaoDoElemento = String.format("%s/pessoal/%s/formacao/%s",
                 this.baseUrl,
-                registoFormação.getPessoal().getId(),
+                registoFormação.getElementoDoPessoal().getId(),
                 registoFormação.getId());
         this.uri_formacao = String.format("%s/formacao/%s",
                 this.baseUrl,

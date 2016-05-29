@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,10 +24,13 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
             joinColumns = @JoinColumn(name = "responsabilidade_operacional_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
     private List<Formacao> formacoes;
+    @JsonView(View.Summary.class)
     private String sigla;
+    @JsonView(View.Summary.class)
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
     private Boolean dependeFactorElegibilidade;
+    @JsonView(View.Summary.class)
     private String designacao;
 
     /**

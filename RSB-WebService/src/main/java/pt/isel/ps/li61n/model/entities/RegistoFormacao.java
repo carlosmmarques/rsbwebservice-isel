@@ -20,7 +20,7 @@ public class RegistoFormacao extends RsbAbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
-    private Pessoal pessoal;
+    private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "formacao_id")
     @JsonView(View.Summary.class)
@@ -39,28 +39,28 @@ public class RegistoFormacao extends RsbAbstractEntity{
     }
 
     /**
-     * @return Elemento do Pessoal
+     * @return Elemento do ElementoDoPessoal
      */
-    public Pessoal getPessoal() {
-        return pessoal;
+    public ElementoDoPessoal getElementoDoPessoal() {
+        return elementoDoPessoal;
     }
 
     /**
-     * @param pessoal Elemento do Pessoal
+     * @param elementoDoPessoal Elemento do ElementoDoPessoal
      */
-    public void setPessoal(Pessoal pessoal) {
-        this.pessoal = pessoal;
+    public void setElementoDoPessoal(ElementoDoPessoal elementoDoPessoal) {
+        this.elementoDoPessoal = elementoDoPessoal;
     }
 
     /**
-     * @return Formação do elemento do pessoal
+     * @return Formação do elemento do elementoDoPessoal
      */
     public Formacao getFormacao() {
         return formacao;
     }
 
     /**
-     * @param formacao Formação do elemento do pessoal
+     * @param formacao Formação do elemento do elementoDoPessoal
      */
     public void setFormacao(Formacao formacao) {
         this.formacao = formacao;

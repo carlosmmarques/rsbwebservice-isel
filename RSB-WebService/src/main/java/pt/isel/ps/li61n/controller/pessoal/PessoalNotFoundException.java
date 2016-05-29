@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Classe para tratamento de excepções via HTTP relativos a Pessoal
+ * Classe para tratamento de excepções via HTTP relativos a ElementoDoPessoal
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Este elemento do pessoal não existe")
 public class PessoalNotFoundException extends RuntimeException {

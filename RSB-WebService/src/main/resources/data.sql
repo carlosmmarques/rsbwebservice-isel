@@ -402,7 +402,7 @@ ON CONFLICT DO NOTHING
 ;
 
 -- ASSOCIAÇÃO PESSOAL A CATEGORIAS, RESPECTIVAS CLASSIFICAÇÕES NA FORMAÇÃO ELEGÍVEL E DATA DE ATRIBUIÇÃO DA CATEGORIA
-INSERT INTO pessoal_possui_categoria (id, classificacao_formacao, data_atribuicao_categoria, categoria_id, pessoal_id) VALUES
+INSERT INTO atribuicao_categoria (id, classificacao_formacao, data_atribuicao_categoria, categoria_id, pessoal_id) VALUES
   ('1', '0', '01-01-1970', '9', '1'),
   ('2', '0', '01-01-1970', '9', '2'),
   ('3', '0', '01-01-1970', '9', '3'),
@@ -698,3 +698,22 @@ INSERT INTO presenca (id, data, hora_inicio, num_horas, elemento_reforcado_id, i
   ('122', '01-12-2015', '20:00', '12', '16', '1', '1', '13', '9', '5S', '2')
 ON CONFLICT DO NOTHING
 ;
+
+-- ACTUALIZA AS SEQUENCIAS DE ID:
+SELECT SETVAL('public.algoritmo_calculo_turno_id_seq', COALESCE(MAX(id), 1) ) FROM public.algoritmo_calculo_turno;
+SELECT SETVAL('public.categoria_id_seq', COALESCE(MAX(id), 1) ) FROM public.categoria;
+SELECT SETVAL('public.formacao_id_seq', COALESCE(MAX(id), 1) ) FROM public.formacao;
+SELECT SETVAL('public.guarnicao_id_seq', COALESCE(MAX(id), 1) ) FROM public.guarnicao;
+SELECT SETVAL('public.instalacao_id_seq', COALESCE(MAX(id), 1) ) FROM public.instalacao;
+SELECT SETVAL('public.periodo_id_seq', COALESCE(MAX(id), 1) ) FROM public.periodo;
+SELECT SETVAL('public.pessoal_id_seq', COALESCE(MAX(id), 1) ) FROM public.pessoal;
+SELECT SETVAL('public.atribuicao_categoria_id_seq', COALESCE(MAX(id), 1) ) FROM public.atribuicao_categoria;
+SELECT SETVAL('public.posto_funcional_id_seq', COALESCE(MAX(id), 1) ) FROM public.posto_funcional;
+SELECT SETVAL('public.presenca_id_seq', COALESCE(MAX(id), 1) ) FROM public.presenca;
+SELECT SETVAL('public.registo_formacao_id_seq', COALESCE(MAX(id), 1) ) FROM public.registo_formacao;
+SELECT SETVAL('public.responsabilidade_operacional_id_seq', COALESCE(MAX(id), 1) ) FROM public.responsabilidade_operacional;
+SELECT SETVAL('public.tipo_unidade_estrutural_id_seq', COALESCE(MAX(id), 1) ) FROM public.tipo_unidade_estrutural;
+SELECT SETVAL('public.tipo_unidade_operacional_id_seq', COALESCE(MAX(id), 1) ) FROM public.tipo_unidade_operacional;
+SELECT SETVAL('public.turno_id_seq', COALESCE(MAX(id), 1) ) FROM public.turno;
+SELECT SETVAL('public.unidade_estrutural_id_seq', COALESCE(MAX(id), 1) ) FROM public.unidade_estrutural;
+SELECT SETVAL('public.unidade_operacional_id_seq', COALESCE(MAX(id), 1) ) FROM public.unidade_operacional;

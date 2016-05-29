@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import javax.persistence.*;
 
 /**
- * Categoria - Categoria profissional de um membro do Pessoal do Corpo de Bombeiros
+ * Categoria - Categoria profissional de um membro do ElementoDoPessoal do Corpo de Bombeiros
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com

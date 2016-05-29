@@ -7,7 +7,7 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 /**
- * Formacao - Registo de Formação de Elementos do Pessoal
+ * Formacao - Registo de Formação de Elementos do ElementoDoPessoal
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com

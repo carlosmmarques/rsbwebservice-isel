@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import java.sql.Date;
 
 /**
- * PessoalPossuiCategoria - Entidade Relação entre os elementos do pessoa, suas categorias, e a caracterização desta
+ * AtribuicaoCategoria - Entidade Relação entre os elementos do pessoa, suas categorias, e a caracterização desta
  * associação.
  * Created on 03/05/2016.
  *
@@ -16,11 +16,11 @@ import java.sql.Date;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class PessoalPossuiCategoria extends RsbAbstractEntity{
+public class AtribuicaoCategoria extends RsbAbstractEntity{
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
-    private Pessoal pessoal;
+    private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
@@ -31,32 +31,32 @@ public class PessoalPossuiCategoria extends RsbAbstractEntity{
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
      */
-    public PessoalPossuiCategoria() {
+    public AtribuicaoCategoria() {
     }
 
     /**
-     * @return Elemento do Pessoal
+     * @return Elemento do ElementoDoPessoal
      */
-    public Pessoal getPessoal() {
-        return pessoal;
+    public ElementoDoPessoal getElementoDoPessoal() {
+        return elementoDoPessoal;
     }
 
     /**
-     * @param pessoal Elemento do Pessoal
+     * @param elementoDoPessoal Elemento do ElementoDoPessoal
      */
-    public void setPessoal(Pessoal pessoal) {
-        this.pessoal = pessoal;
+    public void setElementoDoPessoal(ElementoDoPessoal elementoDoPessoal) {
+        this.elementoDoPessoal = elementoDoPessoal;
     }
 
     /**
-     * @return Categoria associada ao elemento do pessoal
+     * @return Categoria associada ao elemento do elementoDoPessoal
      */
     public Categoria getCategoria() {
         return categoria;
     }
 
     /**
-     * @param categoria Categoria associada ao elemento do pessoal
+     * @param categoria Categoria associada ao elemento do elementoDoPessoal
      */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;

@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * RegistoFormacaoNotFoundException - Classe para tratamento de excepções via HTTP relativos a Pessoal
+ * RegistoFormacaoNotFoundException - Classe para tratamento de excepções via HTTP relativos a ElementoDoPessoal
  * Created on 27/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com

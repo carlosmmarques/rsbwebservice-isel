@@ -19,7 +19,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class RsbAbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(View.Summary.class)
     private Long id;
 

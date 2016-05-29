@@ -8,14 +8,15 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Pessoal - Elementos do Pessoal do Corpo de Bombeiros
+ * ElementoDoPessoal - Elementos do ElementoDoPessoal do Corpo de Bombeiros
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Pessoal extends RsbAbstractEntity{
+@Table(name = "pessoal")
+public class ElementoDoPessoal extends RsbAbstractEntity{
 
     @Column(nullable = true)
     @JsonView(View.Summary.class)
@@ -67,15 +68,15 @@ public class Pessoal extends RsbAbstractEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instalacao_id")
     private Instalacao instalacao;
-    @OneToMany(mappedBy = "pessoal")
-    private List<PessoalPossuiCategoria> categorias;
-    @OneToMany(mappedBy = "pessoal")
+    @OneToMany(mappedBy = "elementoDoPessoal")
+    private List<AtribuicaoCategoria> atribuicaoDeCategorias;
+    @OneToMany(mappedBy = "elementoDoPessoal")
     private List<RegistoFormacao> formacoes;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
      */
-    public Pessoal() {
+    public ElementoDoPessoal() {
     }
 
     /**
@@ -331,17 +332,17 @@ public class Pessoal extends RsbAbstractEntity{
     }
 
     /**
-     * @return Lista de categorias do elemento
+     * @return Lista de atribuicaoDeCategorias do elemento
      */
-    public List<PessoalPossuiCategoria> getCategorias() {
-        return categorias;
+    public List<AtribuicaoCategoria> getAtribuicaoDeCategorias() {
+        return atribuicaoDeCategorias;
     }
 
     /**
-     * @param categorias Lista de categorias do elemento
+     * @param atribuicaoDeCategorias Lista de atribuicaoDeCategorias do elemento
      */
-    public void setCategorias(List<PessoalPossuiCategoria> categorias) {
-        this.categorias = categorias;
+    public void setAtribuicaoDeCategorias(List<AtribuicaoCategoria> atribuicaoDeCategorias) {
+        this.atribuicaoDeCategorias = atribuicaoDeCategorias;
     }
 
     /**
