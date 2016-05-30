@@ -165,7 +165,7 @@ ON CONFLICT DO NOTHING
 ;
 
 -- PESSOAL
-INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificação, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
+INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificacao, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
   ('1', '4193', '', '22-12-1961', 'jose.vieira@cm-lisboa.pt', '0', '14', '149302789', 'José António do Vale Vieira', '6056194', '435030', '910282666', '', 'BilheteIdentidade', '1', '13', 'S2', '2'),
   ('2', '4180', '', '02-11-1966', 'joaquim.choucho@cm-lisboa.pt', '0', '22', '189656085', 'Joaquim Lopes Choucho', '7608825', '408030', '966514925', '', 'BilheteIdentidade', '1', '13', 'S2', '1'),
   ('3', '4189', '', '11-07-1965', 'carlos.jose.vaz@cm-lisboa.pt', '0', '29', '187920648', 'Carlos José Taborda Vaz', '6995061', '203880', '919019546', '', 'BilheteIdentidade', '2', '7', 'S3', '9'),
@@ -275,12 +275,12 @@ INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor
   ('108', '4471', '', '10-05-1978', 'nuno.ramos@cm-lisboa.pt', '0', '1037', '216229871', 'Nuno Filipe dos Santos Ramos', '11242945', '0', '966167219', '', 'BilheteIdentidade', '2', '5', 'S4', '3')
 ON CONFLICT DO NOTHING
 ;
-INSERT INTO pessoal (id, matricula, abreviatura, data_ingresso, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificação, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
+INSERT INTO pessoal (id, matricula, abreviatura, data_ingresso, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificacao, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
   ('109', '3961', '', '11-12-1983', '01-03-1960', 'joao.curto@cm-lisboa.pt', '0', '0', '142670995', 'João Manuel Curto', '4455167', '374102', '913463261', '', 'BilheteIdentidade', '1', '15', '0', '9'),
   ('110', '4135', '', '01-04-1987', '13-04-1964', 'jose.m.oliveira@cm-lisboa.pt', '0', '0', '122263952', 'José Manuel Moleira de Oliveira', '7759924', '497757', '916410788', '', 'BilheteIdentidade', '1', '12', 'S1', '4')
 ON CONFLICT DO NOTHING
 ;
-INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificação, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
+INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificacao, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id) VALUES
   ('111', '', '', '01-01-1970', '', '0', '0', '', '', '', '1', '', '', 'BilheteIdentidade', '1', '6', 'S', '2'),
   ('112', '', '', '01-01-1970', '', '0', '0', '', '', '', '2', '', '', 'BilheteIdentidade', '1', '12', 'S1', '9'),
   ('113', '', '', '01-01-1970', '', '0', '107', '', '', '', '3', '', '', 'BilheteIdentidade', '1', '9', 'S3', '4'),

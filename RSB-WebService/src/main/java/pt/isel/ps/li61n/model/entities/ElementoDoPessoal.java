@@ -53,7 +53,7 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     @JsonView(View.Summary.class)
     private TipoDocIdentificacao tipoDocIdentificacao;
     @JsonView(View.Summary.class)
-    private String numDocIdentificação;
+    private String numDocIdentificacao;
     @JsonView(View.Summary.class)
     private Float factorElegibilidade;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -250,15 +250,15 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     /**
      * @return Numero do documento de Identificação
      */
-    public String getNumDocIdentificação() {
-        return numDocIdentificação;
+    public String getNumDocIdentificacao() {
+        return numDocIdentificacao;
     }
 
     /**
-     * @param numDocIdentificação Numero do documento de Identificação
+     * @param numDocIdentificacao Numero do documento de Identificação
      */
-    public void setNumDocIdentificação(String numDocIdentificação) {
-        this.numDocIdentificação = numDocIdentificação;
+    public void setNumDocIdentificacao(String numDocIdentificacao) {
+        this.numDocIdentificacao = numDocIdentificacao;
     }
 
     /**

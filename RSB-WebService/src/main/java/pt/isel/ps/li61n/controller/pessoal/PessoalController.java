@@ -40,6 +40,8 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     Instalacao_IRepository instalacao_Repository;
     @Autowired
     AtribuicaoCategoria_IRepository atribuicaoCategoria_Repository;
+    @Autowired
+    Turno_IRepository turno_Repository;
 
     /**
      * @param postofuncional_id              Opcional - O identificador (Id) do Posto Funcional
@@ -55,16 +57,14 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Responsebody em JSON
     public List<PessoalDTO> obterElementosDoPessoal(
-            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
-            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
-            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
-            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
-            @RequestParam(value = "registoFormacao_id", required = false) Optional<Long> formacao_id,
-            @RequestParam(value = "responsabilidadeoperacional_id", required = false)
-            Optional<Long> responsabilidadeoperacional_id,
+            @RequestParam(value = "postofuncional_id", required = true) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = true) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = true) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id", required = true) Optional<Long> categoria_id,
+            @RequestParam(value = "registoFormacao_id", required = true) Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
             HttpServletRequest request
-    ) {
-
+    ) throws PessoalNotFoundException {
         final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
         pessoal_Repository.findAll().stream()
                 .filter(pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
@@ -90,6 +90,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                                                 r -> r.getId().equals(v)))
                         ).orElse(true))
                 .forEach(pessoal -> pessoalDTOs.add(new PessoalDTO(pessoal, request)));
+        if (pessoalDTOs.size() == 0) throw new PessoalNotFoundException("");
         return pessoalDTOs;
     }
 
@@ -214,7 +215,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param nif                     Numero de Identificação Fiscal do Elemento
      * @param dataingresso            Data de Ingresso no Corpo de Bombeiros
      * @param tipodocidentificacao    Tipo de documento de Identificação (Bilhete de Identidade / Cartão de Cidadão)
-     * @param numdocidentificação     Numero do documento de Identificação
+     * @param numdocidentificacao     Numero do documento de Identificação
      * @param factorelegibilidade     Factor de elegibilidade
      * @param request                 HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                nomeadamente do URI.
@@ -243,7 +244,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             @RequestParam(value = "nif", required = false) Optional<String> nif,
             @RequestParam(value = "dataingresso", required = false) Optional<Date> dataingresso,
             @RequestParam(value = "tipodocidentificacao", required = false) Optional<ElementoDoPessoal.TipoDocIdentificacao> tipodocidentificacao,
-            @RequestParam(value = "numdocidentificação", required = false) Optional<String> numdocidentificação,
+            @RequestParam(value = "numdocidentificacao", required = false) Optional<String> numdocidentificacao,
             @RequestParam(value = "factorelegibilidade", required = false) Optional<Float> factorelegibilidade,
             HttpServletRequest request
     ) {
@@ -265,7 +266,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         nif.ifPresent(elemento::setNif);
         dataingresso.ifPresent(elemento::setDataIngresso);
         tipodocidentificacao.ifPresent(elemento::setTipoDocIdentificacao);
-        numdocidentificação.ifPresent(elemento::setNumDocIdentificação);
+        numdocidentificacao.ifPresent(elemento::setNumDocIdentificacao);
         factorelegibilidade.ifPresent(elemento::setFactorElegibilidade);
         try {
             elemento.setPostoFuncional(postoFuncional_Repository.findOne(postofuncional_id));
@@ -276,6 +277,11 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             elemento.setTipoPresenca(tipoPresenca_Repository.findOne(tipopresenca_id));
         } catch (Exception e) {
             throw new TipoPresencaNotfoundException(tipopresenca_id);
+        }
+        try {
+            elemento.setTurno(turno_Repository.findOne(turno_id));
+        } catch (Exception e) {
+            throw new TurnoNotfoundException(turno_id);
         }
         try {
             elemento.setInstalacao(instalacao_Repository.findOne(instalacao_id));
@@ -294,18 +300,20 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         atribuicaoDeCategoria.setClassificacaoFormacao(classificacaoformacao);
         atribuicaoCategoria_Repository.save(atribuicaoDeCategoria);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(new PessoalDTO(elemento, request), HttpStatus.CREATED);
     }
 
     /**
      * @param numeroMecanografico O numero mecanográfico do elemento a validar
-     * @throws RegistoPessoalNumMecanograficoExistsException
+     * @throws PessoalNumMecanograficoExistsException
      */
-    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws RegistoPessoalNumMecanograficoExistsException {
+    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws PessoalNumMecanograficoExistsException {
 
         if (pessoal_Repository.findAll().stream()
                 .filter(p -> p.getNumMecanografico().equals(numeroMecanografico))
                 .count() > 0)
-            throw new RegistoPessoalNumMecanograficoExistsException(numeroMecanografico);
+            throw new PessoalNumMecanograficoExistsException(numeroMecanografico);
     }
+
+
 }
