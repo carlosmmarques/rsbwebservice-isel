@@ -2,6 +2,7 @@ package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.Representation;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,42 +20,42 @@ import java.util.List;
 public class ElementoDoPessoal extends RsbAbstractEntity{
 
     @Column(nullable = true)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private String idInterno;
     @Column(nullable = false)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String Matricula;
     @Column(unique = true, nullable = false)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private String numMecanografico;
     @Column(nullable = false)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String abreviatura;
     @Column(nullable = false)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private String nome;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private Date dataNascimento;
     @Column(nullable = false)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String telefone1;
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String telefone2;
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String eMail;
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String nif;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private TipoDocIdentificacao tipoDocIdentificacao;
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private String numDocIdentificacao;
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Normal.class})
     private Float factorElegibilidade;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postoFuncional_id")

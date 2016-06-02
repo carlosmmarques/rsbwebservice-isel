@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonView;
 import pt.isel.ps.li61n.model.entities.Formacao;
 import pt.isel.ps.li61n.model.entities.RegistoFormacao;
-import pt.isel.ps.li61n.model.entities.View;
+import pt.isel.ps.li61n.controller.Representation;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
@@ -18,15 +18,15 @@ import java.util.Map;
 public class RegistoFormaçãoDoElementoDTO {
     Map<String, String> formacao_map = new HashMap<>();
     private String baseUrl;
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private Long id;
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private String uri_registoFormacaoDoElemento;
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private String uri_formacao;
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private Date dataAquisicaoFormacao;
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private Date dataCaducidade;
 
     /**
@@ -59,7 +59,7 @@ public class RegistoFormaçãoDoElementoDTO {
         Formacao formacao = registoFormação.getFormacao();
         for (Field field : formacao.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(JsonView.class))
-                if (field.getAnnotation(JsonView.class).value()[0].equals(View.Summary.class)) {
+                if (field.getAnnotation(JsonView.class).value()[0].equals(Representation.Summary.class)) {
                     try {
                         String value;
                         field.setAccessible(true);

@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.Representation;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class Instalacao extends RsbAbstractEntity{
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "unidadeEstrutural_id")
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private UnidadeEstrutural unidadeEstrutural;
     private String designacao;
     private String descricao;

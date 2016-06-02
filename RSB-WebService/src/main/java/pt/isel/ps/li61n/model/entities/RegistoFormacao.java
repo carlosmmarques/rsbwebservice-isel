@@ -2,11 +2,13 @@ package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.Representation;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * RegistoFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
@@ -23,13 +25,12 @@ public class RegistoFormacao extends RsbAbstractEntity{
     private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "formacao_id")
-    @JsonView(View.Summary.class)
     private Formacao formacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private Date dataAquisicaoFormacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class})
     private Date dataCaducidadeFormacao;
 
     /**
@@ -93,4 +94,13 @@ public class RegistoFormacao extends RsbAbstractEntity{
     public void setDataCaducidadeFormacao(Date dataCaducidadeFormacao) {
         this.dataCaducidadeFormacao = dataCaducidadeFormacao;
     }
+
+    public void setDataCaducidadeFormacao(Float validade){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dataAquisicaoFormacao);
+        // TODO: melhorar calculo de caducidade
+        cal.add(Calendar.MONTH, Math.round(validade*12));
+        this.dataCaducidadeFormacao = validade.equals(-1.0) ? null : new Date(cal.getTime().getTime());
+    }
+
 }

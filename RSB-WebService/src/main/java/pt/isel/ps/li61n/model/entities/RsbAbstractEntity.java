@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.Representation;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +21,7 @@ public abstract class RsbAbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(View.Summary.class)
+    @JsonView(Representation.Summary.class)
     private Long id;
 
     /**
@@ -37,4 +38,5 @@ public abstract class RsbAbstractEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
 }

@@ -27,7 +27,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {
-            PessoalNumMecanograficoExistsException.class
+            ConflictException.class
     })
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request){
@@ -47,11 +47,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {
-            PessoalNotFoundException.class,
-            PostoFuncionalNotFoundException.class,
-            RegistoFormacaoNotFoundException.class,
-            TipoPresencaNotfoundException.class,
-            TurnoNotfoundException.class
+            NotFoundException.class,
     })
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleResourceNotFoundException(RuntimeException exc, HttpServletRequest request){

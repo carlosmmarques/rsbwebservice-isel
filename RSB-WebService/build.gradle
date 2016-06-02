@@ -34,7 +34,7 @@ dependencies {
 	// compile('org.flywaydb:flyway-core:3.0')
     // Java Persistence API
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    // View Engine - ThymeLeaf
+    // Representation Engine - ThymeLeaf
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     // Basic Security
 	compile('org.springframework.boot:spring-boot-starter-security')
