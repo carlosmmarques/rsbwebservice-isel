@@ -64,7 +64,7 @@ public class PessoalDTO<T> {
                 elemento.getTurno().getId());
 //        this.uri_categoria = String.format("%s/categoria/%s",
 //                this.baseUrl,
-//                elemento.getAtribuicaoDeCategorias().stream()
+//                elemento.getAtribuicõesDeCategoria().stream()
 //                        .sorted((o1, o2) -> o2.getDataAtribuicaoCategoria().compareTo(o1.getDataAtribuicaoCategoria()))
 //                        .findFirst().get()
 //                        .getCategoria().getId());

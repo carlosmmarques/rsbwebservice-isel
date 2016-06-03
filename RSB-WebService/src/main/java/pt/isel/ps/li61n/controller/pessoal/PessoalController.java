@@ -80,7 +80,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                 .filter(pessoa -> instalacao_id.map(v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
                 .filter(pessoa ->
                         categoria_id.map(v ->
-                                pessoa.getAtribuicaoDeCategorias().stream().sorted(
+                                pessoa.getAtribuicõesDeCategoria().stream().sorted(
                                         (c1, c2) ->
                                                 c2.getDataAtribuicaoCategoria()
                                                         .compareTo(c1.getDataAtribuicaoCategoria())
@@ -308,6 +308,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         } catch (Exception e) {
             throw new NotFoundException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
         }
+
         atribuicaoDeCategoria.setElementoDoPessoal(elemento);
         atribuicaoDeCategoria.setDataAtribuicaoCategoria(dataatribuicaocategoria);
         atribuicaoDeCategoria.setClassificacaoFormacao(classificacaoformacao);

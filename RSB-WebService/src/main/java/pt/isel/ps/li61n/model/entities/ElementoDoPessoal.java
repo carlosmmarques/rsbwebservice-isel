@@ -70,7 +70,7 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     @JoinColumn(name = "instalacao_id")
     private Instalacao instalacao;
     @OneToMany(mappedBy = "elementoDoPessoal")
-    private List<AtribuicaoCategoria> atribuicaoDeCategorias;
+    private List<AtribuicaoCategoria> atribuicõesDeCategoria;
     @OneToMany(mappedBy = "elementoDoPessoal")
     private List<RegistoFormacao> formacoes;
 
@@ -333,17 +333,17 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     }
 
     /**
-     * @return Lista de atribuicaoDeCategorias do elemento
+     * @return Lista de atribuicõesDeCategoria do elemento
      */
-    public List<AtribuicaoCategoria> getAtribuicaoDeCategorias() {
-        return atribuicaoDeCategorias;
+    public List<AtribuicaoCategoria> getAtribuicõesDeCategoria() {
+        return atribuicõesDeCategoria;
     }
 
     /**
-     * @param atribuicaoDeCategorias Lista de atribuicaoDeCategorias do elemento
+     * @param atribuicõesDeCategoria Lista de atribuicõesDeCategoria do elemento
      */
-    public void setAtribuicaoDeCategorias(List<AtribuicaoCategoria> atribuicaoDeCategorias) {
-        this.atribuicaoDeCategorias = atribuicaoDeCategorias;
+    public void setAtribuicõesDeCategoria(List<AtribuicaoCategoria> atribuicõesDeCategoria) {
+        this.atribuicõesDeCategoria = atribuicõesDeCategoria;
     }
 
     /**
