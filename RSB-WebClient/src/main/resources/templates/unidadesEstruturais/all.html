@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Lista de Unidades Estruturais</title>
+</head>
+<body>
+    <!-- Lista do Pessoal -->
+    <div th:unless="${#lists.isEmpty(ues)}">
+
+        <h2> Lista de unidades estruturais.</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ue : ${ues}">
+                    <td>
+                        <a href="details.html" th:href="@{/unidadesEstruturais/{id}(id=${ue.getId()})}">
+                            <span th:text="${ue.getDesignacao()}">3.ª</span>
+                        </a>
+                    </td>
+                    <td>
+                        <span th:text="${ue.getTipo()}">Companhia</span>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(ues)}">
+        <h2>Não existe unidades estruturais a apresentar!</h2>
+    </div>
+
+    <!-- OPERAÇÕES -->
+    <div>
+        <h3>Nesta página poderá fazer:</h3>
+        <ul>
+            <li><!-- Registar uma unidade estrutural -->
+                <a href="insert.html" th:href="@{/unidadesEstruturais/criar}">
+                    Criar uma Unidade Estrutural.
+                </a>
+            </li>
+            <!--     <li>Atribuir a um elemento uma Unidade Operacional
+                <a href="all.html">
+                    Atribuir um elemento a uma Unidade Operacional.
+                </a>
+            </li>-->
+        </ul>
+    </div>
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+</body>
+</html>

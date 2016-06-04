@@ -12,6 +12,13 @@ import pt.isel.ps.li61n.model.PessoalUI;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Created on 20/05/2016.
+ *
+ * @author  Carlos Marques - carlosmmarques@gmail.com
+ *          Tiago Venturinha - tventurinha@gmail.com
+ */
+
 @Controller
 @RequestMapping("/pessoal")
 public class PessoalController {
@@ -37,8 +44,9 @@ public class PessoalController {
        PessoalUI pessoa = _elementosLogic.getOne( id );
 
         if(  pessoa == null ){
-            return "redirect:/error";
+            return "redirect:/PageError";
         }
+
         model.addAttribute( "pessoa", pessoa );
         return "/pessoal/details";
     }

@@ -1,0 +1,26 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://wwww.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <title>Templates</title>
+    </head>
+    <body>
+
+        <footer th:fragment="footer" >
+
+            <a href="index.html" th:object="${#ctx.httpServletRequest}"
+                th:href="@{ *{getScheme()} + '://' + *{getServerName()} + ':' + *{getServerPort()} + '\index'}"
+            >
+            <!--    #{+'://'+ *{getServerName()} + ':' + *{getServerPort()} } }">
+            "%s://%s:%s",
+            request.getScheme(),
+            request.getServerName(),
+            request.getServerPort() -->
+            Voltar à página principal? </a>
+        </footer>
+
+    </body>
+</html>
