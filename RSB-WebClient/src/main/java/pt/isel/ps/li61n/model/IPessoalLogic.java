@@ -5,9 +5,6 @@ import java.util.Collection;
 /**
  * Created by Demo on 24/05/2016.
  */
-public interface IPessoalLogic<E,T>{
+public interface IPessoalLogic< E, T > extends ILogic< E, T >{
 
-    Collection<E> getAll();
-
-    E getOne( T id );
 }

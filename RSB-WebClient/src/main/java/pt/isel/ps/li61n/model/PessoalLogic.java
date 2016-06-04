@@ -33,4 +33,9 @@ public class PessoalLogic implements IPessoalLogic< PessoalUI, String > {
     public PessoalUI getOne( String id ) {
         return _pessoal.get( id );
     }
+
+    @Override
+    public PessoalUI create(PessoalUI element) {
+        return null;
+    }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Detalhes de uma Unidade Estrutural</title>
+</head>
+<body>
+    <!-- Detalhes de uma Unidade Estrutural -->
+    <div>
+        <h1>Detalhes da unidade estrutural</h1>
+        <h2><span th:text="${ue.getDesignacao()}">Nome da Unidade Estrutural</span></h2>
+        <h3><span th:text="${ue.getTipo()}">Tipo da Unidade Estrutural</span></h3>
+
+    </div>
+
+    <!-- Operações -->
+    <div>
+
+
+    </div>
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+
+</body>
+</html>

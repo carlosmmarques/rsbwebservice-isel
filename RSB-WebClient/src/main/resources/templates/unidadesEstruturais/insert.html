@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <title>Criar Unidade Estrutural</title>
+    </head>
+    <body>
+        <h1>Criar uma unidade Estrutural</h1>
+        <!-- Formulário para criar uma unidade estrutural -->
+        <div>
+            <form action="/unidadesEstruturais" method="POST">
+                Designação: <input type="text" name="designacao"></input><br></br>
+                Tipo:
+                <select name="tipo">
+                    <option value="Regimento">Regimento</option>
+                    <option value="Batalhão">Batalhão</option>
+                    <option value="Companhia">Companhia</option>
+                    <option value="Secção">Secção</option>
+                </select><br></br>
+                <input type="submit" value="Criar"></input>
+            </form>
+        </div>
+
+
+    </body>
+</html>
