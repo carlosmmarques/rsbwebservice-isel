@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ConflictException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public ConflictException(String numMecanografico) {
-        super(String.format("Elemento com numero mecanográfico %s já existe no repositório", numMecanografico));
+    public ConflictException(String message) {
+        super(message);
     }
 }

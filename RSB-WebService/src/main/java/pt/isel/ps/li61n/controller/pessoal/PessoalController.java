@@ -301,18 +301,19 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         } catch (Exception e) {
             throw new NotFoundException(String.format("Não é possível obter a Instalação com id: %s", instalacao_id));
         }
-        pessoal_Repository.save(elemento);
-
         try {
             atribuicaoDeCategoria.setCategoria(categoria_Repository.findOne(categoria_id));
         } catch (Exception e) {
             throw new NotFoundException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
         }
-
+        elemento = pessoal_Repository.saveAndFlush(elemento);
         atribuicaoDeCategoria.setElementoDoPessoal(elemento);
         atribuicaoDeCategoria.setDataAtribuicaoCategoria(dataatribuicaocategoria);
         atribuicaoDeCategoria.setClassificacaoFormacao(classificacaoformacao);
-        atribuicaoCategoria_Repository.save(atribuicaoDeCategoria);
+        atribuicaoDeCategoria = atribuicaoCategoria_Repository.saveAndFlush(atribuicaoDeCategoria);
+        List<AtribuicaoCategoria> atribuicoesCategoria = new ArrayList<AtribuicaoCategoria>();
+        atribuicoesCategoria.add(atribuicaoDeCategoria);
+        elemento.setAtribuicõesDeCategoria(atribuicoesCategoria);
 
         return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.CREATED);
     }
@@ -421,8 +422,6 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                 throw new NotFoundException(String.format("Não é possível obter a Instalação com id: %s", i.toString()));
             }
         });
-        pessoal_Repository.save(elemento);
-
         categoria_id.ifPresent(cat_id -> {
             List<AtribuicaoCategoria> atribuicoesCategoria = atribuicaoCategoria_Repository.findByElementoDoPessoal(elemento);
             Optional<AtribuicaoCategoria> atribuicaoDeCategoriaOpt = atribuicoesCategoria
@@ -445,6 +444,8 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             classificacaoformacao.ifPresent(atribuicaoCategoria::setClassificacaoFormacao);
             atribuicaoCategoria_Repository.save(atribuicaoCategoria);
         });
+        pessoal_Repository.save(elemento);
+
         return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.OK);
     }
 

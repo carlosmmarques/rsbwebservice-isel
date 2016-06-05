@@ -62,12 +62,12 @@ public class PessoalDTO<T> {
         this.uri_turnoPorOmissao = String.format("%s/turno/%s",
                 this.baseUrl,
                 elemento.getTurno().getId());
-//        this.uri_categoria = String.format("%s/categoria/%s",
-//                this.baseUrl,
-//                elemento.getAtribuicõesDeCategoria().stream()
-//                        .sorted((o1, o2) -> o2.getDataAtribuicaoCategoria().compareTo(o1.getDataAtribuicaoCategoria()))
-//                        .findFirst().get()
-//                        .getCategoria().getId());
+        this.uri_categoria = String.format("%s/categoria/%s",
+                this.baseUrl,
+                elemento.getAtribuicõesDeCategoria().stream()
+                        .sorted((o1, o2) -> o2.getDataAtribuicaoCategoria().compareTo(o1.getDataAtribuicaoCategoria()))
+                        .findFirst().get()
+                        .getCategoria().getId());
         for (Field field : elemento.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(JsonView.class))
                 if (Arrays.asList(field.getAnnotation(JsonView.class).value()).contains(this.representationModel)) {
