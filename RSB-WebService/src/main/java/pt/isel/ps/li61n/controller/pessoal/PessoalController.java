@@ -505,6 +505,31 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
 
 
     /**
+     * @param id   Identificador do elemento.
+     * @param request      HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                     nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(Representation.Normal.class) // A representação incluirá apenas campos com esta anotação
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    // Este Método atende ao verbo HTTP DELETE
+    @ResponseBody //Responsebody em JSON
+    public ResponseEntity<?> EliminarElementoDoPessoal(
+            @PathVariable String id,
+            HttpServletRequest request
+    ) throws Exception {
+        ElementoDoPessoal elemento = pessoal_Repository.findOne(Long.parseLong(id));
+        List<AtribuicaoCategoria> atribuicoesCategoria = atribuicaoCategoria_Repository.findByElementoDoPessoal(elemento);
+        atribuicoesCategoria.stream()
+                .forEach(atribuicaoCategoria_Repository::delete);
+        pessoal_Repository.delete(Long.parseLong(id));
+        return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.OK);
+    }
+
+
+
+    /**
      * @param numeroMecanografico O numero mecanográfico do elemento a validar
      * @throws ConflictException se o numero mecanográfico já está atribuido
      */

@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Instalacao extends RsbAbstractEntity{
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "unidadeEstrutural_id")
+    @JoinColumn(name = "unidadeEstrutural_id", nullable = false)
     @JsonView(Representation.Summary.class)
     private UnidadeEstrutural unidadeEstrutural;
     private String designacao;
