@@ -3,10 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import com.fasterxml.jackson.annotation.JsonView;
 import pt.isel.ps.li61n.controller.Representation;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 /**
  * RsbAbstractEntity - Atributos base das entidades da aplicação.
@@ -23,6 +20,22 @@ public abstract class RsbAbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Representation.Summary.class)
     private Long id;
+    @Column(columnDefinition="BOOLEAN DEFAULT FALSE")
+    private Boolean eliminado;
+
+    /**
+     * @return Estado da Entidade (Activo / Inactivo)
+     */
+    public Boolean getEliminado() {
+        return eliminado;
+    }
+
+    /**
+     * @param eliminado Estado da Entidade (Activo / Inactivo)
+     */
+    public void setEliminado(Boolean eliminado) {
+        this.eliminado = eliminado;
+    }
 
     /**
      * @return Identificador da entidade.

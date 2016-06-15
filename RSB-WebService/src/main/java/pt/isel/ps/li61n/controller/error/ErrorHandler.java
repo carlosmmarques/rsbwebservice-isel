@@ -26,9 +26,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
-    @ExceptionHandler(value = {
-            ConflictException.class
-    })
+    @ExceptionHandler(value = {ConflictException.class})
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request){
         String completeURL = request.getRequestURL().toString();

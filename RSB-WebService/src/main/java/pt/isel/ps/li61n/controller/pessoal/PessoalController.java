@@ -30,7 +30,7 @@ import java.util.*;
 public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
 
     /**
-     * Instância do repositório de elementos do pessoal
+     * Instâncias dos repositórios
      */
     @Autowired
     Pessoal_IRepository pessoal_Repository;
@@ -520,10 +520,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             HttpServletRequest request
     ) throws Exception {
         ElementoDoPessoal elemento = pessoal_Repository.findOne(Long.parseLong(id));
-        List<AtribuicaoCategoria> atribuicoesCategoria = atribuicaoCategoria_Repository.findByElementoDoPessoal(elemento);
-        atribuicoesCategoria.stream()
-                .forEach(atribuicaoCategoria_Repository::delete);
-        pessoal_Repository.delete(Long.parseLong(id));
+        elemento.setEliminado(true);
+        /* TODO Validar a necessidade de lançar excepção quando um elmento é eliminado. Exemplo:
+            Um elementoa afecto a um turno. Faz sentido validar esta afectação antes de o sinalizar como "Eliminado"?
+         */
+
+//        List<AtribuicaoCategoria> atribuicoesCategoria = atribuicaoCategoria_Repository.findByElementoDoPessoal(elemento);
+//        atribuicoesCategoria.stream()
+//                .forEach(atribuicaoCategoria_Repository::delete);
+//        pessoal_Repository.delete(Long.parseLong(id));
+        elemento = pessoal_Repository.save(elemento);
         return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.OK);
     }
 

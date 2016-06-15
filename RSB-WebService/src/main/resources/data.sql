@@ -1,4 +1,4 @@
--- GERAR DADOS DE TESTE
+-- GERAR DADOS DE eliminado
 
 -- ALGORITMOS DE CALCULO DE TURNO:
 INSERT INTO algoritmo_calculo_turno(id, descricao, designacao, servico_permanente) VALUES
@@ -327,15 +327,15 @@ INSERT INTO categoria (id, abreviatura, descrição, nivel_hierarquico, quadro) 
   ('2', '2oCmdt', '2.º Comandante', '0', 'COMANDO'),
   ('3', 'Cmdt.Comp', 'Comandante de Companhia', '0', 'COMANDO'),
   ('4', 'Adj.Tec', 'Adjunto Técnico', '0', 'COMANDO'),
-  ('5', 'Ch.Pr', 'Chefe Principal', '0', 'BOMBEIRO'),
-  ('6', 'Ch.1a', 'Chefe de 1.ª Classe', '0', 'BOMBEIRO'),
-  ('7', 'Ch.2a', 'Chefe de 2.ª Classe', '0', 'BOMBEIRO'),
-  ('8', 'S/Ch.Pr', 'Subchefe Principal', '0', 'BOMBEIRO'),
-  ('9', 'S/Ch.1a', 'Subchefe de 1.ª Classe', '0', 'BOMBEIRO'),
-  ('10', 'S/Ch.2a', 'Subchefe de 2.ª Classe', '0', 'BOMBEIRO'),
-  ('11', 'B.Sap', 'Bombeiro Sapador', '0', 'BOMBEIRO'),
-  ('12', 'B.Rec', 'Bombeiro Sapador Recruta', '0', 'BOMBEIRO'),
-  ('13', 'N/D', 'Não Disponível', '0', 'OUTRO')
+  ('5', 'Ch.Pr', 'Chefe Principal', '1', 'BOMBEIRO'),
+  ('6', 'Ch.1a', 'Chefe de 1.ª Classe', '2', 'BOMBEIRO'),
+  ('7', 'Ch.2a', 'Chefe de 2.ª Classe', '3', 'BOMBEIRO'),
+  ('8', 'S/Ch.Pr', 'Subchefe Principal', '4', 'BOMBEIRO'),
+  ('9', 'S/Ch.1a', 'Subchefe de 1.ª Classe', '5', 'BOMBEIRO'),
+  ('10', 'S/Ch.2a', 'Subchefe de 2.ª Classe', '6', 'BOMBEIRO'),
+  ('11', 'B.Sap', 'Bombeiro Sapador', '7', 'BOMBEIRO'),
+  ('12', 'B.Rec', 'Bombeiro Sapador Recruta', '8', 'BOMBEIRO'),
+  ('13', 'N/D', 'Não Disponível', '-1', 'OUTRO')
 ON CONFLICT DO NOTHING
 ;
 

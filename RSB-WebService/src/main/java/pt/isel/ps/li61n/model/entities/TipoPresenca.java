@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 public class TipoPresenca{
 
     @Id
+    // Esta classe não herda de RSBAbstract pq o seu Id não é Inteiro.
     private String id;
     private Boolean ausencia;
     private Boolean reforco;

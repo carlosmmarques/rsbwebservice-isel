@@ -73,6 +73,9 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     private List<AtribuicaoCategoria> atribuicõesDeCategoria;
     @OneToMany(mappedBy = "elementoDoPessoal")
     private List<RegistoFormacao> formacoes;
+    // TODO - Mapear os contactos à tabela Contactos.
+    @OneToMany(mappedBy = "elementoDoPessoal")
+    private List<Contacto> contactos;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
