@@ -20,7 +20,7 @@ public abstract class RsbAbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Representation.Summary.class)
     private Long id;
-    @Column(columnDefinition="BOOLEAN DEFAULT FALSE")
+    @Column(name = "eliminado", columnDefinition="BOOLEAN DEFAULT FALSE")
     private Boolean eliminado;
 
     /**

@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.Instalacao;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Instalacao_IRepository extends JpaRepository<Instalacao, Long> {
+public interface IInstalacaoRepository extends JpaRepository<Instalacao, Long> {
 }

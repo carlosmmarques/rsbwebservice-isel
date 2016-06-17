@@ -18,19 +18,19 @@ public class PessoalDTO<T> {
     final Map<String, String> pessoaMap = new HashMap<>();
     private Class<T> representationModel;
     private String baseUrl;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private Long id;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_pessoa;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_instalacaoPorOmissao;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_postoFuncionalPorOmissao;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_tipoPresencaPorOmissao;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_turnoPorOmissao;
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String uri_categoria;
 
     /**

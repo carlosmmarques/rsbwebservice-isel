@@ -25,13 +25,13 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
             joinColumns = @JoinColumn(name = "responsabilidade_operacional_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
     private List<Formacao> formacoes;
-    @JsonView(Representation.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String sigla;
-    @JsonView(Representation.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
     private Boolean dependeFactorElegibilidade;
-    @JsonView(Representation.Summary.class)
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String designacao;
 
     /**

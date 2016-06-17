@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.Categoria;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface Categoria_IRepository extends JpaRepository<Categoria, Long> {
+public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
 }

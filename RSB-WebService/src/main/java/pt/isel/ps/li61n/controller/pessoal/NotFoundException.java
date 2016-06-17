@@ -11,6 +11,6 @@ public class NotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public NotFoundException(String message) {
-        super(String.format(message == "" ? "Não existem elementos" : "Elemento com message %s não existe no repositório", message));
+        super(message == "" ? "Erro! Não existem elementos" : String.format("Erro! %s", message));
     }
 }

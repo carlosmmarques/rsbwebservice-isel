@@ -20,42 +20,42 @@ import java.util.List;
 public class ElementoDoPessoal extends RsbAbstractEntity{
 
     @Column(nullable = true)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String idInterno;
     @Column(nullable = false)
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String Matricula;
     @Column(unique = true, nullable = false)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String numMecanografico;
     @Column(nullable = false)
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String abreviatura;
     @Column(nullable = false)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private String nome;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private Date dataNascimento;
     @Column(nullable = false)
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String telefone1;
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String telefone2;
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String eMail;
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String nif;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private TipoDocIdentificacao tipoDocIdentificacao;
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private String numDocIdentificacao;
-    @JsonView({Representation.Normal.class})
+    @JsonView({Representation.Normal.class, Representation.Verbose.class})
     private Float factorElegibilidade;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postoFuncional_id")
@@ -72,7 +72,7 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     @OneToMany(mappedBy = "elementoDoPessoal")
     private List<AtribuicaoCategoria> atribuicõesDeCategoria;
     @OneToMany(mappedBy = "elementoDoPessoal")
-    private List<RegistoFormacao> formacoes;
+    private List<RegistoFormacao> registosFormacao;
     // TODO - Mapear os contactos à tabela Contactos.
     @OneToMany(mappedBy = "elementoDoPessoal")
     private List<Contacto> contactos;
@@ -352,15 +352,77 @@ public class ElementoDoPessoal extends RsbAbstractEntity{
     /**
      * @return Lista de formações do elemento
      */
-    public List<RegistoFormacao> getFormacoes() {
-        return formacoes;
+    public List<RegistoFormacao> getRegistosFormacao() {
+        return registosFormacao;
     }
 
     /**
-     * @param formacoes Lista de formações do elemento
+     * @param registosFormacao Lista de formações do elemento
      */
-    public void setFormacoes(List<RegistoFormacao> formacoes) {
-        this.formacoes = formacoes;
+    public void setRegistosFormacao(List<RegistoFormacao> registosFormacao) {
+        this.registosFormacao = registosFormacao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ElementoDoPessoal)) return false;
+
+        ElementoDoPessoal that = (ElementoDoPessoal) o;
+
+        if (idInterno != null ? !idInterno.equals(that.idInterno) : that.idInterno != null) return false;
+        if (!Matricula.equals(that.Matricula)) return false;
+        if (!numMecanografico.equals(that.numMecanografico)) return false;
+        if (!abreviatura.equals(that.abreviatura)) return false;
+        if (!nome.equals(that.nome)) return false;
+        if (!dataNascimento.equals(that.dataNascimento)) return false;
+        if (!telefone1.equals(that.telefone1)) return false;
+        if (telefone2 != null ? !telefone2.equals(that.telefone2) : that.telefone2 != null) return false;
+        if (eMail != null ? !eMail.equals(that.eMail) : that.eMail != null) return false;
+        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
+        if (dataIngresso != null ? !dataIngresso.equals(that.dataIngresso) : that.dataIngresso != null) return false;
+        if (tipoDocIdentificacao != that.tipoDocIdentificacao) return false;
+        if (numDocIdentificacao != null ? !numDocIdentificacao.equals(that.numDocIdentificacao) : that.numDocIdentificacao != null)
+            return false;
+        if (factorElegibilidade != null ? !factorElegibilidade.equals(that.factorElegibilidade) : that.factorElegibilidade != null)
+            return false;
+        if (postoFuncional != null ? !postoFuncional.equals(that.postoFuncional) : that.postoFuncional != null)
+            return false;
+        if (tipoPresenca != null ? !tipoPresenca.equals(that.tipoPresenca) : that.tipoPresenca != null) return false;
+        if (turno != null ? !turno.equals(that.turno) : that.turno != null) return false;
+        if (instalacao != null ? !instalacao.equals(that.instalacao) : that.instalacao != null) return false;
+        if (atribuicõesDeCategoria != null ? !atribuicõesDeCategoria.equals(that.atribuicõesDeCategoria) : that.atribuicõesDeCategoria != null)
+            return false;
+        if (registosFormacao != null ? !registosFormacao.equals(that.registosFormacao) : that.registosFormacao != null)
+            return false;
+        return contactos != null ? contactos.equals(that.contactos) : that.contactos == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idInterno != null ? idInterno.hashCode() : 0;
+        result = 31 * result + Matricula.hashCode();
+        result = 31 * result + numMecanografico.hashCode();
+        result = 31 * result + abreviatura.hashCode();
+        result = 31 * result + nome.hashCode();
+        result = 31 * result + dataNascimento.hashCode();
+        result = 31 * result + telefone1.hashCode();
+        result = 31 * result + (telefone2 != null ? telefone2.hashCode() : 0);
+        result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
+        result = 31 * result + (nif != null ? nif.hashCode() : 0);
+        result = 31 * result + (dataIngresso != null ? dataIngresso.hashCode() : 0);
+        result = 31 * result + (tipoDocIdentificacao != null ? tipoDocIdentificacao.hashCode() : 0);
+        result = 31 * result + (numDocIdentificacao != null ? numDocIdentificacao.hashCode() : 0);
+        result = 31 * result + (factorElegibilidade != null ? factorElegibilidade.hashCode() : 0);
+        result = 31 * result + (postoFuncional != null ? postoFuncional.hashCode() : 0);
+        result = 31 * result + (tipoPresenca != null ? tipoPresenca.hashCode() : 0);
+        result = 31 * result + (turno != null ? turno.hashCode() : 0);
+        result = 31 * result + (instalacao != null ? instalacao.hashCode() : 0);
+        result = 31 * result + (atribuicõesDeCategoria != null ? atribuicõesDeCategoria.hashCode() : 0);
+        result = 31 * result + (registosFormacao != null ? registosFormacao.hashCode() : 0);
+        result = 31 * result + (contactos != null ? contactos.hashCode() : 0);
+        return result;
     }
 
     /**
