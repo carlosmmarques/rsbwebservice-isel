@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class UnidadeEstrutural extends RsbAbstractEntity{
+public class UnidadeEstrutural extends RsbEntidadeAbstracta {
 
     private String designacao;
     @ManyToOne(optional = true)

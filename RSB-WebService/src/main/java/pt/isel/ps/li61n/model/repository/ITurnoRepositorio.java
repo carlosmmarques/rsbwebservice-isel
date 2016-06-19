@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
+import pt.isel.ps.li61n.model.entities.Turno;
 
 /**
  * UnidadeEstrutural_IRepository - Description
@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface IUnidadeOperacionalRepository extends JpaRepository<UnidadeOperacional, Long> {
+public interface ITurnoRepositorio extends JpaRepository<Turno, Long> {
 }

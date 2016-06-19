@@ -1,13 +1,15 @@
 package pt.isel.ps.li61n.controller.pessoal;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pt.isel.ps.li61n.controller.Representation;
+import pt.isel.ps.li61n.RsbWebserviceApplication;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
+import pt.isel.ps.li61n.controller.dto.*;
 import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.RegistoFormacao;
 import pt.isel.ps.li61n.model.services.IPessoalService;
@@ -15,6 +17,7 @@ import pt.isel.ps.li61n.model.services.IPessoalService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 /**
  * PessoalController - Description
@@ -34,6 +37,11 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     IPessoalService pessoalService;
 
     /**
+     * Logger
+     */
+    Logger logger = RsbWebserviceApplication.logger;
+
+    /**
      * @param postofuncional_id              Opcional - O identificador (Id) do Posto Funcional
      * @param turno_id                       Opcional - O identificador (Id) do turno
      * @param instalacao_id                  Opcional - O identificador (Id) da instalação a que o elemento está atribuido
@@ -43,10 +51,9 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                                       que o elemento possa desempenhar
      * @return Lista de ElementoDoPessoal global ou filtrada através dos parametros acima designados.
      */
-    @JsonView(Representation.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
-    @ResponseBody //Responsebody em JSON
-    public List<PessoalDTO<Representation.Summary>> obterElementosDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<List<PessoalDTO>> obterElementosDoPessoal(
             @RequestParam(value = "postofuncional_id", required = true) Optional<Long> postofuncional_id,
             @RequestParam(value = "turno_id", required = true) Optional<Long> turno_id,
             @RequestParam(value = "instalacao_id", required = true) Optional<Long> instalacao_id,
@@ -55,19 +62,23 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
             HttpServletRequest request
     ) throws Exception {
-        final List<PessoalDTO<Representation.Summary>> pessoalDTOs = new LinkedList<>();
-        pessoalService.obterElementosDoPessoal(
-                postofuncional_id,
-                turno_id,
-                instalacao_id,
-                categoria_id,
-                formacao_id,
-                responsabilidadeoperacional_id)
-                .stream().forEach(elementoDoPessoal -> pessoalDTOs.add(
-                new PessoalDTO<>(elementoDoPessoal, request, Representation.Summary.class)));
-        if (pessoalDTOs.size() == 0)
-            throw new NotFoundException("Não existem elementos para os critérios introduzidos!");
-        return pessoalDTOs;
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
+            pessoalService.obterElementosDoPessoal(
+                    postofuncional_id,
+                    turno_id,
+                    instalacao_id,
+                    categoria_id,
+                    formacao_id,
+                    responsabilidadeoperacional_id)
+                    .stream().forEach(elementoDoPessoal -> pessoalDTOs.add(
+                    new PessoalDTO(elementoDoPessoal, request, ModeloDeRepresentacao.Sumario.class)));
+            if (pessoalDTOs.size() == 0)
+                throw new NotFoundException("Não existem elementos para os critérios introduzidos!");
+            return pessoalDTOs;
+        };
     }
 
     /**
@@ -76,16 +87,19 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Representação do elemento na forma de um DTO facilmente serializavel em Json.
      */
-    @JsonView(Representation.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public PessoalDTO<Representation.Normal> obterUmElementoDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<PessoalDTO> obterUmElementoDoPessoal(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
-        return new PessoalDTO<>(pessoalService.obterUmElementoDoPessoal(id)
-                , request
-                , Representation.Normal.class);
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            return new PessoalDTO(pessoalService.obterUmElementoDoPessoal(id)
+                    , request
+                    , ModeloDeRepresentacao.Normal.class);
+        };
     }
 
     /**
@@ -94,22 +108,26 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Lista das formações de um determinado elemento na forma de um DTO facilmente serializável em JSon
      */
-    @JsonView(Representation.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}/formacao", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public List<RegistoFormaçãoDoElementoDTO> obterRegistosDeFormacaoDeUmElemento(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> obterRegistosDeFormacaoDeUmElemento(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
-        final List<RegistoFormaçãoDoElementoDTO> registoFormaçãoDoElementoDTOs = new LinkedList<>();
-        pessoalService.obterRegistosDeFormacaoDeUmElemento(id).stream().forEach(
-                registoFormacao ->
-                        registoFormaçãoDoElementoDTOs.add(
-                                new RegistoFormaçãoDoElementoDTO(registoFormacao, request)
-                        )
-        );
-
-        return registoFormaçãoDoElementoDTOs;
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            final List<RegistoFormacaoDTO> registoFormacaoDTOs = new LinkedList<>();
+            pessoalService.obterRegistosDeFormacaoDeUmElemento(id).stream().forEach(
+                    registoFormacao ->
+                            registoFormacaoDTOs.add(
+                                    new RegistoFormacaoDTO(registoFormacao,
+                                            request,
+                                            ModeloDeRepresentacao.Sumario.class)
+                            )
+            );
+            return registoFormacaoDTOs;
+        };
     }
 
 
@@ -120,18 +138,21 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                           nomeadamente do URI.
      * @return O registo da formação do elemento na forma de um DTO facilmente serializável em JSon
      */
-    @JsonView(Representation.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{elemento_id}/formacao/{registoFormacao_id}", method = RequestMethod.GET)
-    // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public RegistoFormaçãoDoElementoDTO obterUmRegistoDeFormacaoDeUmElemento(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> obterRegistoDeFormacaoDeUmElemento(
             @PathVariable Long elemento_id,
             @PathVariable Long registoFormacao_id,
             HttpServletRequest request
     ) throws Exception {
-        return new RegistoFormaçãoDoElementoDTO(
-                pessoalService.obterUmRegistoDeFormacaoDeUmElemento(elemento_id, registoFormacao_id)
-                , request);
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            return new RegistoFormacaoDTO(
+                    pessoalService.obterUmRegistoDeFormacaoDeUmElemento(elemento_id, registoFormacao_id),
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+        };
     }
 
     /**
@@ -140,24 +161,26 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Conjunto de Responsabilidades Operacionais a que o elemento está habilitado
      */
-    @JsonView(Representation.Summary.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}/responsabilidadeoperacional", method = RequestMethod.GET)
-    // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public Set<ResponsabilidadeOperacionalDTO<Representation.Summary>> obterResponsabilidadesOperacionaisDeUmElemento(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> obterResponsabilidadesOperacionaisDeUmElemento(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
-        final Set<ResponsabilidadeOperacionalDTO<Representation.Summary>> responsabilidadesOperacionais = new LinkedHashSet<>();
-        pessoalService.obterResponsabilidadesOperacionaisDeUmElemento(id).stream()
-                .forEach(responsabilidadeOperacional -> {
-                            responsabilidadesOperacionais.add(
-                                    new ResponsabilidadeOperacionalDTO<>(responsabilidadeOperacional
-                                            , request
-                                            , Representation.Summary.class));
-                        }
-                );
-        return responsabilidadesOperacionais;
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            final Set<ResponsabilidadeOperacionalDTO> responsabilidadesOperacionais = new LinkedHashSet<>();
+            pessoalService.obterResponsabilidadesOperacionaisDeUmElemento(id).stream()
+                    .forEach(responsabilidadeOperacional -> {
+                                responsabilidadesOperacionais.add(
+                                        new ResponsabilidadeOperacionalDTO(responsabilidadeOperacional
+                                                , request
+                                                , ModeloDeRepresentacao.Sumario.class));
+                            }
+                    );
+            return responsabilidadesOperacionais;
+        };
     }
 
     /**
@@ -186,10 +209,9 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
-    @JsonView(Representation.Verbose.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public ResponseEntity<?> inserirUmElementoDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<ResponseEntity<?>> inserirUmElementoDoPessoal(
             @RequestParam(value = "idInterno", required = true) String idInterno,
             @RequestParam(value = "matricula", required = true) String matricula,
             @RequestParam(value = "nummecanografico", required = true) String nummecanografico,
@@ -213,32 +235,35 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             @RequestParam(value = "factorelegibilidade", required = false) Optional<Float> factorelegibilidade,
             HttpServletRequest request
     ) throws Exception {
-
-        ElementoDoPessoal elemento = pessoalService
-                .inserirUmElementoDoPessoal(
-                        idInterno,
-                        matricula,
-                        nummecanografico,
-                        abreviatura,
-                        nome,
-                        datanascimento,
-                        telefone1,
-                        postofuncional_id,
-                        tipopresenca_id,
-                        turno_id,
-                        instalacao_id,
-                        categoria_id,
-                        dataatribuicaocategoria,
-                        classificacaoformacao,
-                        telefone2,
-                        email,
-                        nif,
-                        dataingresso,
-                        tipodocidentificacao,
-                        numdocidentificacao,
-                        factorelegibilidade
-                );
-        return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Verbose.class), HttpStatus.CREATED);
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ElementoDoPessoal elemento = pessoalService
+                    .inserirUmElementoDoPessoal(
+                            idInterno,
+                            matricula,
+                            nummecanografico,
+                            abreviatura,
+                            nome,
+                            datanascimento,
+                            telefone1,
+                            postofuncional_id,
+                            tipopresenca_id,
+                            turno_id,
+                            instalacao_id,
+                            categoria_id,
+                            dataatribuicaocategoria,
+                            classificacaoformacao,
+                            telefone2,
+                            email,
+                            nif,
+                            dataingresso,
+                            tipodocidentificacao,
+                            numdocidentificacao,
+                            factorelegibilidade
+                    );
+            return new ResponseEntity<>(new PessoalDTO(elemento, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
     }
 
 
@@ -269,14 +294,12 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
-    @JsonView(Representation.Normal.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public ResponseEntity<?> actualizarUmElementoDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<ResponseEntity<?>> actualizarUmElementoDoPessoal(
             @PathVariable Long id,
             @RequestParam(value = "idInterno", required = false) Optional<String> idInterno,
             @RequestParam(value = "matricula", required = false) Optional<String> matricula,
-            // @RequestParam(value = "nummecanografico", required = true) Optional<String> nummecanografico,
             @RequestParam(value = "abreviatura", required = false) Optional<String> abreviatura,
             @RequestParam(value = "nome", required = false) Optional<String> nome,
             @RequestParam(value = "datanascimento", required = false) Optional<Date> datanascimento,
@@ -297,30 +320,34 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             @RequestParam(value = "factorelegibilidade", required = false) Optional<Float> factorelegibilidade,
             HttpServletRequest request
     ) throws Exception {
-        ElementoDoPessoal elemento = pessoalService.actualizarUmElementoDoPessoal(
-                id,
-                idInterno,
-                matricula,
-                abreviatura,
-                nome,
-                datanascimento,
-                telefone1,
-                postofuncional_id,
-                tipopresenca_id,
-                turno_id,
-                instalacao_id,
-                categoria_id,
-                dataatribuicaocategoria,
-                classificacaoformacao,
-                telefone2,
-                email,
-                nif,
-                dataingresso,
-                tipodocidentificacao,
-                numdocidentificacao,
-                factorelegibilidade
-        );
-        return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.OK);
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ElementoDoPessoal elemento = pessoalService.actualizarUmElementoDoPessoal(
+                    id,
+                    idInterno,
+                    matricula,
+                    abreviatura,
+                    nome,
+                    datanascimento,
+                    telefone1,
+                    postofuncional_id,
+                    tipopresenca_id,
+                    turno_id,
+                    instalacao_id,
+                    categoria_id,
+                    dataatribuicaocategoria,
+                    classificacaoformacao,
+                    telefone2,
+                    email,
+                    nif,
+                    dataingresso,
+                    tipodocidentificacao,
+                    numdocidentificacao,
+                    factorelegibilidade
+            );
+            return new ResponseEntity<>(new PessoalDTO(elemento, request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+        };
     }
 
 
@@ -334,20 +361,19 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
-    @JsonView(Representation.Normal.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{elemento_id}/formacao/{formacao_id}", method = RequestMethod.PUT)
-    // Este Método atende ao verbo HTTP GET
-    @ResponseBody //Responsebody em JSON
-    public ResponseEntity<?> actualizarFormacaoDeElementoDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<ResponseEntity<?>> actualizarFormacaoDeElementoDoPessoal(
             @PathVariable Long elemento_id,
             @PathVariable Long formacao_id,
             @RequestParam(value = "dataformacao", required = true) Date dataFormacao,
             @RequestParam(value = "datacaducidade", required = false) Optional<Date> dataCaducidade,
             HttpServletRequest request
     ) throws Exception {
-        ResponseEntity<?> response;
-        final boolean[] novoRegisto = {false};
-        synchronized (this) {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            final boolean[] novoRegisto = {false};
             RegistoFormacao registoFormacao = pessoalService.actualizarFormacaoDeElementoDoPessoal(
                     elemento_id,
                     formacao_id,
@@ -355,9 +381,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     dataCaducidade,
                     novoRegisto
             );
-            response = new ResponseEntity<>(new RegistoFormacaoDTO<>(registoFormacao, request, Representation.Normal.class), novoRegisto[0] ? HttpStatus.CREATED : HttpStatus.OK);
-        }
-        return response;
+            return new ResponseEntity<>(
+                    new RegistoFormacaoDTO(
+                            registoFormacao,
+                            request,
+                            ModeloDeRepresentacao.Normal.class),
+                    novoRegisto[0] ? HttpStatus.CREATED : HttpStatus.OK);
+        };
     }
 
 
@@ -368,18 +398,41 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
-    @JsonView(Representation.Normal.class) // A representação incluirá apenas campos com esta anotação
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    // Este Método atende ao verbo HTTP DELETE
-    @ResponseBody //Responsebody em JSON
-    public ResponseEntity<?> EliminarElementoDoPessoal(
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> EliminarElementoDoPessoal(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
-        ElementoDoPessoal elemento = pessoalService.EliminarElementoDoPessoal(
-                id
-        );
-        return new ResponseEntity<>(new PessoalDTO<>(elemento, request, Representation.Normal.class), HttpStatus.OK);
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ElementoDoPessoal elemento = pessoalService.EliminarElementoDoPessoal(
+                    id
+            );
+            return new ResponseEntity<>(new PessoalDTO(elemento, request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/categoria", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterCategorias(
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<CategoriaDTO> categoriasDTO = new LinkedList<>();
+            pessoalService.obterCategorias().stream()
+                    .forEach(categoria -> categoriasDTO.add(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Sumario.class)));
+            return new ResponseEntity<>(categoriasDTO, HttpStatus.OK);
+        };
     }
 
 }

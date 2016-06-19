@@ -1,12 +1,12 @@
 package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import pt.isel.ps.li61n.controller.Representation;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.*;
 
 /**
- * RsbAbstractEntity - Atributos base das entidades da aplicação.
+ * RsbEntidadeAbstracta - Atributos base das entidades da aplicação.
  * Created on 05/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
@@ -14,11 +14,11 @@ import javax.persistence.*;
  */
 
 @MappedSuperclass
-public abstract class RsbAbstractEntity {
+public abstract class RsbEntidadeAbstracta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Representation.Summary.class)
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     private Long id;
     @Column(name = "eliminado", columnDefinition="BOOLEAN DEFAULT FALSE")
     private Boolean eliminado;

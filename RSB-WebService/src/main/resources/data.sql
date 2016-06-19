@@ -4,7 +4,7 @@
 INSERT INTO algoritmo_calculo_turno(id, descricao, designacao, servico_permanente) VALUES
   ('1', '12+24+12+48', 'Algoritmo Turno', TRUE),
   ('2', 'Horário Normal', 'Algoritmo Horario Normal', FALSE),
-  ('3', 'Manhã / Tarde / Noite', 'Algoritmo 8 Hrs (M/T/N)', TRUE),
+  ('3', 'Manhã / Tarde / Noite', 'Algoritmo 8 Hrs (M/Entidade/N)', TRUE),
   ('4', 'Sem Turno', 'Sem Turno', FALSE)
 ON CONFLICT DO NOTHING
 ;
@@ -88,7 +88,7 @@ INSERT INTO tipo_presenca(id, abreviatura, ausencia, descricao, reforco) VALUES
   ('N', 'Hospital', TRUE, 'Hospital', FALSE),
   ('X', 'Ferias Confirmadas', TRUE, 'Ferias Confirmadas', FALSE),
   ('Z', 'Ferias N/ Confirm.', TRUE, 'Ferias N/ Confirm.', FALSE),
-  ('T', 'Transferência', TRUE, 'Transferência para outra Unidade', FALSE),
+  ('Entidade', 'Transferência', TRUE, 'Transferência para outra Unidade', FALSE),
   ('0', 'N/A', TRUE, 'Não aplicável', FALSE),
   ('S', 'Serviço Interno', FALSE, 'Serviços Internos Comandante Companhia / Batalhão / Secção', FALSE),
   ('S0', 'Disp. Compensação', TRUE, 'Dispensa por compensação', FALSE),
@@ -225,7 +225,7 @@ INSERT INTO pessoal (id, matricula, abreviatura, data_nascimento, e_mail, factor
   ('58', '4874', '', '10-03-1988', 'fabio.sequeira@cm-lisboa.pt', '0', '532', '247762032', 'Fábio Miguel Capinha Sequeira', '13378156', '955517', '963779761', '', 'BilheteIdentidade', '2', '5', 'S4', '2'),
   ('59', '4627', '', '23-01-1981', 'rogerio.beatriz@cm-lisboa.pt', '0', '548', '209648740', 'Rogério Mendonça Beatriz', '11914264', '952224', '919007589', '', 'BilheteIdentidade', '1', '5', 'S4', '1'),
   ('60', '4704', '', '01-01-1978', 'manuel.monteiro@cm-lisboa.pt', '0', '555', '219744963', 'Manuel Pereira Monteiro', '11336388', '953653', '964612845', '', 'BilheteIdentidade', '1', '5', 'S4', '4'),
-  ('61', '4633', '', '27-11-1979', 'bruno.mourinha@cm-lisboa.pt', '0', '561', '221306668', 'Bruno Miguel T. F. Mourinha', '11521634', '952160', '962873662', '', 'BilheteIdentidade', '2', '5', 'S5', '3'),
+  ('61', '4633', '', '27-11-1979', 'bruno.mourinha@cm-lisboa.pt', '0', '561', '221306668', 'Bruno Miguel Entidade. F. Mourinha', '11521634', '952160', '962873662', '', 'BilheteIdentidade', '2', '5', 'S5', '3'),
   ('62', '4871', '', '19-04-1987', 'emanuel.alves@cm-lisboa.pt', '0', '567', '217610145', 'Emanuel da Silva Alves', '13333184', '955511', '919959030', '', 'BilheteIdentidade', '2', '5', 'S4', '4'),
   ('63', '4837', '', '01-11-1985', 'rui.pacheco@cm-lisboa.pt', '0', '571', '241791944', 'Rui Pedro Ribeiro Pacheco', '12869065', '955603', '962330521', '', 'BilheteIdentidade', '2', '5', 'S4', '2'),
   ('64', '4641', '', '18-10-1978', 'marco.marques@cm-lisboa.pt', '0', '573', '215015282', 'Marco António Pereira Marques', '11498676', '952187', '0', '', 'BilheteIdentidade', '1', '5', 'S4', '4'),
@@ -570,7 +570,7 @@ ON CONFLICT DO NOTHING
 -- PRESENÇAS
 INSERT INTO presenca (id, data, hora_inicio, num_horas, instalacao_efectiva_id, periodo_id, pessoal_id, posto_funcional_efectivo_id, tipo_presenca_efectiva_id, turno_efectivo_id) VALUES
   ('1', '01-12-2015', '20:00', '12', '1', '1', '111', '6', 'X', '2'),
-  ('2', '01-12-2015', '08:00', '0', '1', '1', '112', '12', 'T', '9'),
+  ('2', '01-12-2015', '08:00', '0', '1', '1', '112', '12', 'Entidade', '9'),
   ('3', '02-12-2015', '08:00', '12', '1', '1', '110', '12', 'A', '4'),
   ('4', '01-12-2015', '20:00', '12', '1', '1', '1', '13', 'S2', '2'),
   ('5', '03-12-2015', '08:00', '12', '1', '1', '2', '13', 'S2', '1'),

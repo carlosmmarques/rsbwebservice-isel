@@ -17,7 +17,7 @@ import java.sql.Time;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Presenca extends RsbAbstractEntity{
+public class Presenca extends RsbEntidadeAbstracta {
 
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

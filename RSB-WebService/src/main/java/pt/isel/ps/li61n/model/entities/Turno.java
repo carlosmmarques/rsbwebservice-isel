@@ -14,7 +14,7 @@ import java.sql.Time;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Turno extends RsbAbstractEntity{
+public class Turno extends RsbEntidadeAbstracta {
 
     private String designacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

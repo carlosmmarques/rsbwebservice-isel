@@ -1,12 +1,14 @@
 package pt.isel.ps.li61n.model.services;
 
 import org.springframework.stereotype.Service;
+import pt.isel.ps.li61n.model.entities.Categoria;
 import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.RegistoFormacao;
 import pt.isel.ps.li61n.model.entities.ResponsabilidadeOperacional;
 
 import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -189,4 +191,9 @@ public interface IPessoalService {
     ElementoDoPessoal EliminarElementoDoPessoal(
             Long id
     ) throws Exception;
+
+    /**
+     * @return Lista global de Categorias
+     */
+    List<Categoria> obterCategorias();
 }

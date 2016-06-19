@@ -1,7 +1,7 @@
 package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import pt.isel.ps.li61n.controller.Representation;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class ResponsabilidadeOperacional extends RsbAbstractEntity{
+public class ResponsabilidadeOperacional extends RsbEntidadeAbstracta {
 
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")
@@ -25,13 +25,13 @@ public class ResponsabilidadeOperacional extends RsbAbstractEntity{
             joinColumns = @JoinColumn(name = "responsabilidade_operacional_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
     private List<Formacao> formacoes;
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String sigla;
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
     private Boolean dependeFactorElegibilidade;
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
 
     /**

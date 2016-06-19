@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.PostoFuncional;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface IPostoFuncionalRepository extends JpaRepository<PostoFuncional, Long> {
+public interface IPostoFuncionalRepositorio extends JpaRepository<PostoFuncional, Long> {
 }

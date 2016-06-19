@@ -2,13 +2,12 @@ package pt.isel.ps.li61n.model.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.controller.pessoal.ConflictException;
 import pt.isel.ps.li61n.controller.pessoal.DeletedResourceException;
 import pt.isel.ps.li61n.controller.pessoal.NotFoundException;
-import pt.isel.ps.li61n.model.entities.AtribuicaoCategoria;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
-import pt.isel.ps.li61n.model.entities.RegistoFormacao;
-import pt.isel.ps.li61n.model.entities.ResponsabilidadeOperacional;
+import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.*;
 
 import java.sql.Date;
@@ -29,23 +28,23 @@ public class PessoalService implements IPessoalService {
      * Instâncias dos repositórios
      */
     @Autowired
-    IPessoalRepository pessoalRepo;
+    IPessoalRepositorio pessoalRepo;
     @Autowired
-    IPostoFuncionalRepository postoFuncionalRepo;
+    IPostoFuncionalRepositorio postoFuncionalRepo;
     @Autowired
-    ITipoPresencaRepository tipoPresencaRepo;
+    ITipoPresencaRepositorio tipoPresencaRepo;
     @Autowired
-    ICategoriaRepository categoriaRepo;
+    ICategoriaRepositorio categoriaRepo;
     @Autowired
-    IInstalacaoRepository instalacaoRepo;
+    IInstalacaoRepositorio instalacaoRepo;
     @Autowired
-    IAtribuicaoCategoriaRepository atribuicaoCategoriaRepo;
+    IAtribuicaoCategoriaRepositorio atribuicaoCategoriaRepo;
     @Autowired
-    ITurnoRepository turnoRepo;
+    ITurnoRepositorio turnoRepo;
     @Autowired
-    IRegistoFormacaoRepository registoFormacaoRepo;
+    IRegistoFormacaoRepositorio registoFormacaoRepo;
     @Autowired
-    IFormacaoRepository formacaoRepo;
+    IFormacaoRepositorio formacaoRepo;
 
 
     /**
@@ -58,6 +57,7 @@ public class PessoalService implements IPessoalService {
      * @return Colecção de elementos do pessoal
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<ElementoDoPessoal> obterElementosDoPessoal(
             Optional<Long> postofuncional_id,
             Optional<Long> turno_id,
@@ -89,7 +89,7 @@ public class PessoalService implements IPessoalService {
                                         f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
                                                 r -> r.getId().equals(v)))
                         ).orElse(true))
-                .filter(pessoa -> !pessoa.getEliminado())
+//                .filter(pessoa -> !pessoa.getEliminado())
                 .collect(Collectors.toList());
     }
 
@@ -98,6 +98,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do Pessoal
      */
     @Override
+    @Transactional(readOnly = true)
     public ElementoDoPessoal obterUmElementoDoPessoal(
             Long id
     ) throws Exception {
@@ -114,6 +115,7 @@ public class PessoalService implements IPessoalService {
      * @return Colecção de registos de formação do elemento
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<RegistoFormacao> obterRegistosDeFormacaoDeUmElemento(
             Long id
     ) throws Exception {
@@ -131,6 +133,7 @@ public class PessoalService implements IPessoalService {
      * @return Registo de formação específico de um Elemento
      */
     @Override
+    @Transactional(readOnly = true)
     public RegistoFormacao obterUmRegistoDeFormacaoDeUmElemento(
             Long elemento_id,
             Long registoFormacao_id
@@ -156,6 +159,7 @@ public class PessoalService implements IPessoalService {
      * @return Colecção de Responsabilidades Operacionais a que o elemento está apto.
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<ResponsabilidadeOperacional> obterResponsabilidadesOperacionaisDeUmElemento(
             Long id
     ) throws Exception {
@@ -196,6 +200,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal inserido
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal inserirUmElementoDoPessoal(
             String idInterno,
             String matricula,
@@ -301,6 +306,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal actualizado
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal actualizarUmElementoDoPessoal(
             Long id,
             Optional<String> idInterno,
@@ -409,6 +415,7 @@ public class PessoalService implements IPessoalService {
      * @return Registo de formação actualizado
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public RegistoFormacao actualizarFormacaoDeElementoDoPessoal(
             Long elemento_id,
             Long formacao_id,
@@ -451,6 +458,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento eliminado
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal EliminarElementoDoPessoal(Long id) throws Exception {
         ElementoDoPessoal elemento = pessoalRepo.findOne(id);
         elemento.setEliminado(true);
@@ -458,20 +466,25 @@ public class PessoalService implements IPessoalService {
             Um elementoa afecto a um turno. Faz sentido validar esta afectação antes de o sinalizar como "Eliminado"?
          */
 
-//        List<AtribuicaoCategoria> atribuicoesCategoria = atribuicaoCategoria_Repository.findByElementoDoPessoal(elemento);
-//        atribuicoesCategoria.stream()
-//                .forEach(atribuicaoCategoria_Repository::delete);
-//        pessoal_Repository.delete(Long.parseLong(id));
         return pessoalRepo.save(elemento);
 
+    }
+
+    /**
+     * @return Lista global de Categorias
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Categoria> obterCategorias() {
+        return categoriaRepo.findAll();
     }
 
     /**
      * @param numeroMecanografico O numero mecanográfico do elemento a validar
      * @throws ConflictException se o numero mecanográfico já está atribuido
      */
+    @Transactional(readOnly = true)
     private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws ConflictException {
-
         if (pessoalRepo.findAll().stream()
                 .filter(p -> p.getNumMecanografico().equals(numeroMecanografico))
                 .count() > 0)

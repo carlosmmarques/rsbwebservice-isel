@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class UnidadeOperacional extends RsbAbstractEntity{
+public class UnidadeOperacional extends RsbEntidadeAbstracta {
 
     private String designacao;
     private Boolean operacional;

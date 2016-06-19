@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
-import pt.isel.ps.li61n.controller.Representation;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -17,45 +17,45 @@ import java.util.List;
  */
 @Entity
 @Table(name = "pessoal")
-public class ElementoDoPessoal extends RsbAbstractEntity{
+public class ElementoDoPessoal extends RsbEntidadeAbstracta {
 
     @Column(nullable = true)
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String idInterno;
     @Column(nullable = false)
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String Matricula;
     @Column(unique = true, nullable = false)
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String numMecanografico;
     @Column(nullable = false)
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String abreviatura;
     @Column(nullable = false)
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String nome;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataNascimento;
     @Column(nullable = false)
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String telefone1;
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String telefone2;
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String eMail;
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String nif;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Summary.class, Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private TipoDocIdentificacao tipoDocIdentificacao;
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String numDocIdentificacao;
-    @JsonView({Representation.Normal.class, Representation.Verbose.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float factorElegibilidade;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postoFuncional_id")

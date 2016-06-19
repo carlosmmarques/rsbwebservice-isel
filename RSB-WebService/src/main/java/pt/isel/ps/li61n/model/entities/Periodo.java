@@ -14,7 +14,7 @@ import java.sql.Date;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Periodo extends RsbAbstractEntity{
+public class Periodo extends RsbEntidadeAbstracta {
 
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

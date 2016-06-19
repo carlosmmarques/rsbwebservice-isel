@@ -16,7 +16,7 @@ import java.sql.Date;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class AtribuicaoCategoria extends RsbAbstractEntity{
+public class AtribuicaoCategoria extends RsbEntidadeAbstracta {
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")

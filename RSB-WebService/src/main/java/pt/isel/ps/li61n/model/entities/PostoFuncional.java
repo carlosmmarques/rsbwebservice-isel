@@ -10,7 +10,7 @@ import javax.persistence.Entity;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class PostoFuncional extends RsbAbstractEntity{
+public class PostoFuncional extends RsbEntidadeAbstracta {
 
     private String designacao;
     private String descricao;

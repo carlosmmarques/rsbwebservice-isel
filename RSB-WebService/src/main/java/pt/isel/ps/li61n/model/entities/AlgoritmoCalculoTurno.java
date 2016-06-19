@@ -13,7 +13,7 @@ import java.util.Set;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class AlgoritmoCalculoTurno extends RsbAbstractEntity{
+public class AlgoritmoCalculoTurno extends RsbEntidadeAbstracta {
 
     private String designacao;
     private String descricao;

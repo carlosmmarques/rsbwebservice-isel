@@ -10,7 +10,7 @@ import javax.persistence.Entity;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoUnidadeOperacional extends RsbAbstractEntity{
+public class TipoUnidadeOperacional extends RsbEntidadeAbstracta {
 
     private String designacao;
     private String descricao;

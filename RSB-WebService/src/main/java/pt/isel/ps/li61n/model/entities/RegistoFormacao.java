@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
-import pt.isel.ps.li61n.controller.Representation;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +18,7 @@ import java.util.Calendar;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class RegistoFormacao extends RsbAbstractEntity{
+public class RegistoFormacao extends RsbEntidadeAbstracta {
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
@@ -27,10 +27,10 @@ public class RegistoFormacao extends RsbAbstractEntity{
     @JoinColumn(name = "formacao_id")
     private Formacao formacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataAquisicaoFormacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView({Representation.Summary.class, Representation.Normal.class})
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataCaducidadeFormacao;
 
     /**

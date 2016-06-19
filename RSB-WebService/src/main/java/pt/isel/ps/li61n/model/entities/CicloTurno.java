@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * CicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbAbstractEntity, uma vez que a chave é
+ * CicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbEntidadeAbstracta, uma vez que a chave é
  * composta de um Id do Ciclo e um Id do periodo do ciclo (Um Ciclo é composto por vários periodos)
 
  * Created on 03/05/2016.
