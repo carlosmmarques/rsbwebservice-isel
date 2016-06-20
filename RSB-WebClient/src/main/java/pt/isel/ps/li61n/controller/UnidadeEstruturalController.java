@@ -1,20 +1,16 @@
 package pt.isel.ps.li61n.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pt.isel.ps.li61n.model.ILogic;
 import pt.isel.ps.li61n.model.IUnidadeEstruturalLogic;
-import pt.isel.ps.li61n.model.UnidadeEstruturalLogic;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
+import pt.isel.ps.li61n.model.views.CreateUnidadeEstruturalViewModel;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 import static pt.isel.ps.li61n.RsbWebClientApplication.UNIDADES_ESTRUTURAIS_URL;
@@ -30,7 +26,9 @@ import static pt.isel.ps.li61n.RsbWebClientApplication.UNIDADES_ESTRUTURAIS_URL;
 @RequestMapping( UNIDADES_ESTRUTURAIS_URL )
 public class UnidadeEstruturalController {
 
-     // Definição globais para facilitar a utilização nos testes.
+    /**
+     * Definição globais para facilitar a utilização nos testes.
+     */
     public static final String
         VIEW_NAME_ALL = UNIDADES_ESTRUTURAIS_URL + "/all",
         VIEW_NAME_DETAILS = UNIDADES_ESTRUTURAIS_URL + "/details",
@@ -40,7 +38,7 @@ public class UnidadeEstruturalController {
         ,MODEL_UE_ELEMENT = "ue"
     ;
 
-    private IUnidadeEstruturalLogic< UnidadeEstrutural, String > _logic;
+    private IUnidadeEstruturalLogic _logic;
 
     @Autowired
     public UnidadeEstruturalController( IUnidadeEstruturalLogic logic ){
@@ -56,6 +54,7 @@ public class UnidadeEstruturalController {
     @RequestMapping( method = RequestMethod.GET )
     public String index( Model model ){
         Collection< UnidadeEstrutural > ues = _logic.getAll();
+
         model.addAttribute( MODEL_UE_LIST, ues );
         return VIEW_NAME_ALL;
     }
@@ -70,10 +69,24 @@ public class UnidadeEstruturalController {
             value = "/{id}"
             ,method = RequestMethod.GET
     )
-    public  String details( @PathVariable( "id" ) String id, Model model ) {
+    public  String details( @PathVariable( "id" ) Long id, Model model ) {
 
         //obter o elemento com 'id'
         UnidadeEstrutural ue = _logic.getOne( id );
+
+        if( ue != null ){
+            // obter o tipo se a ue não tiver
+            if( ue.getTipo() == null ){
+                ue.setTipo( _logic.getTipo( ue.getTipo_id() ) );
+            }
+
+            // obter as subunidaes ou actualizar
+            // TODO: Criar género de flag a dizer q precisa de ser actualizado pa não estar smp a fazer o pedido
+            ue.setSubunidades( _logic.getSubunidadesEstruturais( ue.getId() ) );
+        }
+        else{
+            return "/error";
+        }
 
         /*if(  ue == null ){
             // 204
@@ -85,14 +98,21 @@ public class UnidadeEstruturalController {
     }
 
     /**
-     *
+     * Método responsável por apresentar a página "Inserir Unidade Estrutural".
      * @return
      */
     @RequestMapping(
             value = "/criar"
             ,method = RequestMethod.GET
     )
-    public String insertView(){
+    public String insertView( Model model ){
+
+        CreateUnidadeEstruturalViewModel viewModel = new CreateUnidadeEstruturalViewModel(
+            _logic.getAllTipos()
+            ,_logic.getAll()
+        );
+
+        model.addAttribute( "viewModel", viewModel );
         return VIEW_NAME_INSERT;
     }
 
@@ -103,7 +123,21 @@ public class UnidadeEstruturalController {
      */
     @RequestMapping( method = RequestMethod.POST )
     public String insert( UnidadeEstrutural ue ){
+
+        // Representação de "Nenhuma"
+        if( ue.getUnidadeEstruturalMae_id() == -1L )
+            ue.setUnidadeEstruturalMae_id( null );
+
         _logic.create( ue );
+        JdbcTemplate test;
         return "redirect:/unidadesEstruturais/" + ue.getId();
+    }
+
+    @RequestMapping(
+            value = "/{id}/instalacoes/criar"
+            ,method = RequestMethod.GET
+    )
+    public String insertInstalacaoView(){
+        return "/unidadesEstruturais/instalacoes/insert";
     }
 }

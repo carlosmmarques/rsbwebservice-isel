@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/pessoal")
 public class PessoalController {
 
-    private IPessoalLogic< PessoalUI, String > _elementosLogic;
+    private IPessoalLogic< String, PessoalUI > _elementosLogic;
 
     @Autowired
     public PessoalController(IPessoalLogic logic ){

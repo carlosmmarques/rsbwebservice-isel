@@ -7,17 +7,51 @@
 </head>
 <body>
     <!-- Detalhes de uma Unidade Estrutural -->
-    <div>
+    <div th:object="${ue}">
         <h1>Detalhes da unidade estrutural</h1>
-        <h2><span th:text="${ue.getDesignacao()}">Nome da Unidade Estrutural</span></h2>
-        <h3><span th:text="${ue.getTipo()}">Tipo da Unidade Estrutural</span></h3>
+        <h2>
+            <span th:text="*{getDesignacao()}">Nome da Unidade Estrutural</span>
+            (<span th:text="*{getTipo().getDesignacao()}">Tipo da Unidade Estrutural</span>)
+        </h2>
 
+        <h3>Unidade Estrutural Mãe:
+            <span th:if=" *{getUnidadeEstruturalMae() != null}">
+                <a href="#"
+                    th:href="@{/unidadesEstruturais/{id}(id=*{getUnidadeEstruturalMae().getId()})}"
+                    th:text="*{getUnidadeEstruturalMae().getDesignacao()}"
+                >
+                Uma unidade estrutural mãe
+                </a>
+            </span>
+            <span th:if=" *{getUnidadeEstruturalMae() == null}">
+                Não tem unidade estrutural mãe.
+            </span>
+        </h3>
+        <h3>Lista das subunidades:</h3>
+        <div th:if="${ ue.getSubunidades() == null || ue.getSubunidades().size() == 0 }">
+            Não tem subunidades.
+        </div>
+        <div th:unless="${ #lists.isEmpty( ue.getSubunidades() ) }">
+            <ul>
+                <li th:each="sub : ${ ue.getSubunidades() }">
+                    <a href="#" th:href="@{/unidadesEstruturais/{id}(id=${sub.getId()})}">
+                        <span th:text="${sub.getDesignacao()}">Nome da Unidade Estrutural</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <!-- Operações -->
+    <!-- OPERAÇÕES -->
     <div>
-
-
+        <h3>Nesta página poderá fazer:</h3>
+        <ul>
+            <li><!-- Adicionar uma instalação -->
+                <a href="/instalacoes/ainsert.html" th:href="@{/unidadesEstruturais/{id}/instalacoes/criar(id=${ue.getId()})}">
+                    Adicionar uma instalação.
+                </a>
+            </li>
+        </ul>
     </div>
     <!-- footer -->
     <div th:replace="templates :: footer"></div>

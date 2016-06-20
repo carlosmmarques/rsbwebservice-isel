@@ -5,12 +5,9 @@ import org.springframework.stereotype.Controller;
 import java.util.Collection;
 import java.util.HashMap;
 
-/**
- * Created by Demo on 24/05/2016.
- */
 
 @Controller
-public class PessoalLogic implements IPessoalLogic< PessoalUI, String > {
+public class PessoalLogic implements IPessoalLogic<  String, PessoalUI > {
 
     private HashMap< String, PessoalUI > _pessoal;
 
@@ -35,7 +32,7 @@ public class PessoalLogic implements IPessoalLogic< PessoalUI, String > {
     }
 
     @Override
-    public PessoalUI create(PessoalUI element) {
+    public String create(PessoalUI element) {
         return null;
     }
 }

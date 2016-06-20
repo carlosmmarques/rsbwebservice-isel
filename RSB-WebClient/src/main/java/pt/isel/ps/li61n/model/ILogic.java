@@ -8,13 +8,13 @@ import java.util.Collection;
  * @author  Carlos Marques - carlosmmarques@gmail.com
  *          Tiago Venturinha - tventurinha@gmail.com
  */
-public interface ILogic< E, T > {
+public interface ILogic< Id, Type > {
 
-    Collection< E > getAll();
+    Collection< Type > getAll();
 
-    E getOne( T id );
+    Type getOne( Id id );
 
-    E create( E element ); // return id??
+    Id create( Type element ); // return id??
 
     //void update ( E e );
 }

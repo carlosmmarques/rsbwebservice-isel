@@ -22,8 +22,12 @@ import static pt.isel.ps.li61n.RsbWebClientApplication.UNIDADES_ESTRUTURAIS_URL;
  */
 public class UnidadeEstruturalControllerTest {
 
+    private String _ue_url_base = UNIDADES_ESTRUTURAIS_URL;
+
     //private MockMvc _mockMvc;
     private IUnidadeEstruturalLogic _mockLogic;
+
+
 
     @Before
     public void prepare(){
@@ -67,7 +71,7 @@ public class UnidadeEstruturalControllerTest {
          //
          // Arrange
          //
-         String idTest = "1";
+         Long idTest = new Long( 1 );
          UnidadeEstrutural elementTest = new UnidadeEstrutural( idTest);
 
          when( _mockLogic.getOne( idTest ) )
