@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
-import pt.isel.ps.li61n.controller.dto.*;
+import pt.isel.ps.li61n.controller.dto.CategoriaDTO;
+import pt.isel.ps.li61n.controller.dto.PessoalDTO;
+import pt.isel.ps.li61n.controller.dto.RegistoFormacaoDTO;
+import pt.isel.ps.li61n.controller.dto.ResponsabilidadeOperacionalDTO;
+import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.RegistoFormacao;
 import pt.isel.ps.li61n.model.services.IPessoalService;
@@ -76,7 +80,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     .stream().forEach(elementoDoPessoal -> pessoalDTOs.add(
                     new PessoalDTO(elementoDoPessoal, request, ModeloDeRepresentacao.Sumario.class)));
             if (pessoalDTOs.size() == 0)
-                throw new NotFoundException("Não existem elementos para os critérios introduzidos!");
+                throw new NaoEncontradoException("Não existem elementos para os critérios introduzidos!");
             return pessoalDTOs;
         };
     }
@@ -432,6 +436,27 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             pessoalService.obterCategorias().stream()
                     .forEach(categoria -> categoriasDTO.add(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Sumario.class)));
             return new ResponseEntity<>(categoriasDTO, HttpStatus.OK);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador do elemento.
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/categoria/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterCategoria(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            return new ResponseEntity<>(new CategoriaDTO(pessoalService.obterCategoria(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
         };
     }
 

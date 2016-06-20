@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pt.isel.ps.li61n.controller.pessoal.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +25,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
-    @ExceptionHandler(value = {ConflictException.class})
+    @ExceptionHandler(value = {ConflictoException.class})
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request){
         String completeURL = request.getRequestURL().toString();
@@ -45,7 +44,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {
-            NotFoundException.class,
+            NaoEncontradoException.class,
     })
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleResourceNotFoundException(RuntimeException exc, HttpServletRequest request){
@@ -64,7 +63,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {
-            DeletedResourceException.class,
+            RecursoEliminadoException.class,
     })
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleDeletedResourceException(RuntimeException exc, HttpServletRequest request){

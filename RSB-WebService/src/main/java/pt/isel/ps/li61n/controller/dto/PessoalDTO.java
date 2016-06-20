@@ -48,7 +48,7 @@ public class PessoalDTO extends AbstractDTO {
         this.uri_turnoPorOmissao = String.format("%s/turno/%s",
                 this.baseUrl,
                 elemento.getTurno().getId());
-        this.uri_categoria = String.format("%s/categoria/%s",
+        this.uri_categoria = String.format("%s/pessoal/categoria/%s",
                 this.baseUrl,
                 elemento.getAtribuicõesDeCategoria().stream()
                         .sorted((o1, o2) -> o2.getDataAtribuicaoCategoria().compareTo(o1.getDataAtribuicaoCategoria()))

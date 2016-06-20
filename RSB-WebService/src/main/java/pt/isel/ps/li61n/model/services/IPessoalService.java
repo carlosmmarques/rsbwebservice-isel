@@ -196,4 +196,11 @@ public interface IPessoalService {
      * @return Lista global de Categorias
      */
     List<Categoria> obterCategorias();
+
+    /**
+     *
+     * @param id Identificador do elemento
+     * @return Categoria do elemento.
+     */
+    Categoria obterCategoria(Long id);
 }

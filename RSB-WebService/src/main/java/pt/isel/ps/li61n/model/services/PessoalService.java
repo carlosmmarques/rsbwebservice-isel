@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import pt.isel.ps.li61n.controller.pessoal.ConflictException;
-import pt.isel.ps.li61n.controller.pessoal.DeletedResourceException;
-import pt.isel.ps.li61n.controller.pessoal.NotFoundException;
+import pt.isel.ps.li61n.controller.error.ConflictoException;
+import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
+import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.*;
 
@@ -104,9 +104,9 @@ public class PessoalService implements IPessoalService {
     ) throws Exception {
         final ElementoDoPessoal elemento = pessoalRepo.findOne(id);
         if (elemento == null)
-            throw new NotFoundException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
         if (elemento.getEliminado())
-            throw new DeletedResourceException(String.format("O elemento solicitado foi eliminado: %s", id));
+            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
         return elemento;
     }
 
@@ -121,9 +121,9 @@ public class PessoalService implements IPessoalService {
     ) throws Exception {
         final ElementoDoPessoal elemento = pessoalRepo.findOne(id);
         if (elemento == null)
-            throw new NotFoundException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
         if (elemento.getEliminado())
-            throw new DeletedResourceException(String.format("O elemento solicitado foi eliminado: %s", id));
+            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
         return elemento.getRegistosFormacao();
     }
 
@@ -140,9 +140,9 @@ public class PessoalService implements IPessoalService {
     ) throws Exception {
         final ElementoDoPessoal elemento = pessoalRepo.findOne(elemento_id);
         if (elemento == null)
-            throw new NotFoundException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", elemento_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", elemento_id));
         if (elemento.getEliminado())
-            throw new DeletedResourceException(String.format("O elemento solicitado foi eliminado: %s", elemento_id));
+            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", elemento_id));
         try {
             final RegistoFormacao registoFormacao = elemento.getRegistosFormacao().stream()
                     .filter(regFormacao -> regFormacao.getId().equals(registoFormacao_id))
@@ -150,7 +150,7 @@ public class PessoalService implements IPessoalService {
                     .findAny().get();
             return registoFormacao;
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não existe nenhum registo de formação com o id %s para o elemento %s", registoFormacao_id, elemento_id));
+            throw new NaoEncontradoException(String.format("Não existe nenhum registo de formação com o id %s para o elemento %s", registoFormacao_id, elemento_id));
         }
     }
 
@@ -247,27 +247,27 @@ public class PessoalService implements IPessoalService {
         try {
             elemento.setPostoFuncional(postoFuncionalRepo.findOne(postofuncional_id));
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter o Posto Funcional com id: %s", postofuncional_id.toString()));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Posto Funcional com id: %s", postofuncional_id.toString()));
         }
         try {
             elemento.setTipoPresenca(tipoPresencaRepo.findOne(tipopresenca_id));
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter o Tipo de Presença com id: %s", tipopresenca_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Tipo de Presença com id: %s", tipopresenca_id));
         }
         try {
             elemento.setTurno(turnoRepo.findOne(turno_id));
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter o Turno com id: %s", turno_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Turno com id: %s", turno_id));
         }
         try {
             elemento.setInstalacao(instalacaoRepo.findOne(instalacao_id));
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter a Instalação com id: %s", instalacao_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter a Instalação com id: %s", instalacao_id));
         }
         try {
             atribuicaoDeCategoria.setCategoria(categoriaRepo.findOne(categoria_id));
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
         }
         elemento = pessoalRepo.saveAndFlush(elemento);
         atribuicaoDeCategoria.setElementoDoPessoal(elemento);
@@ -334,9 +334,9 @@ public class PessoalService implements IPessoalService {
         ElementoDoPessoal elemento = pessoalRepo.findOne(id);
 
         if (elemento == null)
-            throw new NotFoundException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
         if (elemento.getEliminado())
-            throw new DeletedResourceException(String.format("O elemento solicitado foi eliminado: %s", id));
+            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
 
         idInterno.ifPresent(elemento::setIdInterno);
         matricula.ifPresent(elemento::setMatricula);
@@ -356,28 +356,28 @@ public class PessoalService implements IPessoalService {
             try {
                 elemento.setPostoFuncional(postoFuncionalRepo.findOne(pf));
             } catch (Exception e) {
-                throw new NotFoundException(String.format("Não é possível obter o Posto Funcional com id: %s", pf.toString()));
+                throw new NaoEncontradoException(String.format("Não é possível obter o Posto Funcional com id: %s", pf.toString()));
             }
         });
         tipopresenca_id.ifPresent(tp -> {
             try {
                 elemento.setTipoPresenca(tipoPresencaRepo.findOne(tp));
             } catch (Exception e) {
-                throw new NotFoundException(String.format("Não é possível obter o Tipo de Presença com id: %s", tp.toString()));
+                throw new NaoEncontradoException(String.format("Não é possível obter o Tipo de Presença com id: %s", tp.toString()));
             }
         });
         turno_id.ifPresent(t -> {
             try {
                 elemento.setTurno(turnoRepo.findOne(t));
             } catch (Exception e) {
-                throw new NotFoundException(String.format("Não é possível obter o Turno com id: %s", t.toString()));
+                throw new NaoEncontradoException(String.format("Não é possível obter o Turno com id: %s", t.toString()));
             }
         });
         instalacao_id.ifPresent(i -> {
             try {
                 elemento.setInstalacao(instalacaoRepo.findOne(i));
             } catch (Exception e) {
-                throw new NotFoundException(String.format("Não é possível obter a Instalação com id: %s", i.toString()));
+                throw new NaoEncontradoException(String.format("Não é possível obter a Instalação com id: %s", i.toString()));
             }
         });
         categoria_id.ifPresent(cat_id -> {
@@ -395,7 +395,7 @@ public class PessoalService implements IPessoalService {
                     atribuicaoCategoria.setCategoria(categoriaRepo.findOne(cat_id));
                     atribuicaoCategoria.setElementoDoPessoal(elemento);
                 } catch (Exception e) {
-                    throw new NotFoundException(String.format("Não é possível obter a Categoria com id: %s", cat_id.toString()));
+                    throw new NaoEncontradoException(String.format("Não é possível obter a Categoria com id: %s", cat_id.toString()));
                 }
             }
             dataatribuicaocategoria.ifPresent(atribuicaoCategoria::setDataAtribuicaoCategoria);
@@ -432,7 +432,7 @@ public class PessoalService implements IPessoalService {
                     .filter(r -> r.getFormacao().getId().equals(formacao_id))
                     .findFirst();
         } catch (Exception e) {
-            throw new NotFoundException(String.format("Não é possível obter o registo da formação com id %s para o elemento %s", formacao_id, elemento_id));
+            throw new NaoEncontradoException(String.format("Não é possível obter o registo da formação com id %s para o elemento %s", formacao_id, elemento_id));
         }
         RegistoFormacao registoFormacao =
                 registoFormacaoOpt.isPresent() ?
@@ -444,7 +444,7 @@ public class PessoalService implements IPessoalService {
                 registoFormacao.setElementoDoPessoal(elemento);
                 registoFormacao.setFormacao(formacaoRepo.findOne(formacao_id));
             } catch (Exception e) {
-                throw new NotFoundException(String.format("Não é possível obter o registo de Formacao com id: %s", formacao_id));
+                throw new NaoEncontradoException(String.format("Não é possível obter o registo de Formacao com id: %s", formacao_id));
             }
         }
         registoFormacao.setDataAquisicaoFormacao(dataFormacao);
@@ -479,16 +479,26 @@ public class PessoalService implements IPessoalService {
         return categoriaRepo.findAll();
     }
 
+
+    /**
+     * @param id Identificador do elemento
+     * @return Categoria do elemento.
+     */
+    @Override
+    public Categoria obterCategoria(Long id) {
+        return categoriaRepo.findOne(id);
+    }
+
     /**
      * @param numeroMecanografico O numero mecanográfico do elemento a validar
-     * @throws ConflictException se o numero mecanográfico já está atribuido
+     * @throws ConflictoException se o numero mecanográfico já está atribuido
      */
     @Transactional(readOnly = true)
-    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws ConflictException {
+    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws ConflictoException {
         if (pessoalRepo.findAll().stream()
                 .filter(p -> p.getNumMecanografico().equals(numeroMecanografico))
                 .count() > 0)
-            throw new ConflictException(String.format("Já existe um elemento com o numero mecanográfico %s", numeroMecanografico));
+            throw new ConflictoException(String.format("Já existe um elemento com o numero mecanográfico %s", numeroMecanografico));
     }
 
 }
