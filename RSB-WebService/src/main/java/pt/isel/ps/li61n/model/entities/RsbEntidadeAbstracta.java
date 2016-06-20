@@ -22,7 +22,7 @@ public abstract class RsbEntidadeAbstracta {
     private Long id;
     @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
     @JsonView(ModeloDeRepresentacao.Verboso.class)
-    private Boolean eliminado;
+    private Boolean eliminado = false;
 
     /**
      * @return Estado da Entidade (Activo / Inactivo)

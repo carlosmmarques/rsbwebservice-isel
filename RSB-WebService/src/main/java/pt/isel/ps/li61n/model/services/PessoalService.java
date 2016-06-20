@@ -288,12 +288,10 @@ public class PessoalService implements IPessoalService {
         } catch (Exception e) {
             throw new NaoEncontradoException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
         }
-        elemento.setEliminado(false);
         elemento = pessoalRepo.saveAndFlush(elemento);
         atribuicaoDeCategoria.setElementoDoPessoal(elemento);
         atribuicaoDeCategoria.setDataAtribuicaoCategoria(dataatribuicaocategoria);
         atribuicaoDeCategoria.setClassificacaoFormacao(classificacaoformacao);
-        atribuicaoDeCategoria.setEliminado(false);
         atribuicaoDeCategoria = atribuicaoCategoriaRepo.saveAndFlush(atribuicaoDeCategoria);
         List<AtribuicaoCategoria> atribuicoesCategoria = new ArrayList<AtribuicaoCategoria>();
         atribuicoesCategoria.add(atribuicaoDeCategoria);
@@ -547,7 +545,6 @@ public class PessoalService implements IPessoalService {
         categoria.setAbreviatura(abreviatura);
         categoria.setDescrição(descricao);
         categoria.setNivelHierarquico(nivelHierarquico);
-        categoria.setEliminado(false);
 
         return categoriaRepo.save(categoria);
     }
@@ -635,7 +632,6 @@ public class PessoalService implements IPessoalService {
         PostoFuncional postoFuncional = new PostoFuncional();
         postoFuncional.setDesignacao(designacao);
         descricao.ifPresent(postoFuncional::setDescricao);
-        postoFuncional.setEliminado(false);
         return postoFuncionalRepo.save(postoFuncional);
     }
 
@@ -708,7 +704,6 @@ public class PessoalService implements IPessoalService {
         formacao.setValidade(validade);
         formacao.setDesignacao(designacao);
         descricao.ifPresent(formacao::setDescricao);
-        formacao.setEliminado(false);
         return formacaoRepo.save(formacao);
     }
 
