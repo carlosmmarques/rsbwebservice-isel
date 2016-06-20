@@ -51,7 +51,6 @@ public class ElementoDoPessoal extends RsbEntidadeAbstracta {
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataIngresso;
     @Enumerated(EnumType.STRING)
-    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private TipoDocIdentificacao tipoDocIdentificacao;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String numDocIdentificacao;

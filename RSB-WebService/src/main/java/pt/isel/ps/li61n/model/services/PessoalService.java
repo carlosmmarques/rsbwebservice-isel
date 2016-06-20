@@ -2,11 +2,10 @@ package pt.isel.ps.li61n.model.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
-import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.*;
 
@@ -28,23 +27,36 @@ public class PessoalService implements IPessoalService {
      * Instâncias dos repositórios
      */
     @Autowired
-    IPessoalRepositorio pessoalRepo;
+    private IPessoalRepositorio pessoalRepo;
     @Autowired
-    IPostoFuncionalRepositorio postoFuncionalRepo;
+    private IPostoFuncionalRepositorio postoFuncionalRepo;
     @Autowired
-    ITipoPresencaRepositorio tipoPresencaRepo;
+    private ITipoPresencaRepositorio tipoPresencaRepo;
     @Autowired
-    ICategoriaRepositorio categoriaRepo;
+    private ICategoriaRepositorio categoriaRepo;
     @Autowired
-    IInstalacaoRepositorio instalacaoRepo;
+    private IInstalacaoRepositorio instalacaoRepo;
     @Autowired
-    IAtribuicaoCategoriaRepositorio atribuicaoCategoriaRepo;
+    private IAtribuicaoCategoriaRepositorio atribuicaoCategoriaRepo;
     @Autowired
-    ITurnoRepositorio turnoRepo;
+    private ITurnoRepositorio turnoRepo;
     @Autowired
-    IRegistoFormacaoRepositorio registoFormacaoRepo;
+    private IRegistoFormacaoRepositorio registoFormacaoRepo;
     @Autowired
-    IFormacaoRepositorio formacaoRepo;
+    private IFormacaoRepositorio formacaoRepo;
+
+
+    /**
+     * @param numeroMecanografico O numero mecanográfico do elemento a validar
+     * @throws ConflictoException se o numero mecanográfico já está atribuido
+     */
+    @Transactional(readOnly = true)
+    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws ConflictoException {
+        if (pessoalRepo.findAll().stream()
+                .filter(p -> p.getNumMecanografico().equals(numeroMecanografico))
+                .count() > 0)
+            throw new ConflictoException(String.format("Já existe um elemento com o numero mecanográfico %s", numeroMecanografico));
+    }
 
 
     /**
@@ -66,7 +78,7 @@ public class PessoalService implements IPessoalService {
             Optional<Long> formacao_id,
             Optional<Long> responsabilidadeoperacional_id
     ) throws Exception {
-        return pessoalRepo.findAll().stream()
+        List pessoas = pessoalRepo.findAll().stream()
                 .filter(pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
                 .filter(pessoa -> turno_id.map(v -> v.equals(pessoa.getTurno().getId())).orElse(true))
                 .filter(pessoa -> instalacao_id.map(v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))
@@ -89,9 +101,11 @@ public class PessoalService implements IPessoalService {
                                         f -> f.getFormacao().getResponsabilidadesOperacionais().stream().anyMatch(
                                                 r -> r.getId().equals(v)))
                         ).orElse(true))
-//                .filter(pessoa -> !pessoa.getEliminado())
+                .filter(pessoa -> pessoa.getEliminado() != null && !pessoa.getEliminado())
                 .collect(Collectors.toList());
+        return pessoas;
     }
+
 
     /**
      * @param id Identificador do Elemento
@@ -99,16 +113,17 @@ public class PessoalService implements IPessoalService {
      */
     @Override
     @Transactional(readOnly = true)
-    public ElementoDoPessoal obterUmElementoDoPessoal(
+    public ElementoDoPessoal obterElementoDoPessoal(
             Long id
     ) throws Exception {
-        final ElementoDoPessoal elemento = pessoalRepo.findOne(id);
+        ElementoDoPessoal elemento = pessoalRepo.findOne(id);
         if (elemento == null)
             throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
         if (elemento.getEliminado())
             throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
         return elemento;
     }
+
 
     /**
      * @param id Identificador do Elemento
@@ -119,13 +134,13 @@ public class PessoalService implements IPessoalService {
     public Collection<RegistoFormacao> obterRegistosDeFormacaoDeUmElemento(
             Long id
     ) throws Exception {
-        final ElementoDoPessoal elemento = pessoalRepo.findOne(id);
-        if (elemento == null)
-            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
-        if (elemento.getEliminado())
-            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
+
+        ElementoDoPessoal elemento = obterElementoDoPessoal(id);
+
         return elemento.getRegistosFormacao();
+
     }
+
 
     /**
      * @param elemento_id        Identificador do elemento
@@ -134,15 +149,13 @@ public class PessoalService implements IPessoalService {
      */
     @Override
     @Transactional(readOnly = true)
-    public RegistoFormacao obterUmRegistoDeFormacaoDeUmElemento(
+    public RegistoFormacao obterRegistoDeFormacaoDeUmElemento(
             Long elemento_id,
             Long registoFormacao_id
     ) throws Exception {
-        final ElementoDoPessoal elemento = pessoalRepo.findOne(elemento_id);
-        if (elemento == null)
-            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", elemento_id));
-        if (elemento.getEliminado())
-            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", elemento_id));
+
+        ElementoDoPessoal elemento = obterElementoDoPessoal(elemento_id);
+
         try {
             final RegistoFormacao registoFormacao = elemento.getRegistosFormacao().stream()
                     .filter(regFormacao -> regFormacao.getId().equals(registoFormacao_id))
@@ -154,6 +167,7 @@ public class PessoalService implements IPessoalService {
         }
     }
 
+
     /**
      * @param id Identificador do elemento
      * @return Colecção de Responsabilidades Operacionais a que o elemento está apto.
@@ -163,8 +177,10 @@ public class PessoalService implements IPessoalService {
     public Collection<ResponsabilidadeOperacional> obterResponsabilidadesOperacionaisDeUmElemento(
             Long id
     ) throws Exception {
+
         final Set<ResponsabilidadeOperacional> responsabilidadesOperacionais = new LinkedHashSet<>();
-        final ElementoDoPessoal elemento = pessoalRepo.findOne(id);
+        ElementoDoPessoal elemento = obterElementoDoPessoal(id);
+
         elemento.getRegistosFormacao().stream()
                 .filter(registoFormacao -> //Obter apenas registos de formação que não estão caducados
                         registoFormacao.getDataCaducidadeFormacao().getTime() > Calendar.getInstance().getTimeInMillis())
@@ -174,6 +190,7 @@ public class PessoalService implements IPessoalService {
                 );
         return responsabilidadesOperacionais;
     }
+
 
     /**
      * @param idInterno               Identificador interno da Unidade Estrutural
@@ -200,8 +217,10 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal inserido
      */
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
-    public ElementoDoPessoal inserirUmElementoDoPessoal(
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public ElementoDoPessoal inserirElementoDoPessoal(
             String idInterno,
             String matricula,
             String nummecanografico,
@@ -269,10 +288,12 @@ public class PessoalService implements IPessoalService {
         } catch (Exception e) {
             throw new NaoEncontradoException(String.format("Não é possível obter a Categoria com id: %s", categoria_id));
         }
+        elemento.setEliminado(false);
         elemento = pessoalRepo.saveAndFlush(elemento);
         atribuicaoDeCategoria.setElementoDoPessoal(elemento);
         atribuicaoDeCategoria.setDataAtribuicaoCategoria(dataatribuicaocategoria);
         atribuicaoDeCategoria.setClassificacaoFormacao(classificacaoformacao);
+        atribuicaoDeCategoria.setEliminado(false);
         atribuicaoDeCategoria = atribuicaoCategoriaRepo.saveAndFlush(atribuicaoDeCategoria);
         List<AtribuicaoCategoria> atribuicoesCategoria = new ArrayList<AtribuicaoCategoria>();
         atribuicoesCategoria.add(atribuicaoDeCategoria);
@@ -280,6 +301,7 @@ public class PessoalService implements IPessoalService {
 
         return elemento;
     }
+
 
     /**
      * @param id                      Identificador do elemento.
@@ -306,8 +328,10 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal actualizado
      */
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
-    public ElementoDoPessoal actualizarUmElementoDoPessoal(
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public ElementoDoPessoal actualizarElementoDoPessoal(
             Long id,
             Optional<String> idInterno,
             Optional<String> matricula,
@@ -331,12 +355,7 @@ public class PessoalService implements IPessoalService {
             Optional<Float> factorelegibilidade
     ) throws Exception {
 
-        ElementoDoPessoal elemento = pessoalRepo.findOne(id);
-
-        if (elemento == null)
-            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
-        if (elemento.getEliminado())
-            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
+        ElementoDoPessoal elemento = obterElementoDoPessoal(id);
 
         idInterno.ifPresent(elemento::setIdInterno);
         matricula.ifPresent(elemento::setMatricula);
@@ -407,6 +426,7 @@ public class PessoalService implements IPessoalService {
 
     }
 
+
     /**
      * @param elemento_id    Identificador do elemento.
      * @param formacao_id    Identificador da Formação
@@ -415,7 +435,9 @@ public class PessoalService implements IPessoalService {
      * @return Registo de formação actualizado
      */
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
     public RegistoFormacao actualizarFormacaoDeElementoDoPessoal(
             Long elemento_id,
             Long formacao_id,
@@ -423,7 +445,7 @@ public class PessoalService implements IPessoalService {
             Optional<Date> dataCaducidade,
             boolean[] novoRegisto
     ) throws Exception {
-        ElementoDoPessoal elemento = pessoalRepo.findOne(elemento_id);
+        ElementoDoPessoal elemento = obterElementoDoPessoal(elemento_id);
         List<RegistoFormacao> registosFormacao = registoFormacaoRepo.findByElementoDoPessoal(elemento);
         Optional<RegistoFormacao> registoFormacaoOpt;
         try {
@@ -453,22 +475,24 @@ public class PessoalService implements IPessoalService {
         return registoFormacaoRepo.save(registoFormacao);
     }
 
+
     /**
      * @param id Identificador do elemento.
      * @return Elemento eliminado
      */
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
     public ElementoDoPessoal EliminarElementoDoPessoal(Long id) throws Exception {
-        ElementoDoPessoal elemento = pessoalRepo.findOne(id);
+        ElementoDoPessoal elemento = obterElementoDoPessoal(id);
         elemento.setEliminado(true);
         /* TODO Validar a necessidade de lançar excepção quando um elmento é eliminado. Exemplo:
             Um elementoa afecto a um turno. Faz sentido validar esta afectação antes de o sinalizar como "Eliminado"?
          */
-
         return pessoalRepo.save(elemento);
-
     }
+
 
     /**
      * @return Lista global de Categorias
@@ -476,7 +500,9 @@ public class PessoalService implements IPessoalService {
     @Override
     @Transactional(readOnly = true)
     public List<Categoria> obterCategorias() {
-        return categoriaRepo.findAll();
+        return categoriaRepo.findAll().stream()
+                .filter(categoria -> categoria.getEliminado() != null && !categoria.getEliminado())
+                .collect(Collectors.toList());
     }
 
 
@@ -485,20 +511,237 @@ public class PessoalService implements IPessoalService {
      * @return Categoria do elemento.
      */
     @Override
-    public Categoria obterCategoria(Long id) {
-        return categoriaRepo.findOne(id);
+    @Transactional(readOnly = true)
+    public Categoria obterCategoria(Long id) throws Exception {
+        Categoria categoria = categoriaRepo.findOne(id);
+        if (categoria == null)
+            throw new NaoEncontradoException(String.format("Não é possível obter o Elemento do Pessoal com id: %s", id));
+        if (categoria.getEliminado())
+            throw new RecursoEliminadoException(String.format("O elemento solicitado foi eliminado: %s", id));
+        return categoria;
+
+    }
+
+
+    /**
+     * @param quadro           Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura      Abreviatura da categoria
+     * @param descricao        Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @return Categoria inserida
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public Categoria inserirCategoria(
+            String quadro,
+            String abreviatura,
+            String descricao,
+            Integer nivelHierarquico
+    ) throws Exception {
+
+        Categoria categoria = new Categoria();
+
+        categoria.setQuadro(Enum.valueOf(Categoria.Quadro.class, quadro));
+        categoria.setAbreviatura(abreviatura);
+        categoria.setDescrição(descricao);
+        categoria.setNivelHierarquico(nivelHierarquico);
+        categoria.setEliminado(false);
+
+        return categoriaRepo.save(categoria);
+    }
+
+
+    /**
+     * @param id               Identificador da categoria
+     * @param quadro           Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura      Abreviatura da categoria
+     * @param descricao        Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @return Categoria inserida
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public Categoria actualizarCategoria(
+            Long id,
+            Optional<String> quadro,
+            Optional<String> abreviatura,
+            Optional<String> descricao,
+            Optional<Integer> nivelHierarquico
+    ) throws Exception {
+        Categoria categoria = categoriaRepo.findOne(id);
+        quadro.ifPresent(q -> categoria.setQuadro(Enum.valueOf(Categoria.Quadro.class, q)));
+        abreviatura.ifPresent(categoria::setAbreviatura);
+        descricao.ifPresent(categoria::setDescrição);
+        nivelHierarquico.ifPresent(categoria::setNivelHierarquico);
+        return categoria;
+    }
+
+
+    /**
+     * @param id Identificador da Categoria
+     * @return Categoria eliminada
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public Categoria eliminarCategoria(Long id) throws Exception {
+        Categoria categoria = obterCategoria(id);
+        categoria.setEliminado(true);
+        return categoria;
+    }
+
+
+    /**
+     * @return Colecção de Postos Funcionais
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<PostoFuncional> obterPostosFuncionais() throws Exception {
+        return postoFuncionalRepo.findAll().stream()
+                .filter(postoFuncional -> postoFuncional.getEliminado() != null && !postoFuncional.getEliminado())
+                .collect(Collectors.toList());
     }
 
     /**
-     * @param numeroMecanografico O numero mecanográfico do elemento a validar
-     * @throws ConflictoException se o numero mecanográfico já está atribuido
+     * @param id Identificador do Posto Funcional
+     * @return Posto funcional
      */
+    @Override
     @Transactional(readOnly = true)
-    private void validarExistenciaDeNumeroMecanografico(String numeroMecanografico) throws ConflictoException {
-        if (pessoalRepo.findAll().stream()
-                .filter(p -> p.getNumMecanografico().equals(numeroMecanografico))
-                .count() > 0)
-            throw new ConflictoException(String.format("Já existe um elemento com o numero mecanográfico %s", numeroMecanografico));
+    public PostoFuncional obterPostoFuncional(Long id) throws Exception {
+        PostoFuncional postoFuncional = postoFuncionalRepo.findOne(id);
+        if (postoFuncional == null)
+            throw new NaoEncontradoException(String.format("Não é possível obter o Posto Funcional com id: %s", id));
+        if (postoFuncional.getEliminado())
+            throw new RecursoEliminadoException(String.format("O Posto Funcional solicitado foi eliminado: %s", id));
+        return postoFuncional;
     }
 
+    /**
+     * @param designacao Designação do Posto Funcional
+     * @param descricao  Descrição do Posto Funcional
+     * @return Posto Funcional inserido
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public PostoFuncional inserirPostoFuncional(String designacao, Optional<String> descricao) throws Exception {
+        PostoFuncional postoFuncional = new PostoFuncional();
+        postoFuncional.setDesignacao(designacao);
+        descricao.ifPresent(postoFuncional::setDescricao);
+        postoFuncional.setEliminado(false);
+        return postoFuncionalRepo.save(postoFuncional);
+    }
+
+    /**
+     * @param id         Identificador do Posto Funcional
+     * @param designacao Designação do Posto Funcional
+     * @param descricao  Descrição do Posto Funcional
+     * @return Posto Funcional actualizado
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public PostoFuncional actualizarPostoFuncional(Long id, Optional<String> designacao, Optional<String> descricao) throws Exception {
+        PostoFuncional postoFuncional = obterPostoFuncional(id);
+        designacao.ifPresent(postoFuncional::setDesignacao);
+        descricao.ifPresent(postoFuncional::setDescricao);
+        return postoFuncionalRepo.save(postoFuncional);
+    }
+
+    /**
+     * @param id Identificador do Posto Funcional
+     * @return Posto Funcional eliminado
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public PostoFuncional eliminarPostoFuncional(Long id) throws Exception {
+        PostoFuncional postoFuncional = obterPostoFuncional(id);
+        postoFuncional.setEliminado(true);
+        return postoFuncionalRepo.save(postoFuncional);
+    }
+
+    /**
+     * @return Colecção de Formações
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Formacao> obterFormacoes() throws Exception {
+        return formacaoRepo.findAll().stream()
+                .filter(formacao -> formacao.getEliminado() != null && !formacao.getEliminado())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param id Identificador do Formação
+     * @return Formação
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Formacao obterFormacao(Long id) throws Exception {
+        Formacao formacao = formacaoRepo.findOne(id);
+        if (formacao == null)
+            throw new NaoEncontradoException(String.format("Não é possível obter o Posto Funcional com id: %s", id));
+        if (formacao.getEliminado())
+            throw new RecursoEliminadoException(String.format("O Posto Funcional solicitado foi eliminado: %s", id));
+        return formacao;
+    }
+
+    /**
+     * @param validade   Validade (Caducidade) da Formação
+     * @param designacao Designação da Formação
+     * @param descricao  Descrição da Formação
+     * @return Formação inserida
+     */
+    @Override
+    public Formacao inserirFormacao(Float validade, String designacao, Optional<String> descricao) throws Exception {
+        Formacao formacao = new Formacao();
+        formacao.setValidade(validade);
+        formacao.setDesignacao(designacao);
+        descricao.ifPresent(formacao::setDescricao);
+        formacao.setEliminado(false);
+        return formacaoRepo.save(formacao);
+    }
+
+    /**
+     * @param id         Identificador do Formação
+     * @param validade   Validade (Caducidade) da Formação
+     * @param designacao Designação da Formação
+     * @param descricao  Descrição da Formação
+     * @return Formacao actualizada
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public Formacao actualizarFormacao(Long id, Optional<Float> validade, Optional<String> designacao, Optional<String> descricao) throws Exception {
+        Formacao formacao = obterFormacao(id);
+        validade.ifPresent(formacao::setValidade);
+        designacao.ifPresent(formacao::setDesignacao);
+        descricao.ifPresent(formacao::setDescricao);
+        return formacaoRepo.save(formacao);
+    }
+
+    /**
+     * @param id Identificador do Formação
+     * @return Formacao eliminada
+     */
+    @Override
+    @Transactional(readOnly = false
+            //, isolation = Isolation.SERIALIZABLE
+    )
+    public Formacao eliminarFormacao(Long id) throws Exception {
+        Formacao formacao = obterFormacao(id);
+        formacao.setEliminado(true);
+        return formacaoRepo.save(formacao);
+    }
 }

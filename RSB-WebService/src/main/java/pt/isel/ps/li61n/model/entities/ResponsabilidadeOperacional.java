@@ -27,9 +27,9 @@ public class ResponsabilidadeOperacional extends RsbEntidadeAbstracta {
     private List<Formacao> formacoes;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String sigla;
-    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Boolean dependeFactorElegibilidade;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;

@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -21,8 +24,11 @@ public class CicloTurno{
     @JoinColumn(name = "algoritmoCalculoTurno_id")
     private AlgoritmoCalculoTurno algoritmoCalculoTurno;
     @Id
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Integer ordemPeriodoCiclo;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Boolean periodoDescanso;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float numHoras;
 
     /**

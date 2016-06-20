@@ -9,13 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
-import pt.isel.ps.li61n.controller.dto.CategoriaDTO;
-import pt.isel.ps.li61n.controller.dto.PessoalDTO;
-import pt.isel.ps.li61n.controller.dto.RegistoFormacaoDTO;
-import pt.isel.ps.li61n.controller.dto.ResponsabilidadeOperacionalDTO;
+import pt.isel.ps.li61n.controller.dto.*;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
-import pt.isel.ps.li61n.model.entities.RegistoFormacao;
+import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.services.IPessoalService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +53,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<List<PessoalDTO>> obterElementosDoPessoal(
+    public Callable<?> obterElementosDoPessoal(
             @RequestParam(value = "postofuncional_id", required = true) Optional<Long> postofuncional_id,
             @RequestParam(value = "turno_id", required = true) Optional<Long> turno_id,
             @RequestParam(value = "instalacao_id", required = true) Optional<Long> instalacao_id,
@@ -81,7 +77,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     new PessoalDTO(elementoDoPessoal, request, ModeloDeRepresentacao.Sumario.class)));
             if (pessoalDTOs.size() == 0)
                 throw new NaoEncontradoException("Não existem elementos para os critérios introduzidos!");
-            return pessoalDTOs;
+            return new ResponseEntity<>(pessoalDTOs, HttpStatus.OK);
         };
     }
 
@@ -93,16 +89,18 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<PessoalDTO> obterUmElementoDoPessoal(
+    public Callable<?> obterUmElementoDoPessoal(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            return new PessoalDTO(pessoalService.obterUmElementoDoPessoal(id)
-                    , request
-                    , ModeloDeRepresentacao.Normal.class);
+            PessoalDTO pessoalDTO = new PessoalDTO(
+                    pessoalService.obterElementoDoPessoal(id),
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(pessoalDTO, HttpStatus.OK);
         };
     }
 
@@ -130,7 +128,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                                             ModeloDeRepresentacao.Sumario.class)
                             )
             );
-            return registoFormacaoDTOs;
+            return new ResponseEntity<>(registoFormacaoDTOs, HttpStatus.OK);
         };
     }
 
@@ -152,10 +150,11 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            return new RegistoFormacaoDTO(
-                    pessoalService.obterUmRegistoDeFormacaoDeUmElemento(elemento_id, registoFormacao_id),
+            RegistoFormacaoDTO registoFormacaoDTO = new RegistoFormacaoDTO(
+                    pessoalService.obterRegistoDeFormacaoDeUmElemento(elemento_id, registoFormacao_id),
                     request,
                     ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(registoFormacao_id, HttpStatus.OK);
         };
     }
 
@@ -183,7 +182,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                                                 , ModeloDeRepresentacao.Sumario.class));
                             }
                     );
-            return responsabilidadesOperacionais;
+            return new ResponseEntity<>(responsabilidadesOperacionais, HttpStatus.OK);
         };
     }
 
@@ -215,7 +214,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<ResponseEntity<?>> inserirUmElementoDoPessoal(
+    public Callable<?> inserirUmElementoDoPessoal(
             @RequestParam(value = "idInterno", required = true) String idInterno,
             @RequestParam(value = "matricula", required = true) String matricula,
             @RequestParam(value = "nummecanografico", required = true) String nummecanografico,
@@ -243,7 +242,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             ElementoDoPessoal elemento = pessoalService
-                    .inserirUmElementoDoPessoal(
+                    .inserirElementoDoPessoal(
                             idInterno,
                             matricula,
                             nummecanografico,
@@ -300,7 +299,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<ResponseEntity<?>> actualizarUmElementoDoPessoal(
+    public Callable<?> actualizarUmElementoDoPessoal(
             @PathVariable Long id,
             @RequestParam(value = "idInterno", required = false) Optional<String> idInterno,
             @RequestParam(value = "matricula", required = false) Optional<String> matricula,
@@ -327,7 +326,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            ElementoDoPessoal elemento = pessoalService.actualizarUmElementoDoPessoal(
+            ElementoDoPessoal elemento = pessoalService.actualizarElementoDoPessoal(
                     id,
                     idInterno,
                     matricula,
@@ -367,7 +366,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{elemento_id}/formacao/{formacao_id}", method = RequestMethod.PUT)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<ResponseEntity<?>> actualizarFormacaoDeElementoDoPessoal(
+    public Callable<?> actualizarFormacaoDeElementoDoPessoal(
             @PathVariable Long elemento_id,
             @PathVariable Long formacao_id,
             @RequestParam(value = "dataformacao", required = true) Date dataFormacao,
@@ -385,12 +384,11 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     dataCaducidade,
                     novoRegisto
             );
-            return new ResponseEntity<>(
-                    new RegistoFormacaoDTO(
-                            registoFormacao,
-                            request,
-                            ModeloDeRepresentacao.Normal.class),
-                    novoRegisto[0] ? HttpStatus.CREATED : HttpStatus.OK);
+            RegistoFormacaoDTO registoFormacaoDTO = new RegistoFormacaoDTO(
+                    registoFormacao,
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(registoFormacaoDTO, novoRegisto[0] ? HttpStatus.CREATED : HttpStatus.OK);
         };
     }
 
@@ -418,6 +416,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         };
     }
 
+
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
@@ -441,7 +440,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
 
 
     /**
-     * @param id      Identificador do elemento.
+     * @param id      Identificador da Categoria.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
@@ -457,6 +456,382 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             return new ResponseEntity<>(new CategoriaDTO(pessoalService.obterCategoria(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param quadro           Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura      Abreviatura da categoria
+     * @param descricao        Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @param request          HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                         nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/categoria", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> inserirCategoria(
+            @RequestParam(value = "quadro", required = true) String quadro,
+            @RequestParam(value = "abreviatura", required = true) String abreviatura,
+            @RequestParam(value = "descricao", required = true) String descricao,
+            @RequestParam(value = "nivelhierarquico", required = true) Integer nivelHierarquico,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Categoria categoria = pessoalService
+                    .inserirCategoria(
+                            quadro,
+                            abreviatura,
+                            descricao,
+                            nivelHierarquico
+                    );
+            return new ResponseEntity<>(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param id               Identificador da Categoria
+     * @param quadro           Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura      Abreviatura da categoria
+     * @param descricao        Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @param request          HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                         nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/categoria/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> actualizarCategoria(
+            @PathVariable Long id,
+            @RequestParam(value = "quadro", required = false) Optional<String> quadro,
+            @RequestParam(value = "abreviatura", required = false) Optional<String> abreviatura,
+            @RequestParam(value = "descricao", required = false) Optional<String> descricao,
+            @RequestParam(value = "nivelhierarquico", required = false) Optional<Integer> nivelHierarquico,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Categoria categoria = pessoalService.actualizarCategoria(
+                    id,
+                    quadro,
+                    abreviatura,
+                    descricao,
+                    nivelHierarquico
+            );
+            return new ResponseEntity<>(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param id      Identificador da Categoria
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/categoria/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarCategoria(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Categoria categoria = pessoalService.eliminarCategoria(
+                    id
+            );
+            return new ResponseEntity<>(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
+    }
+
+
+    /**
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/postofuncional", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterPostosFuncionais(
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<PostoFuncionalDTO> postosFuncionaisDTO = new LinkedList<>();
+            pessoalService.obterPostosFuncionais().stream()
+                    .forEach(postoFuncional -> postosFuncionaisDTO.add(new PostoFuncionalDTO(postoFuncional, request, ModeloDeRepresentacao.Sumario.class)));
+            return new ResponseEntity<>(postosFuncionaisDTO, HttpStatus.OK);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador do Posto Funcional
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterPostoFuncional(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            PostoFuncionalDTO postoFuncionalDTO = new PostoFuncionalDTO(
+                    pessoalService.obterPostoFuncional(id),
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(
+                    postoFuncionalDTO,
+                    HttpStatus.OK
+            );
+        };
+    }
+
+    /**
+     * @param designacao Designação do Posto Funcional
+     * @param descricao  Descrição do Posto Funcional
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/postofuncional", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> inserirPostoFuncional(
+            @RequestParam(value = "designacao", required = true) String designacao,
+            @RequestParam(value = "descricao", required = false) Optional<String> descricao,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            PostoFuncional postoFuncional = pessoalService
+                    .inserirPostoFuncional(
+                            designacao,
+                            descricao
+                    );
+            PostoFuncionalDTO postoFuncionalDTO = new PostoFuncionalDTO(
+                    postoFuncional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(postoFuncionalDTO, HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param id         Identificador do Posto Funcional
+     * @param designacao Designação do Posto Funcional
+     * @param descricao  Descrição do Posto Funcional
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> actualizarPostoFuncional(
+            @PathVariable Long id,
+            @RequestParam(value = "designacao", required = true) Optional<String> designacao,
+            @RequestParam(value = "descricao", required = false) Optional<String> descricao,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            PostoFuncional postoFuncional = pessoalService.actualizarPostoFuncional(
+                    id,
+                    designacao,
+                    descricao
+            );
+            PostoFuncionalDTO postoFuncionalDTO = new PostoFuncionalDTO(
+                    postoFuncional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(postoFuncionalDTO, HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param id      Identificador do Posto Funcional
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarPostoFuncional(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            PostoFuncional postoFuncional = pessoalService.eliminarPostoFuncional(
+                    id
+            );
+            PostoFuncionalDTO postoFuncionalDTO = new PostoFuncionalDTO(
+                    postoFuncional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(postoFuncionalDTO, HttpStatus.CREATED);
+        };
+    }
+
+
+    /**
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/formacao", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterFormacoes(
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<FormacaoDTO> formacoesDTO = new LinkedList<>();
+            pessoalService.obterFormacoes().stream()
+                    .forEach(formacao -> formacoesDTO.add(new FormacaoDTO(formacao, request, ModeloDeRepresentacao.Sumario.class)));
+            return new ResponseEntity<>(formacoesDTO, HttpStatus.OK);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador da Formação.
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @RequestMapping(value = "/formacao/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterFormacao(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            FormacaoDTO formacaoDTO = new FormacaoDTO(
+                    pessoalService.obterFormacao(id),
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(
+                    formacaoDTO,
+                    HttpStatus.OK
+            );
+        };
+    }
+
+    /**
+     * @param validade   Validade (Caducidade) da Formação - Se omisso será aceite o valor por omissão -1
+     * @param designacao Designação da Formação
+     * @param descricao  Descrição da Formação
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/formacao", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> inserirFormacao(
+            @RequestParam(value = "validade", required = false, defaultValue = "-1") Float validade,
+            @RequestParam(value = "designacao", required = true) String designacao,
+            @RequestParam(value = "descricao", required = false) Optional<String> descricao,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Formacao formacao = pessoalService
+                    .inserirFormacao(
+                            validade,
+                            designacao,
+                            descricao
+                    );
+            FormacaoDTO formacaoDTO = new FormacaoDTO(
+                    formacao,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(formacaoDTO, HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param id         Identificador da Formação
+     * @param validade   Validade (Caducidade) da Formação
+     * @param designacao Designação da Formação
+     * @param descricao  Descrição da Formação
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/formacao/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> actualizarFormacao(
+            @PathVariable Long id,
+            @RequestParam(value = "validade", required = false) Optional<Float> validade,
+            @RequestParam(value = "designacao", required = true) Optional<String> designacao,
+            @RequestParam(value = "descricao", required = false) Optional<String> descricao,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Formacao formacao = pessoalService.actualizarFormacao(
+                    id,
+                    validade,
+                    designacao,
+                    descricao
+            );
+            FormacaoDTO formacaoDTO = new FormacaoDTO(
+                    formacao,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(formacaoDTO, HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param id      Identificador da Formação
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @RequestMapping(value = "/formacao/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarFormacao(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Formacao formacao = pessoalService.eliminarFormacao(
+                    id
+            );
+            FormacaoDTO formacaoDTO = new FormacaoDTO(
+                    formacao,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(formacaoDTO, HttpStatus.CREATED);
         };
     }
 

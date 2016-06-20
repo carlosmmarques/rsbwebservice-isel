@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.Entity;
 
 /**
@@ -12,7 +15,9 @@ import javax.persistence.Entity;
 @Entity
 public class PostoFuncional extends RsbEntidadeAbstracta {
 
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
 
     /**

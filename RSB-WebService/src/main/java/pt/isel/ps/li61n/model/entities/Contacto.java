@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -21,6 +24,7 @@ public class Contacto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoContacto_id")
     private TipoContacto tipoContacto;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String contacto;
 
     /**

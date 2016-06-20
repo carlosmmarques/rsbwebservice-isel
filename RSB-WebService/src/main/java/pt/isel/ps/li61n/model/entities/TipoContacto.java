@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +22,7 @@ public class TipoContacto {
     private List<Contacto> contactos;
     @Id
     @Column(unique = true)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designação;
 
 

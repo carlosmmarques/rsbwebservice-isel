@@ -17,10 +17,12 @@ public class Instalacao extends RsbEntidadeAbstracta {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "unidadeEstrutural_id", nullable = false)
-    @JsonView(ModeloDeRepresentacao.Sumario.class)
     private UnidadeEstrutural unidadeEstrutural;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String localizacao;
 
     /**

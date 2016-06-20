@@ -1,6 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -16,10 +18,13 @@ import java.sql.Time;
 @Entity
 public class Turno extends RsbEntidadeAbstracta {
 
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dtInicioCiclo;
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Time hrInicioCiclo;
     @ManyToOne
     @JoinColumn(name = "algoritmoCalculoTurno_id")

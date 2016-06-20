@@ -1,14 +1,10 @@
 package pt.isel.ps.li61n.model.services;
 
 import org.springframework.stereotype.Service;
-import pt.isel.ps.li61n.model.entities.Categoria;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
-import pt.isel.ps.li61n.model.entities.RegistoFormacao;
-import pt.isel.ps.li61n.model.entities.ResponsabilidadeOperacional;
+import pt.isel.ps.li61n.model.entities.*;
 
 import java.sql.Date;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,6 +16,7 @@ import java.util.Optional;
  */
 @Service
 public interface IPessoalService {
+
 
     /**
      * @param postofuncional_id Identificador do Posto Funcional (Opcional)
@@ -39,13 +36,15 @@ public interface IPessoalService {
             Optional<Long> responsabilidadeoperacional_id
     ) throws Exception;
 
+
     /**
      * @param id Identificador do Elemento
      * @return Elemento do Pessoal
      */
-    ElementoDoPessoal obterUmElementoDoPessoal(
+    ElementoDoPessoal obterElementoDoPessoal(
             Long id
     ) throws Exception;
+
 
     /**
      * @param id Identificador do Elemento
@@ -55,15 +54,17 @@ public interface IPessoalService {
             Long id
     ) throws Exception;
 
+
     /**
      * @param elemento_id Identificador do elemento
      * @param registoFormacao_id Identificador do Registo de Formação
      * @return Registo de formação específico de um Elemento
      */
-    RegistoFormacao obterUmRegistoDeFormacaoDeUmElemento(
+    RegistoFormacao obterRegistoDeFormacaoDeUmElemento(
             Long elemento_id,
             Long registoFormacao_id
     ) throws Exception;
+
 
     /**
      * @param id Identificador do elemento
@@ -72,6 +73,7 @@ public interface IPessoalService {
     Collection<ResponsabilidadeOperacional> obterResponsabilidadesOperacionaisDeUmElemento(
             Long id
     ) throws Exception;
+
 
     /**
      * @param idInterno               Identificador interno da Unidade Estrutural
@@ -97,7 +99,7 @@ public interface IPessoalService {
      * @param factorelegibilidade     Factor de elegibilidade
      * @return Elemento do pessoal inserido
      */
-    ElementoDoPessoal inserirUmElementoDoPessoal(
+    ElementoDoPessoal inserirElementoDoPessoal(
             String idInterno,
             String matricula,
             String nummecanografico,
@@ -120,6 +122,7 @@ public interface IPessoalService {
             Optional<String> numdocidentificacao,
             Optional<Float> factorelegibilidade
     ) throws Exception;
+
 
     /**
      * @param id                      Identificador do elemento.
@@ -145,7 +148,7 @@ public interface IPessoalService {
      * @param factorelegibilidade     Factor de elegibilidade
      * @return Elemento do pessoal actualizado
      */
-    ElementoDoPessoal actualizarUmElementoDoPessoal(
+    ElementoDoPessoal actualizarElementoDoPessoal(
             Long id,
             Optional<String> idInterno,
             Optional<String> matricula,
@@ -169,6 +172,7 @@ public interface IPessoalService {
             Optional<Float> factorelegibilidade
     ) throws Exception;
 
+
     /**
      * @param elemento_id   Identificador do elemento.
      * @param formacao_id   Identificador da Formação
@@ -184,6 +188,7 @@ public interface IPessoalService {
             boolean[] novoRegisto
     ) throws Exception;
 
+
     /**
      * @param id   Identificador do elemento.
      * @return Elemento eliminado
@@ -192,15 +197,121 @@ public interface IPessoalService {
             Long id
     ) throws Exception;
 
-    /**
-     * @return Lista global de Categorias
-     */
-    List<Categoria> obterCategorias();
 
     /**
-     *
+     * @return Colecção de Categorias
+     */
+    Collection<Categoria> obterCategorias();
+
+
+    /**
      * @param id Identificador do elemento
      * @return Categoria do elemento.
      */
-    Categoria obterCategoria(Long id);
+    Categoria obterCategoria(Long id) throws Exception;
+
+
+    /**
+     * @param quadro Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura Abreviatura da categoria
+     * @param descricao Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @return Categoria inserida
+     */
+    Categoria inserirCategoria(String quadro, String abreviatura, String descricao, Integer nivelHierarquico) throws Exception;
+
+
+    /**
+     * @param  id Identificador da categoria
+     * @param quadro Quadro de Categoria (COMANDO, BOMBEIRO OU OUTRO)
+     * @param abreviatura Abreviatura da categoria
+     * @param descricao Descrição da categoria
+     * @param nivelHierarquico Nível Hierarquico
+     * @return Categoria inserida
+     */
+    Categoria actualizarCategoria(Long id, Optional<String> quadro, Optional<String> abreviatura, Optional<String> descricao, Optional<Integer> nivelHierarquico) throws Exception;
+
+
+    /**
+     * @param id               Identificador da Categoria
+     * @return Categoria eliminada
+     */
+
+    Categoria eliminarCategoria(Long id) throws Exception;
+
+
+    /**
+     * @return Colecção de Postos Funcionais
+     */
+    Collection<PostoFuncional> obterPostosFuncionais() throws Exception;
+
+
+    /**
+     * @param id Identificador do Posto Funcional
+     * @return Posto funcional
+     */
+    PostoFuncional obterPostoFuncional(Long id) throws Exception;
+
+
+    /**
+     * @param designacao Designação do Posto Funcional
+     * @param descricao Descrição do Posto Funcional
+     * @return Posto Funcional inserido
+     */
+    PostoFuncional inserirPostoFuncional(String designacao, Optional<String> descricao) throws Exception;
+
+
+    /**
+     * @param id Identificador do Posto Funcional
+     * @param designacao Designação do Posto Funcional
+     * @param descricao Descrição do Posto Funcional
+     * @return Posto Funcional actualizado
+     */
+    PostoFuncional actualizarPostoFuncional(Long id, Optional<String> designacao, Optional<String> descricao) throws Exception;
+
+
+    /**
+     * @param id Identificador do Posto Funcional
+     * @return Posto Funcional eliminado
+     */
+    PostoFuncional eliminarPostoFuncional(Long id) throws Exception;
+
+
+    /**
+     * @return Colecção de Formações
+     */
+    Collection<Formacao> obterFormacoes() throws Exception;
+
+
+    /**
+     * @param id Identificador do Formação
+     * @return Formação
+     */
+    Formacao obterFormacao(Long id) throws Exception;
+
+
+    /**
+     * @param validade Validade (Caducidade) da Formação
+     * @param designacao Designação da Formação
+     * @param descricao Descrição da Formação
+     * @return Formação inserida
+     */
+    Formacao inserirFormacao(Float validade, String designacao, Optional<String> descricao) throws Exception;
+
+
+    /**
+     * @param id Identificador do Formação
+     * @param validade Validade (Caducidade) da Formação
+     * @param designacao Designação da Formação
+     * @param descricao Descrição da Formação
+     * @return Formacao actualizada
+     */
+    Formacao actualizarFormacao(Long id, Optional<Float> validade, Optional<String> designacao, Optional<String> descricao) throws Exception;
+
+
+    /**
+     * @param id Identificador do Formação
+     * @return Formacao eliminada
+     */
+    Formacao eliminarFormacao(Long id) throws Exception;
 }

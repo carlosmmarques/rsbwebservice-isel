@@ -17,11 +17,11 @@ import java.util.List;
 @Entity
 public class Formacao extends RsbEntidadeAbstracta {
 
-    @JsonView(ModeloDeRepresentacao.Sumario.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float validade;
-    @JsonView(ModeloDeRepresentacao.Sumario.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
-    @JsonView(ModeloDeRepresentacao.Sumario.class)
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
     @ManyToMany(mappedBy = "formacoes")
     private List<ResponsabilidadeOperacional> responsabilidadesOperacionais;

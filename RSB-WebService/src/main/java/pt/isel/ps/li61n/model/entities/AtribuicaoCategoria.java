@@ -1,6 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -25,7 +27,9 @@ public class AtribuicaoCategoria extends RsbEntidadeAbstracta {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataAtribuicaoCategoria;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float classificacaoFormacao;
 
     /**
