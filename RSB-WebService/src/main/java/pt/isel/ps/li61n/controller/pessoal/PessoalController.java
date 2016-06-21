@@ -89,7 +89,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> obterUmElementoDoPessoal(
+    public Callable<?> obterElementoDoPessoal(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -112,7 +112,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}/formacao", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> obterRegistosDeFormacaoDeUmElemento(
+    public Callable<?> obterRegistosDeFormacaoDeElemento(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -142,7 +142,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{elemento_id}/formacao/{registoFormacao_id}", method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> obterRegistoDeFormacaoDeUmElemento(
+    public Callable<?> obterRegistoDeFormacaoDeElemento(
             @PathVariable Long elemento_id,
             @PathVariable Long registoFormacao_id,
             HttpServletRequest request
@@ -166,7 +166,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}/responsabilidadeoperacional", method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> obterResponsabilidadesOperacionaisDeUmElemento(
+    public Callable<?> obterResponsabilidadesOperacionaisDeElemento(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -214,7 +214,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> inserirUmElementoDoPessoal(
+    public Callable<?> inserirElementoDoPessoal(
             @RequestParam(value = "idInterno", required = true) String idInterno,
             @RequestParam(value = "matricula", required = true) String matricula,
             @RequestParam(value = "nummecanografico", required = true) String nummecanografico,
@@ -299,7 +299,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> actualizarUmElementoDoPessoal(
+    public Callable<?> actualizarElementoDoPessoal(
             @PathVariable Long id,
             @RequestParam(value = "idInterno", required = false) Optional<String> idInterno,
             @RequestParam(value = "matricula", required = false) Optional<String> matricula,
