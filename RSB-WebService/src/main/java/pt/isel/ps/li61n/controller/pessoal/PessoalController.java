@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.controller.pessoal;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                                       que o elemento possa desempenhar
      * @return Lista de ElementoDoPessoal global ou filtrada através dos parametros acima designados.
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterElementosDoPessoal(
@@ -87,6 +89,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Representação do elemento na forma de um DTO facilmente serializavel em Json.
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterElementoDoPessoal(
@@ -110,6 +113,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Lista das formações de um determinado elemento na forma de um DTO facilmente serializável em JSon
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{id}/formacao", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterRegistosDeFormacaoDeElemento(
@@ -140,6 +144,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                           nomeadamente do URI.
      * @return O registo da formação do elemento na forma de um DTO facilmente serializável em JSon
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{elemento_id}/formacao/{registoFormacao_id}", method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterRegistoDeFormacaoDeElemento(
@@ -164,6 +169,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Conjunto de Responsabilidades Operacionais a que o elemento está habilitado
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{id}/responsabilidadeoperacional", method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterResponsabilidadesOperacionaisDeElemento(
@@ -212,6 +218,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirElementoDoPessoal(
@@ -297,6 +304,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarElementoDoPessoal(
@@ -364,6 +372,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{elemento_id}/formacao/{formacao_id}", method = RequestMethod.PUT)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarFormacaoDeElementoDoPessoal(
@@ -400,6 +409,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> EliminarElementoDoPessoal(
@@ -423,6 +433,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/categoria", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterCategorias(
@@ -446,6 +457,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterCategoria(
@@ -468,6 +480,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                         nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirCategoria(
@@ -501,6 +514,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                         nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarCategoria(
@@ -531,6 +545,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> eliminarCategoria(
@@ -554,6 +569,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/postofuncional", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterPostosFuncionais(
@@ -577,6 +593,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterPostoFuncional(
@@ -604,6 +621,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirPostoFuncional(
@@ -636,6 +654,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarPostoFuncional(
@@ -667,6 +686,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> eliminarPostoFuncional(
@@ -695,6 +715,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/formacao", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterFormacoes(
@@ -718,6 +739,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterFormacao(
@@ -746,6 +768,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirFormacao(
@@ -781,6 +804,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarFormacao(
@@ -814,6 +838,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> eliminarFormacao(

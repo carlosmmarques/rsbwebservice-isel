@@ -570,7 +570,7 @@ ON CONFLICT DO NOTHING
 -- PRESENÇAS
 INSERT INTO presenca (id, data, hora_inicio, num_horas, instalacao_efectiva_id, periodo_id, pessoal_id, posto_funcional_efectivo_id, tipo_presenca_efectiva_id, turno_efectivo_id) VALUES
   ('1', '01-12-2015', '20:00', '12', '1', '1', '111', '6', 'X', '2'),
-  ('2', '01-12-2015', '08:00', '0', '1', '1', '112', '12', 'Entidade', '9'),
+  ('2', '01-12-2015', '08:00', '0', '1', '1', '112', '12', 'T', '9'),
   ('3', '02-12-2015', '08:00', '12', '1', '1', '110', '12', 'A', '4'),
   ('4', '01-12-2015', '20:00', '12', '1', '1', '1', '13', 'S2', '2'),
   ('5', '03-12-2015', '08:00', '12', '1', '1', '2', '13', 'S2', '1'),

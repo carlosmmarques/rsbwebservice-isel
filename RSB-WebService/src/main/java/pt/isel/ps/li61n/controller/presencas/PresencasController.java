@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.controller.presencas;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
+import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
+import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
 import pt.isel.ps.li61n.model.services.IPresencasService;
@@ -59,6 +62,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      * @param elementoreforcado_id Identificador do Elemento que foi reforçado por motivos de ausencia
      * @return Lista de ElementoDoPessoal global ou filtrada através dos parametros acima designados.
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterPresencas(
@@ -105,6 +109,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Representação do elemento na forma de um DTO facilmente serializavel em Json.
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterPresenca(
@@ -138,6 +143,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      *                             nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirPresenca(
@@ -191,6 +197,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarPresenca(
@@ -235,6 +242,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> EliminarPresenca(
@@ -258,6 +266,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterTiposPresenca(
@@ -281,6 +290,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterTipoPresenca(
@@ -304,6 +314,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirTipoPresenca(
@@ -339,6 +350,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarTipoPresenca(
@@ -370,6 +382,7 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> eliminarTipoPresenca(
@@ -387,4 +400,134 @@ public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
     }
 
 
+    /**
+     * @throws Exception
+     */
+
+    /**
+     * @param datainicio Data inicio de periodos
+     * @param datafim    Data de fim de periodos
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
+    @RequestMapping(value = "/periodo", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterPeriodos(
+            @RequestParam(value = "datainicio", required = false) Optional<Date> datainicio,
+            @RequestParam(value = "datafim", required = false) Optional<Date> datafim,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<PeriodoDTO> periodosDTO = new LinkedList<>();
+            presencasService.obterPeriodos(datainicio, datafim).stream()
+                    .forEach(periodo -> periodosDTO.add(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Sumario.class)));
+            return new ResponseEntity<>(periodosDTO, HttpStatus.OK);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador do Periodo
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
+    @RequestMapping(value = "/periodo/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterPeriodo(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            return new ResponseEntity<>(new PeriodoDTO(presencasService.obterPeriodo(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param datainicio Data inicio de periodo
+     * @param datafim    Data de fim de periodo
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/periodo", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> inserirPeriodo(
+            @RequestParam(value = "datainicio", required = true) Date datainicio,
+            @RequestParam(value = "datafim", required = true) Date datafim,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Periodo periodo = presencasService
+                    .inserirPeriodo(
+                            datainicio,
+                            datafim
+                    );
+            return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param id         Identificador do Periodo
+     * @param datainicio Data inicio de periodo
+     * @param datafim    Data de fim de periodo
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/periodo/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> actualizarPeriodo(
+            @PathVariable Long id,
+            @RequestParam(value = "datainicio", required = false) Optional<Date> datainicio,
+            @RequestParam(value = "datafim", required = false) Optional<Date> datafim,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Periodo periodo = presencasService.actualizarPeriodo(
+                    id,
+                    datainicio,
+                    datafim
+            );
+            return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param id      Identificador do Tipo de Presença
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/periodo/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarPeriodo(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Periodo periodo = presencasService.eliminarPeriodo(
+                    id
+            );
+            return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
+    }
 }

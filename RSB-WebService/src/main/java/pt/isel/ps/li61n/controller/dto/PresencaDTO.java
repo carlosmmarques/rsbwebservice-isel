@@ -34,7 +34,13 @@ public class PresencaDTO extends AbstractDTO {
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String uri_turnoefectivo;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
-    private String tipopresencaefectivs;
+    private String tipopresencaefectiva;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private String idinterno_elemento;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private String idinterno_elementoreforco;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private String idinterno_elementoreforcado;
 
 
     /**
@@ -78,7 +84,14 @@ public class PresencaDTO extends AbstractDTO {
         this.uri_turnoefectivo = String.format("%s/turno/%s",
                 this.baseUrl,
                 presenca.getTurnoEfectivo().getId());
-        this.tipopresencaefectivs = presenca.getTipoPresencaEfectiva().getId();
+        this.tipopresencaefectiva = presenca.getTipoPresencaEfectiva().getId();
+        this.idinterno_elemento = presenca.getElementoDoPessoal().getIdInterno();
+        this.idinterno_elementoreforco =
+                presenca.getElementoReforco() == null ? "" :
+                presenca.getElementoReforco().getIdInterno();
+        this.idinterno_elementoreforcado =
+                presenca.getElementoReforcado() == null ? "" :
+                presenca.getElementoReforcado().getIdInterno();
     }
 
 }
