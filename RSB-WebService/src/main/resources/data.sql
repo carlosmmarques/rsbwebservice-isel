@@ -4,7 +4,7 @@
 INSERT INTO algoritmo_calculo_turno(id, descricao, designacao, servico_permanente) VALUES
   ('1', '12+24+12+48', 'Algoritmo Turno', TRUE),
   ('2', 'Horário Normal', 'Algoritmo Horario Normal', FALSE),
-  ('3', 'Manhã / Tarde / Noite', 'Algoritmo 8 Hrs (M/Entidade/N)', TRUE),
+  ('3', 'Manhã / Tarde / Noite', 'Algoritmo 8 Hrs (M/T/N)', TRUE),
   ('4', 'Sem Turno', 'Sem Turno', FALSE)
 ON CONFLICT DO NOTHING
 ;
@@ -88,7 +88,7 @@ INSERT INTO tipo_presenca(id, abreviatura, ausencia, descricao, reforco) VALUES
   ('N', 'Hospital', TRUE, 'Hospital', FALSE),
   ('X', 'Ferias Confirmadas', TRUE, 'Ferias Confirmadas', FALSE),
   ('Z', 'Ferias N/ Confirm.', TRUE, 'Ferias N/ Confirm.', FALSE),
-  ('Entidade', 'Transferência', TRUE, 'Transferência para outra Unidade', FALSE),
+  ('T', 'Transferência', TRUE, 'Transferência para outra Unidade', FALSE),
   ('0', 'N/A', TRUE, 'Não aplicável', FALSE),
   ('S', 'Serviço Interno', FALSE, 'Serviços Internos Comandante Companhia / Batalhão / Secção', FALSE),
   ('S0', 'Disp. Compensação', TRUE, 'Dispensa por compensação', FALSE),

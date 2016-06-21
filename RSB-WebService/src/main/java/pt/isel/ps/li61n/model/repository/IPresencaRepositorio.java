@@ -2,8 +2,13 @@ package pt.isel.ps.li61n.model.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pt.isel.ps.li61n.model.entities.Presenca;
+
+import java.sql.Date;
+import java.util.Optional;
 
 /**
  * UnidadeEstrutural_IRepository - Description
@@ -15,29 +20,16 @@ import pt.isel.ps.li61n.model.entities.Presenca;
 @Repository
 public interface IPresencaRepositorio extends JpaRepository<Presenca, Long> {
 
-//    /**
-//     * Obtem Lista de Periodos
-//     * @return Conjunto de Periodos
-//     */
-//    public Set<Periodo> obterPeriodos();
-//
-//    /**
-//     * Obtem Lista de Periodos para um ano especifico
-//     * @return Conjunto de Periodos para o ano especificado
-//    */
-//    public Set<Periodo> obterPeriodosPorAno(Integer ano);
-//
-//    /**
-//     * Obtem uma instancia de Periodo a partir do repositório
-//     * @param id - Identificador do Periodo
-//     * @return Periodo
-//     */
-//    public Periodo obterPeriodo(Integer id);
-//
-//    /**
-//     * Inserir Periodo
-//     * @return Id do novo periodo
-//     */
-//    public Integer inserirPeriodo(Periodo periodo);
+
+    /**
+     * @param date                 Data da presença
+     * @param elementodopessoal_id Identificador do elemento do pessoal que executa a presença
+     * @return
+     */
+    @Query("SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal")
+    public Optional<Presenca> findByDataAndElementoDoPessoal(
+            @Param("data") Date date,
+            @Param("elementodopessoal") Long elementodopessoal_id
+    );
 
 }
