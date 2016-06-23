@@ -14,11 +14,10 @@ import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
-import pt.isel.ps.li61n.model.services.IPresencasService;
+import pt.isel.ps.li61n.model.services.IPresencaService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
@@ -28,7 +27,7 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 
 /**
- * PessoalController - Description
+ * PresencasController - Atendimento a pedidos da secção nuclear de gestão de Presenças
  * Created on 13/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
@@ -36,13 +35,13 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping(value = "/presenca")
-public class PresencasController extends RsbBaseController<ElementoDoPessoal> {
+public class PresencaController extends RsbBaseController<Presenca> {
 
     /**
      * Instância do Serviço
      */
     @Autowired
-    IPresencasService presencasService;
+    IPresencaService presencasService;
 
     /**
      * Logger

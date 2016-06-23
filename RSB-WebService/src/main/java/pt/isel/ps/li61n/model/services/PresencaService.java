@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Service
-public class PresencasService implements IPresencasService{
+public class PresencaService implements IPresencaService {
 
     /**
      * Logger

@@ -1,8 +1,10 @@
 package pt.isel.ps.li61n.model.services;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
@@ -22,6 +24,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class PessoalService implements IPessoalService {
+
+    /**
+     * Logger
+     */
+    Logger logger = RsbWebserviceApplication.logger;
 
     /**
      * Instâncias dos repositórios

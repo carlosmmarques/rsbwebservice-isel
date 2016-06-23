@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * CicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbEntidadeAbstracta, uma vez que a chave é
+ * PeriodoCicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbEntidadeAbstracta, uma vez que a chave é
  * composta de um Id do Ciclo e um Id do periodo do ciclo (Um Ciclo é composto por vários periodos)
 
  * Created on 03/05/2016.
@@ -16,8 +16,9 @@ import java.io.Serializable;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-@IdClass(value = CicloTurno.CicloTurnoPK.class) //A chave é composta e representada pela classe CicloTurnoPK
-public class CicloTurno{
+@Table(name = "ciclo_turno")
+@IdClass(value = PeriodoCicloTurno.CicloTurnoPK.class) //A chave é composta e representada pela classe CicloTurnoPK
+public class PeriodoCicloTurno {
 
     @Id
     @ManyToOne
@@ -30,11 +31,13 @@ public class CicloTurno{
     private Boolean periodoDescanso;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float numHoras;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private Boolean eliminado;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
      */
-    public CicloTurno() {
+    public PeriodoCicloTurno() {
     }
 
     /**
@@ -96,7 +99,7 @@ public class CicloTurno{
 
     /**
      * Equals - Necessário implementar equals, uma vez que do lado do Algoritmo de Calculo do Turno temos um método que
-     * devolve um Set<CicloTurno>, não suportando valores repetidos, pelo que é importante oferecer uma implementação de
+     * devolve um Set<PeriodoCicloTurno>, não suportando valores repetidos, pelo que é importante oferecer uma implementação de
      * equals
      * @param o - Objecto a comparar
      * @return true se é "equal" a esta instancia.
@@ -104,9 +107,9 @@ public class CicloTurno{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CicloTurno)) return false;
+        if (!(o instanceof PeriodoCicloTurno)) return false;
 
-        CicloTurno that = (CicloTurno) o;
+        PeriodoCicloTurno that = (PeriodoCicloTurno) o;
 
         if (!algoritmoCalculoTurno.equals(that.algoritmoCalculoTurno)) return false;
         if (!ordemPeriodoCiclo.equals(that.ordemPeriodoCiclo)) return false;
@@ -130,6 +133,20 @@ public class CicloTurno{
     }
 
     /**
+     * @return Estado da Entidade (Activo / Inactivo)
+     */
+    public Boolean getEliminado() {
+        return eliminado;
+    }
+
+    /**
+     * @param eliminado Estado da Entidade (Activo / Inactivo)
+     */
+    public void setEliminado(Boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    /**
      * Chave composta
      */
     public static class CicloTurnoPK implements Serializable {
@@ -141,6 +158,11 @@ public class CicloTurno{
          * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
          */
         public CicloTurnoPK() {
+        }
+
+        public CicloTurnoPK(Integer ordemPeriodoCiclo, AlgoritmoCalculoTurno algoritmoCalculoTurno){
+            this.ordemPeriodoCiclo = ordemPeriodoCiclo;
+            this.algoritmoCalculoTurno = algoritmoCalculoTurno;
         }
 
         /**

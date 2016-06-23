@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
- * PessoalController - Description
+ * PessoalController -  Atendimento a pedidos da secção nuclear de gestão de Pessoal
  * Created on 13/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com

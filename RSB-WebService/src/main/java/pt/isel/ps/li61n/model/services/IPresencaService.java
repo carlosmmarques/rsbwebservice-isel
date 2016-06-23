@@ -17,7 +17,7 @@ import java.util.Optional;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Service
-public interface IPresencasService {
+public interface IPresencaService {
 
 
     /**
