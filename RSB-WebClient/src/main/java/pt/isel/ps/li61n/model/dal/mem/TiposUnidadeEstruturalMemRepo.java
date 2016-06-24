@@ -1,9 +1,7 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import pt.isel.ps.li61n.model.dal.ITipoUnidadeEstruturalRepository;
+import pt.isel.ps.li61n.model.dal.ITiposUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 
 import java.util.Collection;
@@ -16,12 +14,12 @@ import java.util.HashMap;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Component
-public class TipoUnidadeEstruturalMemRepo implements ITipoUnidadeEstruturalRepository< Long, TipoUnidadeEstrutural > {
+public class TiposUnidadeEstruturalMemRepo implements ITiposUnidadeEstruturalRepository {
 
     private HashMap< Long, TipoUnidadeEstrutural > _repo;
     private long _repoSize;
 
-    public TipoUnidadeEstruturalMemRepo( ){
+    public TiposUnidadeEstruturalMemRepo( ){
         _repo = new HashMap<>();
         _repoSize = 0;
 

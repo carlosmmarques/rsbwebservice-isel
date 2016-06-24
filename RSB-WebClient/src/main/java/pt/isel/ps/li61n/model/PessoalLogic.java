@@ -1,38 +1,35 @@
 package pt.isel.ps.li61n.model;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import pt.isel.ps.li61n.model.dal.IPessoalRepository;
+import pt.isel.ps.li61n.model.entities.Pessoal;
 
 import java.util.Collection;
-import java.util.HashMap;
 
+@Component
+public class PessoalLogic implements IPessoalLogic {
 
-@Controller
-public class PessoalLogic implements IPessoalLogic<  String, PessoalUI > {
+    private IPessoalRepository _pessoal;
 
-    private HashMap< String, PessoalUI > _pessoal;
-
-    public PessoalLogic(){
-        _pessoal = new HashMap<>();
-        for ( int i = 0; i < 10 ; i++ ) {
-            String aux = "" + i;
-            PessoalUI p = new PessoalUI( aux, "name " + aux, "/pessoal/" + aux );
-            _pessoal.put( aux, p );
-        }
-
-    }
-    // Obter todos
-    @Override
-    public Collection< PessoalUI > getAll() {
-        return _pessoal.values();
+    @Autowired
+    public PessoalLogic( IPessoalRepository _pessoal ) {
+        this._pessoal = _pessoal;
     }
 
     @Override
-    public PessoalUI getOne( String id ) {
-        return _pessoal.get( id );
+    public Collection< Pessoal > getAll() {
+        return _pessoal.selectAll();
     }
 
     @Override
-    public String create(PessoalUI element) {
-        return null;
+    public Pessoal getOne( Integer numMecanografico ) {
+        return _pessoal.selectOne( numMecanografico );
+    }
+
+    @Override
+    public Integer create( Pessoal element ) {
+        return _pessoal.insert( element );
     }
 }

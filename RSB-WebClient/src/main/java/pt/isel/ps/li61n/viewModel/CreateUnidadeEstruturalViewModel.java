@@ -1,11 +1,10 @@
-package pt.isel.ps.li61n.model.views;
+package pt.isel.ps.li61n.viewModel;
 
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created on 15/06/2016.

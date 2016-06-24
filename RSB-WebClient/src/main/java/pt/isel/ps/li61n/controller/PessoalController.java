@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.isel.ps.li61n.model.IPessoalLogic;
-import pt.isel.ps.li61n.model.PessoalUI;
+import pt.isel.ps.li61n.model.entities.Pessoal;
+import pt.isel.ps.li61n.viewModel.PessoalUI;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created on 20/05/2016.
@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/pessoal")
 public class PessoalController {
 
-    private IPessoalLogic< String, PessoalUI > _elementosLogic;
+    private IPessoalLogic _elementosLogic;
 
     @Autowired
     public PessoalController(IPessoalLogic logic ){
@@ -32,16 +32,16 @@ public class PessoalController {
 
     @RequestMapping( method = RequestMethod.GET )
     public String index( Model model ){
-        Collection<PessoalUI> pessoal = _elementosLogic.getAll();
+        Collection< Pessoal > pessoal = _elementosLogic.getAll();
         model.addAttribute( "pessoal", pessoal );
         return "/pessoal/all";
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String details( @PathVariable( "id" ) String id, Model model ){
+    public String details( @PathVariable( "id" ) Integer id, Model model ){
 
         //obter o elemento com 'id'
-       PessoalUI pessoa = _elementosLogic.getOne( id );
+       Pessoal pessoa = _elementosLogic.getOne( id );
 
         if(  pessoa == null ){
             return "redirect:/PageError";

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.isel.ps.li61n.model.IUnidadeEstruturalLogic;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
-import pt.isel.ps.li61n.model.views.CreateUnidadeEstruturalViewModel;
+import pt.isel.ps.li61n.viewModel.CreateUnidadeEstruturalViewModel;
 
 import java.util.Collection;
 

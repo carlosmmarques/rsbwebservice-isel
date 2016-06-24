@@ -1,4 +1,4 @@
-package pt.isel.ps.li61n.model;
+package pt.isel.ps.li61n.viewModel;
 
 /**
  * Created by Demo on 20/05/2016.

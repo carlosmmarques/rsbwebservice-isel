@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pt.isel.ps.li61n.model.dal.ITipoUnidadeEstruturalRepository;
+import pt.isel.ps.li61n.model.dal.ITiposUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 @Component
 public class UnidadeEstruturalLogic implements IUnidadeEstruturalLogic {
 
-    private IUnidadeEstruturalRepository< Long, UnidadeEstrutural > _ueRepository;
-    private ITipoUnidadeEstruturalRepository< Long, TipoUnidadeEstrutural> _tipoUeRepository;
+    private IUnidadeEstruturalRepository _ueRepository;
+    private ITiposUnidadeEstruturalRepository  _tipoUeRepository;
 
     @Autowired
     public UnidadeEstruturalLogic(
             IUnidadeEstruturalRepository unidadeEstruturalRepository
-            ,ITipoUnidadeEstruturalRepository tipoUnidadeEstruturalRepository
+            ,ITiposUnidadeEstruturalRepository tipoUnidadeEstruturalRepository
     ){
         _ueRepository = unidadeEstruturalRepository;
         _tipoUeRepository = tipoUnidadeEstruturalRepository;

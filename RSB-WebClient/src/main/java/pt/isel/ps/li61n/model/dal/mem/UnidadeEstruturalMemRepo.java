@@ -1,12 +1,9 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import pt.isel.ps.li61n.model.dal.ITipoUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadeEstruturalRepository;
-import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +16,7 @@ import java.util.HashMap;
  */
 @Component
 public class UnidadeEstruturalMemRepo
-                implements IUnidadeEstruturalRepository< Long, UnidadeEstrutural > {
+                implements IUnidadeEstruturalRepository {
 
     private HashMap< Long, UnidadeEstrutural > _repo;
     private long _repoSize;
@@ -27,6 +24,8 @@ public class UnidadeEstruturalMemRepo
     public UnidadeEstruturalMemRepo( ){
         _repo = new HashMap<>();
         _repoSize = 0;
+
+        //populate();
     }
 
     @Override
@@ -50,12 +49,12 @@ public class UnidadeEstruturalMemRepo
 
     @Override
     public void delete(Long aLong) {
-
+        throw new NotImplementedException();
     }
 
     @Override
     public void update(Long aLong) {
-
+        throw new NotImplementedException();
     }
 
     /*
