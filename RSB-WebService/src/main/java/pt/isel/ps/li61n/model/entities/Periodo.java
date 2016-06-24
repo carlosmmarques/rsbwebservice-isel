@@ -1,6 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +16,15 @@ import java.sql.Date;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Periodo extends RsbAbstractEntity{
+public class Periodo extends RsbEntidadeAbstracta {
 
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dtInicio;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dtFim;
 
     /**

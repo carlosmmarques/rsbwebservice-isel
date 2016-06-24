@@ -1,9 +1,9 @@
 package pt.isel.ps.li61n.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
+import javax.persistence.*;
 
 /**
  * TipoPresenca - Caracteriza o tipo de presença. Permite apurar se se trata de uma ausencia, ou em caso de presença,
@@ -17,14 +17,23 @@ import javax.persistence.ManyToOne;
 public class TipoPresenca{
 
     @Id
+    // Esta classe não herda de RSBAbstract pq o seu Id não é Inteiro.
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String id;
-    private Boolean ausencia;
-    private Boolean reforco;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private Boolean ausencia = false;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private Boolean reforco = false;
     @ManyToOne(optional = true)
     @JoinColumn(name = "tipoPresencaEmReforco_id")
     private TipoPresenca tipoPresencaEmReforco;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String abreviatura;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
+    @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    private Boolean eliminado = false;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -116,5 +125,20 @@ public class TipoPresenca{
      */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+
+    /**
+     * @return Estado da Entidade (Activo / Inactivo)
+     */
+    public Boolean getEliminado() {
+        return eliminado;
+    }
+
+    /**
+     * @param eliminado Estado da Entidade (Activo / Inactivo)
+     */
+    public void setEliminado(Boolean eliminado) {
+        this.eliminado = eliminado;
     }
 }

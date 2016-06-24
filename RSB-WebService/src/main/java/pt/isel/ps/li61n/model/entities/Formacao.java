@@ -1,26 +1,27 @@
 package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
 /**
- * Formacao - Registo de Formação de Elementos do Pessoal
+ * Formacao - Registo de Formação de Elementos do ElementoDoPessoal
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Formacao extends RsbAbstractEntity{
+public class Formacao extends RsbEntidadeAbstracta {
 
-    @JsonView(View.Summary.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float validade;
-    @JsonView(View.Summary.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
-    @JsonView(View.Summary.class)
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
     @ManyToMany(mappedBy = "formacoes")
     private List<ResponsabilidadeOperacional> responsabilidadesOperacionais;

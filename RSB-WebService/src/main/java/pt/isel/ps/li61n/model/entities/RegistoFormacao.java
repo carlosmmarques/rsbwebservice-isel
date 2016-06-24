@@ -2,65 +2,66 @@ package pt.isel.ps.li61n.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.sql.Date;
+import java.util.Calendar;
 
 /**
- * PessoalPossuiFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
+ * RegistoFormacao - Entidade Relação entre os elementos do pessoa, Formação e a caracterização relação
  * Created on 03/05/2016.
  *
  * @author  Carlos Marques - carlosmmarques@gmail.com
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class PessoalPossuiFormacao extends RsbAbstractEntity{
+public class RegistoFormacao extends RsbEntidadeAbstracta {
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
-    private Pessoal pessoal;
+    private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "formacao_id")
-    @JsonView(View.Summary.class)
     private Formacao formacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataAquisicaoFormacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.Summary.class)
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataCaducidadeFormacao;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
      */
-    public PessoalPossuiFormacao() {
+    public RegistoFormacao() {
     }
 
     /**
-     * @return Elemento do Pessoal
+     * @return Elemento do ElementoDoPessoal
      */
-    public Pessoal getPessoal() {
-        return pessoal;
+    public ElementoDoPessoal getElementoDoPessoal() {
+        return elementoDoPessoal;
     }
 
     /**
-     * @param pessoal Elemento do Pessoal
+     * @param elementoDoPessoal Elemento do ElementoDoPessoal
      */
-    public void setPessoal(Pessoal pessoal) {
-        this.pessoal = pessoal;
+    public void setElementoDoPessoal(ElementoDoPessoal elementoDoPessoal) {
+        this.elementoDoPessoal = elementoDoPessoal;
     }
 
     /**
-     * @return Formação do elemento do pessoal
+     * @return Formação do elemento do elementoDoPessoal
      */
     public Formacao getFormacao() {
         return formacao;
     }
 
     /**
-     * @param formacao Formação do elemento do pessoal
+     * @param formacao Formação do elemento do elementoDoPessoal
      */
     public void setFormacao(Formacao formacao) {
         this.formacao = formacao;
@@ -93,4 +94,13 @@ public class PessoalPossuiFormacao extends RsbAbstractEntity{
     public void setDataCaducidadeFormacao(Date dataCaducidadeFormacao) {
         this.dataCaducidadeFormacao = dataCaducidadeFormacao;
     }
+
+    public void setDataCaducidadeFormacao(Float validade){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dataAquisicaoFormacao);
+        // TODO: melhorar calculo de caducidade
+        cal.add(Calendar.MONTH, Math.round(validade*12));
+        this.dataCaducidadeFormacao = validade.equals(-1.0) ? null : new Date(cal.getTime().getTime());
+    }
+
 }

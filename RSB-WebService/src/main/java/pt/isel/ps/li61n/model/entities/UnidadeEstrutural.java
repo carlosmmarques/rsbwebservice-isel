@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,8 +15,9 @@ import javax.persistence.ManyToOne;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class UnidadeEstrutural extends RsbAbstractEntity{
+public class UnidadeEstrutural extends RsbEntidadeAbstracta {
 
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
     @ManyToOne(optional = true)
     @JoinColumn(name = "unidadeEstruturalMae_id")
@@ -21,6 +25,7 @@ public class UnidadeEstrutural extends RsbAbstractEntity{
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipoUnidadeEstrutural_id")
     private TipoUnidadeEstrutural tipoUnidadeEstrutural;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Integer nivelHierarquico;
 
     /**

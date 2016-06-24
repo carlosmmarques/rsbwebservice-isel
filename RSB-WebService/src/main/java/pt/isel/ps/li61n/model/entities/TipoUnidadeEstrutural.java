@@ -1,5 +1,8 @@
 package pt.isel.ps.li61n.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
+
 import javax.persistence.Entity;
 
 /**
@@ -10,10 +13,13 @@ import javax.persistence.Entity;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoUnidadeEstrutural extends RsbAbstractEntity{
+public class TipoUnidadeEstrutural extends RsbEntidadeAbstracta {
 
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Integer nivelHierarquicoMaximoMae;
 
     /**
