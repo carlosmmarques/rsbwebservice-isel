@@ -1,0 +1,17 @@
+table#mapaforca {
+    width: 100%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+td, th{
+    border: 0.5px solid black;
+    text-align: center;
+    width: auto;
+}
+
+
+/* teste de layout */
+/*
+td, th{ border: 1px solid red }
+*/

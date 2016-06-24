@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Lista do Pessoal</title>
+</head>
+<body>
+    <!-- Lista do Pessoal -->
+    <div th:unless="${#lists.isEmpty(pessoal)}">
+
+        <h2> Lista do pessoal.</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>N.º/Nome</th>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${pessoal}">
+                    <td>
+                        <span th:text="${p.idInterno}">p.idInterno</span>
+                    </td>
+                    <td>
+                        <a href="details.html" th:href="${p.uri_pessoa}">
+                            <span th:text="${p.name}">p.name</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(pessoal)}">
+        <h2>Não existe pessoal!</h2>
+    </div>
+
+    <!-- OPERAÇÕES -->
+    <div>
+        <h3>Nesta página poderá fazer:</h3>
+        <ul>
+            <li><!-- Registar uma pessoa -->
+                <a href="#" ><!--th:href="@{/pessoal/insert}">-->
+                    Registar uma pessoa.
+                </a>
+            </li>
+
+            <!-- Atribuir a um elemento uma Instalação -->
+            <!--
+            <li>
+                <a href="#">
+                    Atribuir um elemento a uma Instalação.
+                </a>
+            </li>
+            -->
+        </ul>
+    </div>
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+</body>
+</html>

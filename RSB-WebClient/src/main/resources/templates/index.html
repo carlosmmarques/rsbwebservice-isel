@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8"></meta>
-    <title>Aplicação Cliente RSB</title>
-</head>
-<body>
-    <h1>Benvindo à aplicação do RSB</h1>
-    <p>Seleccione uma operação...</p>
-    <a href="http://localhost:8080">Aceder ao Service Web</a>
-</body>
+<html lang="pt"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <title>Aplicação Cliente RSB</title>
+    </head>
+    <body>
+        <h1>Bem-vindo à aplicação do RSB</h1>
+        <p>O que é que pretende fazer?</p>
+        <a href="http://localhost:1234">Aceder ao Service Web?</a><br></br>
+        <a href="/pessoal"> Lista de Pessoal?</a><br></br>
+        <a href="/unidadesEstruturais" th:href="@{/unidadesEstruturais}"> Gestão de Unidades Estruturais?</a><br></br>
+        <a href="/mapaForca" th:href="@{/mapaForca}"> Mapa da Força</a>
+    </body>
 </html>
