@@ -373,7 +373,11 @@ public class TurnoController extends RsbBaseController<Turno> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             List<PeriodoCicloTurnoDTO> periodosCicloTurnoDTO = new LinkedList<>();
             turnoService.obterPeriodosCicloTurno(algoritmocalculoturno_id).stream()
-                    .forEach(periodo -> periodosCicloTurnoDTO.add(new PeriodoCicloTurnoDTO(periodo, request, ModeloDeRepresentacao.Sumario.class)));
+                    .forEach(
+                            periodo -> periodosCicloTurnoDTO.add(
+                                    new PeriodoCicloTurnoDTO(periodo, request, ModeloDeRepresentacao.Sumario.class)
+                            )
+                    );
             return new ResponseEntity<>(periodosCicloTurnoDTO, HttpStatus.OK);
         };
     }
@@ -473,7 +477,7 @@ public class TurnoController extends RsbBaseController<Turno> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             PeriodoCicloTurno periodoCicloTurno = turnoService.actualizarPeriodoCicloTurno(
-                periodocicloturno_id,
+                    periodocicloturno_id,
                     algoritmocalculoturno_id,
                     numhoras,
                     periododescanso
@@ -492,8 +496,8 @@ public class TurnoController extends RsbBaseController<Turno> {
     /**
      * @param periodocicloturno_id     A ordem do periodo do ciclo para o respectivo algoritmo de calculo de turno
      * @param algoritmocalculoturno_id Identificador do algoritmo de calculo de turno
-     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                nomeadamente do URI.
+     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)

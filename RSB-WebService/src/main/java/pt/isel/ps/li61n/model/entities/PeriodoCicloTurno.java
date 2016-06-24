@@ -31,7 +31,8 @@ public class PeriodoCicloTurno {
     private Boolean periodoDescanso;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float numHoras;
-    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @JsonView({ModeloDeRepresentacao.Verboso.class})
+    @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
     private Boolean eliminado;
 
     /**

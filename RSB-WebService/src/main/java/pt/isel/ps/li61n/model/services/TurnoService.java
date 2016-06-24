@@ -243,7 +243,9 @@ public class TurnoService implements ITurnoService{
     ) throws Exception {
 //        return periodoCicloTurnoRepo.findPeriodosCicloByAlgoritmo(
 //                algoritmoCalculoTurnoRepo.findOne(algoritmocalculoturno_id));
-        return periodoCicloTurnoRepo.findByAlgoritmoCalculoTurno(algoritmoCalculoTurnoRepo.findOne(algoritmocalculoturno_id));
+//        return periodoCicloTurnoRepo.findByAlgoritmoCalculoTurno(algoritmoCalculoTurnoRepo.findOne(algoritmocalculoturno_id));
+        Collection<PeriodoCicloTurno> periodosCicloTurno = algoritmoCalculoTurnoRepo.findOne(algoritmocalculoturno_id).getCiclos();
+        return periodosCicloTurno;
     }
 
     /**

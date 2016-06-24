@@ -49,17 +49,9 @@ public class PresencaService implements IPresencaService {
     @Autowired
     private ITipoPresencaRepositorio tipoPresencaRepo;
     @Autowired
-    private ICategoriaRepositorio categoriaRepo;
-    @Autowired
     private IInstalacaoRepositorio instalacaoRepo;
     @Autowired
-    private IAtribuicaoCategoriaRepositorio atribuicaoCategoriaRepo;
-    @Autowired
     private ITurnoRepositorio turnoRepo;
-    @Autowired
-    private IRegistoFormacaoRepositorio registoFormacaoRepo;
-    @Autowired
-    private IFormacaoRepositorio formacaoRepo;
 
 
     /**
@@ -383,14 +375,14 @@ public class PresencaService implements IPresencaService {
                 throw new RecursoEliminadoException(String.format("O registo de periodo solicitado foi eliminado: %s", periodo.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
             // Presença não existe na BD, vamos criar e popular as respectivas presenças:
-            logger.debug("Não existe presneça ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
+            logger.debug("Não existe presença ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
             periodo = new Periodo();
             periodo.setDtInicio(datainicio);
             periodo.setDtFim(datafim);
             popularPresencas(periodo);
             return periodoRepo.save(periodo);
         }
-        //presença existe na BD, vamos lan;ar a respectiva excepção:
+        //presença existe na BD, vamos lançar a respectiva excepção:
         throw new ConflictoException(String.format("Já existe um periodo compreendido entre as datas %s e %s", datainicio, datafim));
 
     }

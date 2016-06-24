@@ -48,8 +48,11 @@ public class PeriodoCicloTurnoDTO {
             Class modeloDeRepresentacao
     ) {
         this.popularAtributosGerais(periodoCicloTurno, request, modeloDeRepresentacao);
-        this.uri_periodocicloturno = String.format("%s/turno/algoritmocalculoturno/%s",
-                this.baseUrl
+        this.uri_periodocicloturno = String.format("%s/turno/algoritmocalculoturno/%s/ciclo/%s",
+                this.baseUrl,
+                periodoCicloTurno.getAlgoritmoCalculoTurno().getId(),
+                periodoCicloTurno.getOrdemPeriodoCiclo()
+
         );
     }
 
