@@ -278,6 +278,66 @@ public interface IPessoalService {
 
 
     /**
+     * @return Colecção de Responsabilidades Operacionais
+     */
+    Collection<ResponsabilidadeOperacional> obterResponsabilidadesOperacionais() throws Exception;
+
+
+    /**
+     * @param id Identificador do Responsabilidade Operacional
+     * @return Responsabilidade Operacional
+     */
+    ResponsabilidadeOperacional obterResponsabilidadeOperacional(
+            Long id
+    ) throws Exception;
+
+
+    /**
+     * @param tipopresenca_id Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao Designação da Responsabilidade Operacional
+     * @param sigla Sigla da Responsabilidade Operacional
+     * @param tiposervico Texto descritivo do Tipo de Serviço
+     * @return Resposnsabilidade Operacional inserida
+     */
+    ResponsabilidadeOperacional inserirResponsabilidadeOperacional(
+            String tipopresenca_id,
+            Boolean dependefactoreligibilidade,
+            String designacao,
+            String sigla,
+            ResponsabilidadeOperacional.TipoServico tiposervico
+    ) throws Exception;
+
+
+    /**
+     * @param id Identificador do Responsabilidade Operacional
+     * @param tipopresenca_id Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao Designação da Responsabilidade Operacional
+     * @param sigla Sigla da Responsabilidade Operacional
+     * @param tiposervico Texto descritivo do Tipo de Serviço
+     * @return Resposnsabilidade Operacional actualizada
+     */
+    ResponsabilidadeOperacional actualizarResponsabilidadeOperacional(
+            Long id,
+            Optional<String> tipopresenca_id,
+            Optional<Boolean> dependefactoreligibilidade,
+            Optional<String> designacao,
+            Optional<String> sigla,
+            Optional<ResponsabilidadeOperacional.TipoServico> tiposervico
+    ) throws Exception;
+
+
+    /**
+     * @param id Identificador do Responsabilidade Operacional
+     * @return Resposnsabilidade Operacional eliminada
+     */
+    ResponsabilidadeOperacional eliminarResponsabilidadeOperacional(
+            Long id
+    ) throws Exception;
+
+
+    /**
      * @return Colecção de Formações
      */
     Collection<Formacao> obterFormacoes() throws Exception;
@@ -314,4 +374,18 @@ public interface IPessoalService {
      * @return Formacao eliminada
      */
     Formacao eliminarFormacao(Long id) throws Exception;
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @return
+     */
+    ResponsabilidadeOperacional associarFormacaoAResponsabilidadeOperacional(Long responsabilidadeoperacional_id, Long formacao_id);
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @return
+     */
+    ResponsabilidadeOperacional eliminarAssociacaoDeFormacaoAResponsabilidadeOperacional(Long responsabilidadeoperacional_id, Long formacao_id);
 }

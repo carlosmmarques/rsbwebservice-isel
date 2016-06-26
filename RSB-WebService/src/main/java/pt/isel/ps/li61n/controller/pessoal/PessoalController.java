@@ -181,12 +181,10 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             final Set<ResponsabilidadeOperacionalDTO> responsabilidadesOperacionais = new LinkedHashSet<>();
             pessoalService.obterResponsabilidadesOperacionaisDeUmElemento(id).stream()
-                    .forEach(responsabilidadeOperacional -> {
-                                responsabilidadesOperacionais.add(
-                                        new ResponsabilidadeOperacionalDTO(responsabilidadeOperacional
-                                                , request
-                                                , ModeloDeRepresentacao.Sumario.class));
-                            }
+                    .forEach(responsabilidadeOperacional -> responsabilidadesOperacionais.add(
+                            new ResponsabilidadeOperacionalDTO(responsabilidadeOperacional
+                                    , request
+                                    , ModeloDeRepresentacao.Sumario.class))
                     );
             return new ResponseEntity<>(responsabilidadesOperacionais, HttpStatus.OK);
         };
@@ -687,7 +685,8 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
-    @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
+    @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.DELETE)
+    // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> eliminarPostoFuncional(
             @PathVariable Long id,
@@ -857,6 +856,258 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     ModeloDeRepresentacao.Verboso.class
             );
             return new ResponseEntity<>(formacaoDTO, HttpStatus.CREATED);
+        };
+    }
+
+
+    /**
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(ModeloDeRepresentacao.Sumario.class)
+    @RequestMapping(value = "/responsabilidadeoperacional", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterResponsabilidadesOperacionais(
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<ResponsabilidadeOperacionalDTO> responsabilidadeOperacionalDTOs = new LinkedList<>();
+            pessoalService.obterResponsabilidadesOperacionais().stream()
+                    .forEach(ro -> responsabilidadeOperacionalDTOs.add(new ResponsabilidadeOperacionalDTO(ro, request, ModeloDeRepresentacao.Sumario.class)));
+            return new ResponseEntity<>(responsabilidadeOperacionalDTOs, HttpStatus.OK);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador da Responsabilidade Operacional.
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterResponsabilidadeOperacional(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    pessoalService.obterResponsabilidadeOperacional(id),
+                    request,
+                    ModeloDeRepresentacao.Normal.class);
+            return new ResponseEntity<>(
+                    responsabilidadeOperacionalDTO,
+                    HttpStatus.OK
+            );
+        };
+    }
+
+    /**
+     * @param tipopresenca_id            Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao                 Designação da Responsabilidade Operacional
+     * @param sigla                      Sigla da Responsabilidade Operacional
+     * @param tiposervico                Texto descritivo do Tipo de Serviço (EXTERNO / INTERNO)
+     * @param request                    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/responsabilidadeoperacional", method = RequestMethod.POST)
+    // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> inserirResponsabilidadeOperacional(
+            @RequestParam(value = "tipopresenca_id", required = false, defaultValue = "-1") String tipopresenca_id,
+            @RequestParam(value = "dependefactoreligibilidade", required = true) Boolean dependefactoreligibilidade,
+            @RequestParam(value = "designacao", required = true) String designacao,
+            @RequestParam(value = "sigla", required = true) String sigla,
+            @RequestParam(value = "tiposervico", required = true) ResponsabilidadeOperacional.TipoServico tiposervico,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacional responsabilidadeOperacional = pessoalService
+                    .inserirResponsabilidadeOperacional(
+                            tipopresenca_id,
+                            dependefactoreligibilidade,
+                            designacao,
+                            sigla,
+                            tiposervico
+                    );
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    responsabilidadeOperacional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param id                         Identificador da Responsabilidade Operacional
+     * @param tipopresenca_id            Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao                 Designação da Responsabilidade Operacional
+     * @param sigla                      Sigla da Responsabilidade Operacional
+     * @param tiposervico                Texto descritivo do Tipo de Serviço (EXTERNO / INTERNO)
+     * @param request                    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                   nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.PUT)
+    // Este Método atende ao verbo HTTP GET
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> actualizarResponsabilidadeOperacional(
+            @PathVariable Long id,
+            @RequestParam(value = "tipopresenca_id", required = false, defaultValue = "-1") Optional<String> tipopresenca_id,
+            @RequestParam(value = "dependefactoreligibilidade", required = true) Optional<Boolean> dependefactoreligibilidade,
+            @RequestParam(value = "designacao", required = true) Optional<String> designacao,
+            @RequestParam(value = "sigla", required = true) Optional<String> sigla,
+            @RequestParam(value = "tiposervico", required = true) Optional<ResponsabilidadeOperacional.TipoServico> tiposervico,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacional responsabilidadeOperacional = pessoalService.actualizarResponsabilidadeOperacional(
+                    id,
+                    tipopresenca_id,
+                    dependefactoreligibilidade,
+                    designacao,
+                    sigla,
+                    tiposervico
+            );
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    responsabilidadeOperacional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.OK);
+        };
+    }
+
+    /**
+     * @param id      Identificador da Responsabilidade Operacional
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.DELETE)
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarResponsabilidadeOperacional(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacional responsabilidadeOperacional = pessoalService.eliminarResponsabilidadeOperacional(
+                    id
+            );
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    responsabilidadeOperacional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
+        };
+    }
+
+
+    /**
+     * @param id      Identificador da Responsabilidade Operacional.
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception
+     */
+    @JsonView(ModeloDeRepresentacao.Normal.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{id}/formacao", method = RequestMethod.GET)
+    @ResponseBody
+    public Callable<?> obterFormacoesAssociadasAResponsabilidadeOperacional(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<FormacaoDTO> formacaoDTOs = new LinkedList<>();
+            pessoalService.obterResponsabilidadeOperacional(id).getFormacoes().stream()
+                    .forEach(formacao -> formacaoDTOs.add(new FormacaoDTO(formacao, request, ModeloDeRepresentacao.Normal.class)));
+            return new ResponseEntity<>(
+                    formacaoDTOs,
+                    HttpStatus.OK
+            );
+        };
+    }
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                       nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{responsabilidadeoperacional_id}/formacao/{formacao_id}", method = RequestMethod.POST)
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> associarFormacaoAResponsabilidade(
+            @PathVariable Long responsabilidadeoperacional_id,
+            @PathVariable Long formacao_id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacional responsabilidadeOperacional = pessoalService
+                    .associarFormacaoAResponsabilidadeOperacional(responsabilidadeoperacional_id, formacao_id);
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    responsabilidadeOperacional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/responsabilidadeoperacional/{responsabilidadeoperacional_id}/formacao/{formacao_id}", method = RequestMethod.DELETE)
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> eliminarAssociacaoDeFormacaoAResponsabilidadeOperacional(
+            @PathVariable Long responsabilidadeoperacional_id,
+            @PathVariable Long formacao_id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            ResponsabilidadeOperacional responsabilidadeOperacional = pessoalService
+                    .eliminarAssociacaoDeFormacaoAResponsabilidadeOperacional(responsabilidadeoperacional_id, formacao_id);
+            ResponsabilidadeOperacionalDTO responsabilidadeOperacionalDTO = new ResponsabilidadeOperacionalDTO(
+                    responsabilidadeOperacional,
+                    request,
+                    ModeloDeRepresentacao.Verboso.class
+            );
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
         };
     }
 

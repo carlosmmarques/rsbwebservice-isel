@@ -31,7 +31,7 @@ public interface ITurnoService {
 
     /**
      * @param id Identificador da Turno
-     * @return Elemento do Pessoal
+     * @return Turno
      */
     Turno obterTurno(
             Long id

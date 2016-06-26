@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.model.services;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
@@ -51,6 +52,8 @@ public class PessoalService implements IPessoalService {
     private IRegistoFormacaoRepositorio registoFormacaoRepo;
     @Autowired
     private IFormacaoRepositorio formacaoRepo;
+    @Autowired
+    private IResponsabilidadeOperacionalRepositorio responsabilidadeOperacionalRepo;
 
 
     /**
@@ -224,9 +227,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal inserido
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal inserirElementoDoPessoal(
             String idInterno,
             String matricula,
@@ -333,9 +334,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento do pessoal actualizado
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal actualizarElementoDoPessoal(
             Long id,
             Optional<String> idInterno,
@@ -440,9 +439,7 @@ public class PessoalService implements IPessoalService {
      * @return Registo de formação actualizado
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public RegistoFormacao actualizarFormacaoDeElementoDoPessoal(
             Long elemento_id,
             Long formacao_id,
@@ -486,9 +483,7 @@ public class PessoalService implements IPessoalService {
      * @return Elemento eliminado
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public ElementoDoPessoal EliminarElementoDoPessoal(Long id) throws Exception {
         ElementoDoPessoal elemento = obterElementoDoPessoal(id);
         elemento.setEliminado(true);
@@ -536,9 +531,7 @@ public class PessoalService implements IPessoalService {
      * @return Categoria inserida
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Categoria inserirCategoria(
             String quadro,
             String abreviatura,
@@ -566,9 +559,7 @@ public class PessoalService implements IPessoalService {
      * @return Categoria inserida
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Categoria actualizarCategoria(
             Long id,
             Optional<String> quadro,
@@ -590,9 +581,7 @@ public class PessoalService implements IPessoalService {
      * @return Categoria eliminada
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Categoria eliminarCategoria(Long id) throws Exception {
         Categoria categoria = obterCategoria(id);
         categoria.setEliminado(true);
@@ -632,9 +621,7 @@ public class PessoalService implements IPessoalService {
      * @return Posto Funcional inserido
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public PostoFuncional inserirPostoFuncional(String designacao, Optional<String> descricao) throws Exception {
         PostoFuncional postoFuncional = new PostoFuncional();
         postoFuncional.setDesignacao(designacao);
@@ -649,9 +636,7 @@ public class PessoalService implements IPessoalService {
      * @return Posto Funcional actualizado
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public PostoFuncional actualizarPostoFuncional(Long id, Optional<String> designacao, Optional<String> descricao) throws Exception {
         PostoFuncional postoFuncional = obterPostoFuncional(id);
         designacao.ifPresent(postoFuncional::setDesignacao);
@@ -664,9 +649,7 @@ public class PessoalService implements IPessoalService {
      * @return Posto Funcional eliminado
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public PostoFuncional eliminarPostoFuncional(Long id) throws Exception {
         PostoFuncional postoFuncional = obterPostoFuncional(id);
         postoFuncional.setEliminado(true);
@@ -706,6 +689,7 @@ public class PessoalService implements IPessoalService {
      * @return Formação inserida
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Formacao inserirFormacao(Float validade, String designacao, Optional<String> descricao) throws Exception {
         Formacao formacao = new Formacao();
         formacao.setValidade(validade);
@@ -722,10 +706,13 @@ public class PessoalService implements IPessoalService {
      * @return Formacao actualizada
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
-    public Formacao actualizarFormacao(Long id, Optional<Float> validade, Optional<String> designacao, Optional<String> descricao) throws Exception {
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public Formacao actualizarFormacao(
+            Long id,
+            Optional<Float> validade,
+            Optional<String> designacao,
+            Optional<String> descricao
+    ) throws Exception {
         Formacao formacao = obterFormacao(id);
         validade.ifPresent(formacao::setValidade);
         designacao.ifPresent(formacao::setDesignacao);
@@ -738,12 +725,132 @@ public class PessoalService implements IPessoalService {
      * @return Formacao eliminada
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Formacao eliminarFormacao(Long id) throws Exception {
         Formacao formacao = obterFormacao(id);
         formacao.setEliminado(true);
         return formacaoRepo.save(formacao);
+    }
+
+    /**
+     * @return Colecção de Responsabilidades Operacionais
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<ResponsabilidadeOperacional> obterResponsabilidadesOperacionais() throws Exception {
+        return responsabilidadeOperacionalRepo.findAll().stream()
+                .filter(resp -> resp.getEliminado() != null && !resp.getEliminado())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @param id Identificador do Responsabilidade Operacional
+     * @return Responsabilidade Operacional
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ResponsabilidadeOperacional obterResponsabilidadeOperacional(Long id) throws Exception {
+        ResponsabilidadeOperacional responsabilidadeOperacional = responsabilidadeOperacionalRepo.findOne(id);
+        if (responsabilidadeOperacional == null)
+            throw new NaoEncontradoException(String.format("Não é possível obter a Responsabilidade Operacional com id: %s", id));
+        if (responsabilidadeOperacional.getEliminado())
+            throw new RecursoEliminadoException(String.format("A Responsabilidade Operacional solicitado foi eliminado: %s", id));
+        return responsabilidadeOperacional;
+    }
+
+    /**
+     * @param tipopresenca_id            Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao                 Designação da Responsabilidade Operacional
+     * @param sigla                      Sigla da Responsabilidade Operacional
+     * @param tiposervico                Texto descritivo do Tipo de Serviço (EXTERNO / INTERNO)
+     * @return Resposnsabilidade Operacional inserida
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public ResponsabilidadeOperacional inserirResponsabilidadeOperacional(
+            String tipopresenca_id,
+            Boolean dependefactoreligibilidade,
+            String designacao,
+            String sigla,
+            ResponsabilidadeOperacional.TipoServico tiposervico
+    ) throws Exception {
+        ResponsabilidadeOperacional responsabilidadeOperacional = new ResponsabilidadeOperacional();
+        responsabilidadeOperacional.setTipoPresenca(tipoPresencaRepo.findOne(tipopresenca_id));
+        responsabilidadeOperacional.setDependeFactorElegibilidade(dependefactoreligibilidade);
+        responsabilidadeOperacional.setDesignacao(designacao);
+        responsabilidadeOperacional.setSigla(sigla);
+        responsabilidadeOperacional.setTipoServico(tiposervico);
+        return responsabilidadeOperacionalRepo.save(responsabilidadeOperacional);
+    }
+
+    /**
+     * @param id                         Identificador da Resposnabilidade Operacional
+     * @param tipopresenca_id            Identificador do Tipo de presença
+     * @param dependefactoreligibilidade Indica se o desempenho da Responsabilidade Operacional depende do factor de eligibilidade
+     * @param designacao                 Designação da Responsabilidade Operacional
+     * @param sigla                      Sigla da Responsabilidade Operacional
+     * @param tiposervico                Texto descritivo do Tipo de Serviço
+     * @return Responsabilidade Operacional actualizada
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public ResponsabilidadeOperacional actualizarResponsabilidadeOperacional(
+            Long id,
+            Optional<String> tipopresenca_id,
+            Optional<Boolean> dependefactoreligibilidade,
+            Optional<String> designacao,
+            Optional<String> sigla,
+            Optional<ResponsabilidadeOperacional.TipoServico> tiposervico
+    ) throws Exception {
+        ResponsabilidadeOperacional responsabilidadeOperacional = obterResponsabilidadeOperacional(id);
+        tipopresenca_id.ifPresent(tp -> responsabilidadeOperacional.setTipoPresenca(tipoPresencaRepo.findOne(tp)));
+        dependefactoreligibilidade.ifPresent(responsabilidadeOperacional::setDependeFactorElegibilidade);
+        designacao.ifPresent(responsabilidadeOperacional::setDesignacao);
+        sigla.ifPresent(responsabilidadeOperacional::setSigla);
+        tiposervico.ifPresent(responsabilidadeOperacional::setTipoServico);
+        return responsabilidadeOperacionalRepo.save(responsabilidadeOperacional);
+    }
+
+    /**
+     * @param id Identificador do Responsabilidade Operacional
+     * @return Resposnsabilidade Operacional eliminada
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public ResponsabilidadeOperacional eliminarResponsabilidadeOperacional(Long id) throws Exception {
+        ResponsabilidadeOperacional responsabilidadeOperacional = obterResponsabilidadeOperacional(id);
+        responsabilidadeOperacional.setEliminado(true);
+        return responsabilidadeOperacionalRepo.save(responsabilidadeOperacional);
+    }
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public ResponsabilidadeOperacional associarFormacaoAResponsabilidadeOperacional(Long responsabilidadeoperacional_id, Long formacao_id) {
+        ResponsabilidadeOperacional responsabilidadeOperacional = responsabilidadeOperacionalRepo.findOne(responsabilidadeoperacional_id);
+        List<Formacao> formacoes = responsabilidadeOperacional.getFormacoes();
+        formacoes.add(formacaoRepo.findOne(formacao_id));
+        responsabilidadeOperacional.setFormacoes(formacoes);
+        return responsabilidadeOperacionalRepo.save(responsabilidadeOperacional);
+    }
+
+
+    /**
+     * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
+     * @param formacao_id                    Identificador da Formação
+     * @return
+     */
+    @Override
+    public ResponsabilidadeOperacional eliminarAssociacaoDeFormacaoAResponsabilidadeOperacional(Long responsabilidadeoperacional_id, Long formacao_id) {
+        ResponsabilidadeOperacional responsabilidadeOperacional = responsabilidadeOperacionalRepo.findOne(responsabilidadeoperacional_id);
+        List<Formacao> formacoes = responsabilidadeOperacional.getFormacoes();
+        formacoes = formacoes.stream().filter(formacao -> !formacao.getId().equals(formacao_id)).collect(Collectors.toList());
+        responsabilidadeOperacional.setFormacoes(formacoes);
+        return responsabilidadeOperacionalRepo.save(responsabilidadeOperacional);
     }
 }
