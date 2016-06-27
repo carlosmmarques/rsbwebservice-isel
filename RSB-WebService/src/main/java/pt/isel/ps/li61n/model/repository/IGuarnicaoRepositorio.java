@@ -2,7 +2,7 @@ package pt.isel.ps.li61n.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
+import pt.isel.ps.li61n.model.entities.Guarnicao;
 
 /**
  * TipoUnidadeEstruturalRepositorio - Description
@@ -12,5 +12,5 @@ import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Repository
-public interface ITipoUnidadeEstruturalRepositorio extends JpaRepository<TipoUnidadeEstrutural, Long> {
+public interface IGuarnicaoRepositorio extends JpaRepository<Guarnicao, Long> {
 }

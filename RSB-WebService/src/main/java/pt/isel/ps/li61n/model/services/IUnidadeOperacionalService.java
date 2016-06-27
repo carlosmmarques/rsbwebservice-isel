@@ -2,7 +2,6 @@ package pt.isel.ps.li61n.model.services;
 
 import org.springframework.stereotype.Service;
 import pt.isel.ps.li61n.model.entities.Guarnicao;
-import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
 import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
 
@@ -39,17 +38,17 @@ public interface IUnidadeOperacionalService {
 
     /**
      * @param designacao Designação do Unidade Operacional
-     * @param tipoUnidadeOperacional Tipo da Unidade Operacional
+     * @param tipounidadeoperacional_id Tipo da Unidade Operacional
      * @param operacional Indica se a Unidade Operacional está em condições de operacionalidade
-     * @param instalacao Instalação a que a unidade está atribuida
+     * @param instalacao_id Instalação a que a unidade está atribuida
      * @return Unidade Operacional inserida
      * @throws Exception
      */
     UnidadeOperacional inserirUnidadeOperacional(
             String designacao,
-            TipoUnidadeOperacional tipoUnidadeOperacional,
+            Long tipounidadeoperacional_id,
             Boolean operacional,
-            Instalacao instalacao
+            Long instalacao_id
     ) throws Exception;
 
 
@@ -57,18 +56,18 @@ public interface IUnidadeOperacionalService {
      *
      * @param id Identificador da Unidade Esturtural a actualizar
      * @param designacao Designação do Unidade Operacional
-     * @param tipoUnidadeOperacional Tipo da Unidade Operacional
+     * @param tipounidadeoperacional_id Tipo da Unidade Operacional
      * @param operacional Indica se a Unidade Operacional está em condições de operacionalidade
-     * @param instalacao Instalação a que a unidade está atribuida
+     * @param instalacao_id Instalação a que a unidade está atribuida
      * @throws Exception
      * @return Unidade Operacional actualizada
      */
     UnidadeOperacional actualizarUnidadeOperacional(
             Long id,
             Optional<String> designacao,
-            Optional<TipoUnidadeOperacional> tipoUnidadeOperacional,
+            Optional<Long> tipounidadeoperacional_id,
             Optional<Boolean> operacional,
-            Optional<Instalacao> instalacao
+            Optional<Long> instalacao_id
     ) throws Exception;
 
 
@@ -138,7 +137,7 @@ public interface IUnidadeOperacionalService {
      * @return Colecção de Guarnições
      * @throws Exception
      */
-    Collection<Instalacao> obterGuarnicoesDeUnidadeOperacional(
+    Collection<Guarnicao> obterGuarnicoesDeUnidadeOperacional(
             Long unidadeOperacional_id
     ) throws Exception;
 
@@ -182,7 +181,7 @@ public interface IUnidadeOperacionalService {
      */
     Guarnicao actualizarGuarnicao(
             Long guarnicao_id,
-            Optional<Long> unidadeOperacional_id,
+            Long unidadeOperacional_id,
             Optional<Long> responsabilidadeOperacional_id,
             Optional<Integer> qtdminima,
             Optional<Integer> qtdmaxima
@@ -191,10 +190,11 @@ public interface IUnidadeOperacionalService {
 
     /**
      * @param guarnicao_id Identificador da Guarnicao
+     * @param unidadeoperacional_id
      * @return Guarnição eliminada
      * @throws Exception
      */
     Guarnicao eliminarGuarnicao(
-            Long guarnicao_id
-    ) throws Exception;
+            Long guarnicao_id,
+            Long unidadeoperacional_id) throws Exception;
 }
