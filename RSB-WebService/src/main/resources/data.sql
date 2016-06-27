@@ -383,8 +383,9 @@ ON CONFLICT DO NOTHING
 
 -- ASSOCIAÇÃO RESPONSABILIDADES OPERACIONAIS / FORMAÇÃO
 ---- Adicionar constraint à associação de Responsabilidades Operacionais e Formações:
+ALTER TABLE responsabilidade_formacao DROP CONSTRAINT IF EXISTS responsabilidade_operacional_id_formacao_id;
 ALTER TABLE responsabilidade_formacao ADD CONSTRAINT responsabilidade_operacional_id_formacao_id UNIQUE (responsabilidade_operacional_id, formacao_id);
----- Adicionar os dados de associação. Falha se existirem graças ao constraint definido acima.
+---- Adicionar os dados de associação. Falha se já existirem graças ao constraint definido acima.
 INSERT INTO responsabilidade_formacao (responsabilidade_operacional_id, formacao_id) VALUES
   ('1', '5'),
   ('2', '5'),

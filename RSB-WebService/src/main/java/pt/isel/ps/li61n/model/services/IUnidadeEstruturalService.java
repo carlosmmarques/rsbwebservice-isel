@@ -1,7 +1,9 @@
 package pt.isel.ps.li61n.model.services;
 
 import org.springframework.stereotype.Service;
-import pt.isel.ps.li61n.model.entities.*;
+import pt.isel.ps.li61n.model.entities.Instalacao;
+import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
+import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -35,42 +37,38 @@ public interface IUnidadeEstruturalService {
 
 
     /**
-     * @param designacao Designação do Unidade Estrutural
+     * @param designacao            Designação do Unidade Estrutural
      * @param tipoUnidadeEstrutural Tipo da Unidade Estutural
-     * @param unidadeEstruturalMae Unidade Estrutural Mãe
-     * @param nivelHierarquico Nível Hierárquico
+     * @param unidadeEstruturalMae  Unidade Estrutural Mãe
+     * @param nivelHierarquico      Nível Hierárquico
      * @return Unidade Estrutural inserida
      * @throws Exception
      */
     UnidadeEstrutural inserirUnidadeEstrutural(
             String designacao,
-            TipoUnidadeEstrutural tipoUnidadeEstrutural,
-            UnidadeEstrutural unidadeEstruturalMae,
+            Long tipoUnidadeEstrutural,
+            Long unidadeEstruturalMae,
             Integer nivelHierarquico
     ) throws Exception;
 
 
     /**
-     *
-     * @param id Identificador da Unidade Esturtural a actualizar
-     * @param designacao Designação do Unidade Estrutural
-     * @param tipoUnidadeEstrutural Tipo da Unidade Estutural
-     * @param unidadeEstruturalMae Unidade Estrutural Mãe
-     * @param nivelHierarquico Nível Hierárquico
+     * @param id               Identificador da Unidade Esturtural a actualizar
+     * @param designacao       Designação do Unidade Estrutural
+     * @param unidadeestruturalmae_id
+     *@param tipounidadeestrutural_id
+     * @param nivelHierarquico Nível Hierárquico  @return Unidade Esturtural actualizada
      * @throws Exception
-     * @return Unidade Esturtural actualizada
      */
     UnidadeEstrutural actualizarUnidadeEstrutural(
             Long id,
             Optional<String> designacao,
-            Optional<TipoUnidadeEstrutural> tipoUnidadeEstrutural,
-            Optional<UnidadeEstrutural> unidadeEstruturalMae,
+            Optional<Long> unidadeestruturalmae_id, Optional<Long> tipounidadeestrutural_id,
             Optional<Integer> nivelHierarquico
     ) throws Exception;
 
 
     /**
-     *
      * @param id Identificador da Unidade Estrutural a eliminar
      * @return Unidade Estrutural Eliminada
      * @throws Exception
@@ -96,8 +94,8 @@ public interface IUnidadeEstruturalService {
 
 
     /**
-     * @param designacao Designação do Tipo de Unidade Estrutural
-     * @param descricao Descrição do Tipo de Unidade Estrutural
+     * @param designacao             Designação do Tipo de Unidade Estrutural
+     * @param descricao              Descrição do Tipo de Unidade Estrutural
      * @param nivelHierarquicoMaximo Nível Hierárquico Máximo para este Tipo de Unidade Estrutural
      * @return Tipo de Unidade Estrutural inserido
      * @throws Exception
@@ -110,11 +108,10 @@ public interface IUnidadeEstruturalService {
 
 
     /**
-     *
-     * @param id Identificador do Tipo de Unidade Estrutural
-     * @param designacao Designação do Tipo de Unidade Estrutural
-     * @param descricao Descrição do Tipo de Unidade Estrutural
-     * @param nivelHierarquicoMaximo Nível Hierárquico Máximo para este Tipo de Unidade Estrutural
+     * @param id                        Identificador do Tipo de Unidade Estrutural
+     * @param designacao                Designação do Tipo de Unidade Estrutural
+     * @param descricao                 Descrição do Tipo de Unidade Estrutural
+     * @param nivelHierarquicoMaximoMae Indica o nível hierarquico máximo para o Tipo de Unidade Estrutural Mãe
      * @return Tipo de Unidade Estrutural actualizado
      * @throws Exception
      */
@@ -122,7 +119,7 @@ public interface IUnidadeEstruturalService {
             Long id,
             Optional<String> designacao,
             Optional<String> descricao,
-            Optional<Integer> nivelHierarquicoMaximo
+            Optional<Integer> nivelHierarquicoMaximoMae
     ) throws Exception;
 
 
@@ -135,37 +132,45 @@ public interface IUnidadeEstruturalService {
 
 
     /**
-     * @param unidadeEstrutural_id Identificador da Unidade Estrutural a que pertencem as instalações
+     * @param unidadeestrutural_id Identificador da Unidade Estrutural a que pertencem as instalações
      * @return Colecção de Instalações
      * @throws Exception
      */
     Collection<Instalacao> obterInstalacoes(
-            Long unidadeEstrutural_id
+            Long unidadeestrutural_id
     ) throws Exception;
 
-
     /**
-     * @param unidadeEstrutural_id Identificador da Unidade Estrutural
      * @param instalacao_id Identificador da Instalação
      * @return Instalação
      * @throws Exception
      */
     Instalacao obterInstalacao(
-            Long unidadeEstrutural_id,
+            Long instalacao_id
+    ) throws Exception;
+
+    /**
+     * @param unidadeestrutural_id Identificador da Unidade Estrutural
+     * @param instalacao_id        Identificador da Instalação
+     * @return Instalação
+     * @throws Exception
+     */
+    Instalacao obterInstalacao(
+            Long unidadeestrutural_id,
             Long instalacao_id
     ) throws Exception;
 
 
     /**
-     * @param unidadeEstrutural_id Identificador da Unidade Estrutural
-     * @param designacao Designação da Instalação
-     * @param descricao Descrição da Instalação
-     * @param localizacao Descrição da Localização da Instalação
+     * @param unidadeestrutural_id Identificador da Unidade Estrutural
+     * @param designacao           Designação da Instalação
+     * @param descricao            Descrição da Instalação
+     * @param localizacao          Descrição da Localização da Instalação
      * @return Instalação inserida
      * @throws Exception
      */
     Instalacao inserirInstalacao(
-            Long unidadeEstrutural_id,
+            Long unidadeestrutural_id,
             String designacao,
             String descricao,
             String localizacao
@@ -173,29 +178,33 @@ public interface IUnidadeEstruturalService {
 
 
     /**
-     * @param instalacao_id Identificador da Instalação
-     * @param unidadeEstrutural_id Identificador da Unidade Estrutural
-     * @param designacao Designação da Instalação
-     * @param descricao Descrição da Instalação
-     * @param localizacao Descrição da Localização da Instalação
+     * @param instalacao_id                   Identificador da Instalação
+     * @param unidadeestrutural_id            Identificador da Unidade Estrutural
+     * @param designacao                      Designação da Instalação
+     * @param descricao                       Descrição da Instalação
+     * @param localizacao                     Descrição da Localização da Instalação
+     * @param unidadeestruturalreafectacao_id Identificador da Unidade Estrutural para reafectação desta instalacao
      * @return Instalação actualizada
      * @throws Exception
      */
     Instalacao actualizarInstalacao(
             Long instalacao_id,
-            Optional<Long> unidadeEstrutural_id,
+            Long unidadeestrutural_id,
             Optional<String> designacao,
             Optional<String> descricao,
-            Optional<String> localizacao
+            Optional<String> localizacao,
+            Optional<Long> unidadeestruturalreafectacao_id
     ) throws Exception;
 
 
     /**
      * @param instalacao_id Identificador da Instalação
+     * @param unidadeestrutural_id            Identificador da Unidade Estrutural
      * @return Instalação eliminada
      * @throws Exception
      */
     Instalacao eliminarInstalacao(
-            Long instalacao_id
+            Long instalacao_id,
+            Long unidadeestrutural_id
     ) throws Exception;
 }

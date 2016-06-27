@@ -25,7 +25,7 @@ public class UnidadeEstrutural extends RsbEntidadeAbstracta {
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipoUnidadeEstrutural_id")
     private TipoUnidadeEstrutural tipoUnidadeEstrutural;
-    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Integer nivelHierarquico;
 
     /**
