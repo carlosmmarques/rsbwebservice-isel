@@ -8,6 +8,4 @@ package pt.isel.ps.li61n.controller;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 public class RsbBaseController<T> {
-//    @Autowired
-//    public JpaRepository<T, Long> pessoal_Repository;
 }
