@@ -27,13 +27,25 @@ repositories {
 
 
 dependencies {
+
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+	// Retrofit & OkHttp
+	//compile 'com.squareup.retrofit2:retrofit:2.1.0'
+	// GSON
+	//compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+	// Just GSON
+	compile 'com.google.code.gson:gson:2.7'
+
+    // Async Http Client
+	compile group: 'org.asynchttpclient', name: 'async-http-client', version: '2.0.6'
+
 	runtime("com.h2database:h2")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
 
 eclipse {
 	classpath {

@@ -24,25 +24,26 @@ public class Presenca extends Identity< Long > {
     private Long periodoId;
 
     // Fk Pessoal -> Obter IdInterno
-    private int elementoId;
+    //private long elementoId;
+    private Pessoal elemento;
 
     // FK TipoPresenca
-    private String TipoPresencaId;
+    private String tipoPresencaId;
 
     // FK pessoal -> obter IdInterno;
-    private Long elementoReforcoReforcadoId;
+    private Pessoal elementoReforcoReforcado;
 
     // FK pessoal -> obter IdInterno;
     //private String elementoReforcadoId;
 
-    // se é reforco não é reforcado
+    // se é reforco não é reforcado. Se for null, não tem .
     private Boolean reforcoNaoReforcado;
 
     // Fk instalacao onde foi efectuado a presença
     private Long instalacaoId;
 
     // Fk PostoFuncional -> obter designacao
-    private Long postoFuncionalId;
+    private PostoFuncional postoFuncional;
 
     // FK Turno -> obter designacao
     private Long turnoId;
@@ -54,9 +55,8 @@ public class Presenca extends Identity< Long > {
     //
     /////////////////////////////////////
 
-
-    public void setElementoReforcoReforcadoId(Long elementoReforcoReforcadoId) {
-        this.elementoReforcoReforcadoId = elementoReforcoReforcadoId;
+    public void setElementoReforcoReforcado( Pessoal elementoReforcoReforcado ) {
+        this.elementoReforcoReforcado = elementoReforcoReforcado;
     }
 
     public Long getPeriodoId() {
@@ -68,11 +68,11 @@ public class Presenca extends Identity< Long > {
     }
 
     public String getTipoPresencaId() {
-        return TipoPresencaId;
+        return tipoPresencaId;
     }
 
-    public void setTipoPresencaId(String tipoPresencaId) {
-        TipoPresencaId = tipoPresencaId;
+    public void setTipoPresencaId( String tipoPresencaId ){
+        this.tipoPresencaId = tipoPresencaId;
     }
 
     public LocalDate getData() {
@@ -107,12 +107,12 @@ public class Presenca extends Identity< Long > {
         this.instalacaoId = instalacaoId;
     }
 
-    public Long getPostoFuncionalId() {
-        return postoFuncionalId;
+    public PostoFuncional getPostoFuncional() {
+        return this.postoFuncional;
     }
 
-    public void setPostoFuncionalId(Long postoFuncionalId) {
-        this.postoFuncionalId = postoFuncionalId;
+    public void setPostoFuncional( PostoFuncional postoFuncional ) {
+        this.postoFuncional = postoFuncional;
     }
 
     public Long getTurnoId() {
@@ -123,19 +123,41 @@ public class Presenca extends Identity< Long > {
         this.turnoId = turnoId;
     }
 
-    public int getElementoId() {
-        return elementoId;
+    public Pessoal getElemento() {
+        return elemento;
     }
 
-    public void setElementoId(int elementoId) {
-        this.elementoId = elementoId;
+    public void setElemento(Pessoal elemento) {
+        this.elemento = elemento;
+    }
+
+    public boolean isReforcoNaoReforcado() {
+        return reforcoNaoReforcado;
+    }
+
+    public void setReforcoNaoReforcado(boolean reforcoNaoReforcado) {
+        this.reforcoNaoReforcado = reforcoNaoReforcado;
     }
 
     public Boolean getReforcoNaoReforcado() {
         return reforcoNaoReforcado;
     }
 
-    public void setReforcoNaoReforcado(Boolean reforcoNaoReforcado) {
+    public void setReforcoNaoReforcado (Boolean reforcoNaoReforcado) {
         this.reforcoNaoReforcado = reforcoNaoReforcado;
+    }
+
+    /*
+    public Pessoal getElemento() {
+        return elemento;
+    }
+
+    public void setElemento( Pessoal elemento ) {
+        this.elemento = elemento;
+    }
+    */
+
+    public Pessoal getElementoReforcoReforcadoId() {
+        return elementoReforcoReforcado;
     }
 }
