@@ -1,6 +1,8 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
+
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
@@ -16,6 +18,7 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@ConditionalOnMissingBean( IPresencasRepository.class )
 @Component
 public class PresencasMemRepo implements IPresencasRepository {
 
@@ -60,6 +63,9 @@ public class PresencasMemRepo implements IPresencasRepository {
 
     private void populate(){
 
+        //TODO: Actualizar!!!
+
+        /*
         //
         // Lista de presenças do B.Sap 510 em Dezembro 2015
         //
@@ -572,6 +578,6 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia30Dez2015_troca.setPostoFuncionalId( postoFuncionalId_default );
         dia30Dez2015_troca.setTurnoId( 4L );
         insert( dia30Dez2015_troca );
-
+        */
     }
 }

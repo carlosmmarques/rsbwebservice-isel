@@ -9,5 +9,5 @@ import pt.isel.ps.li61n.model.entities.Pessoal;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public interface IPessoalRepository extends IRepository< Integer, Pessoal> {
+public interface IPessoalRepository extends IRepository< Long, Pessoal> {
 }

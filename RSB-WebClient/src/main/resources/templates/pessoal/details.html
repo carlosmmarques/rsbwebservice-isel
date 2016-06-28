@@ -8,7 +8,11 @@
 <body>
     <!-- Detalhes de uma pessoa -->
     <div>
-        <h2><span th:text="${pessoa.name}">Nome do Bombeiro</span></h2>
+        <h2><span th:text="${pessoa.nome}">Nome do Bombeiro</span></h2>
+        <h3>Número mecanográfico: </h3> <span th:text="${pessoa.numMecanografico}">1234</span>
+        <h3>Identificador Interno: </h3> <span th:text="${pessoa.idInterno}">1234</span>
+        <h3>Categoria: </h3> <span th:text="${pessoa.categoria}">B.Sapador</span>
+
         <!--
             "id": ​0,
             "uri_pessoa": "",
@@ -33,33 +37,6 @@
         -->
     </div>
 
-    <!-- Operações -->
-    <div>
-        <h3>Nesta página poderá fazer:</h3>
-        <ul>
-            <li><!-- Editar detalhes -->
-                <a href="#">
-                    Editar detalhes.
-                </a>
-            </li>
-            <li><!-- Marcar Férias -->
-                <a href="#">
-                    Marcar Férias.
-                </a>
-            </li>
-            <li><!-- Fazer Troca -->
-                <a href="#">
-                    Fazer troca.
-                </a>
-            </li>
-            <li><!-- Pedir dispensa -->
-                <a href="#">
-                    Pedir dispensa.
-                </a>
-            </li>
-        </ul>
-
-    </div>
     <!-- footer -->
     <div th:replace="templates :: footer"></div>
 

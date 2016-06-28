@@ -14,6 +14,8 @@ public class RsbWebClientApplication {
 
 	public static final String MAPA_FORCA_URL = "/mapaForca";
 
+    public static final String PESSOAL = "/pessoal";
+
 	public static void main(String[] args) {
 		SpringApplication.run(RsbWebClientApplication.class, args);
 	}

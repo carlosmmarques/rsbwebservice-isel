@@ -15,6 +15,7 @@
             <thead>
                 <tr>
                     <th>N.º/Nome</th>
+                    <th>Categoria</th>
                     <th>Nome</th>
                 </tr>
             </thead>
@@ -24,8 +25,11 @@
                         <span th:text="${p.idInterno}">p.idInterno</span>
                     </td>
                     <td>
+                        <span th:text="${p.categoria}">categoria</span>
+                    </td>
+                    <td>
                         <a href="details.html" th:href="${p.uri_pessoa}">
-                            <span th:text="${p.name}">p.name</span>
+                            <span th:text="${p.nome}">p.name</span>
                         </a>
                     </td>
                 </tr>

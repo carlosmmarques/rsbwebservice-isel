@@ -161,7 +161,11 @@
         <!-- Geração dinâmica  (V2 - Map<Integer,PresencaUI> -->
         <tr th:each="presenca : *{presencas.values()}">
             <td><span th:text="${presenca.postoElemento}">S/Ch 2ª</span></td>
-            <td colspan="2"><span th:text="${presenca.idInternoElemento}">318</span></td> <!-- IdInterno -->
+            <td colspan="2">
+                <a href="#" th:href="${presenca.url_detalhesElemento}">
+                    <span th:text="${presenca.idInternoElemento}">318</span>
+                </a>
+            </td> <!-- IdInterno -->
             <td th:each="p : ${presenca.presencas}" th:text="${p}" th:colspan="1" colspan="62"></td>
         </tr>
     </table>

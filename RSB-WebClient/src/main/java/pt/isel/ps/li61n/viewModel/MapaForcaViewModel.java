@@ -1,10 +1,9 @@
 package pt.isel.ps.li61n.viewModel;
 
-import pt.isel.ps.li61n.model.IMapaForcaLogic;
 import pt.isel.ps.li61n.model.IPessoalLogic;
-import pt.isel.ps.li61n.model.dal.mem.PresencasMemRepo;
 import pt.isel.ps.li61n.model.entities.Pessoal;
 import pt.isel.ps.li61n.model.entities.Presenca;
+import pt.isel.ps.li61n.util.web.UrlGenerator;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -24,7 +23,7 @@ public class MapaForcaViewModel {
     public final String periodo;
 
     // Versão 2
-    public final Map< Integer, PresencaUI > presencas;
+    public final Map< Long, PresencaUI > presencas;
 
     // Versão 1
     //public final String[][] presencas;
@@ -83,7 +82,7 @@ public class MapaForcaViewModel {
     }
     */
 
-    private Map< Integer, PresencaUI > gerarTabelaPresencas( Collection<Presenca> presencas ) {
+    private Map< Long, PresencaUI > gerarTabelaPresencas( Collection<Presenca> presencas ) {
 
         //TODO: obter com base nas presencas
         int numDias = 31;  // TODO: (Reflexão) Se assumir que as presenças são sempre agrupadas em periodos
@@ -93,12 +92,12 @@ public class MapaForcaViewModel {
         int numTurnosPorDia = 2;
         int numElementos = 1;
 
-        HashMap< Integer, PresencaUI > tabela = new HashMap<>();
+        HashMap< Long, PresencaUI > tabela = new HashMap<>();
 
         for( Presenca p : presencas ) {
 
-            Integer elementoId = p.getElementoId();
-
+            Pessoal elemento = p.getElemento();
+            Long elementoId = elemento.getId();
             //
             // gerar ou obter contentor de registos presenças
             //
@@ -108,14 +107,15 @@ public class MapaForcaViewModel {
             }
             else{ // Criar registo de presenças
 
-                Pessoal elemento = _pessoalLogic.getOne( elementoId );
+                //Pessoal elemento = _pessoalLogic.getOne( elementoId );
 
                 registos = new String[ numDias * numTurnosPorDia ];
 
                 PresencaUI registoElemento = new PresencaUI(
                         elemento.getIdInterno()
-                        ,elemento.getPostoFuncionalId()
+                        ,p.getPostoFuncional() == null ? "" : p.getPostoFuncional().getDesignacao()
                         ,registos
+                        , UrlGenerator.detalhesPessoal( elementoId )
                 );
 
                 tabela.put( elementoId, registoElemento );

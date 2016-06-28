@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPessoalRepository;
 import pt.isel.ps.li61n.model.entities.Pessoal;
@@ -14,10 +16,12 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@ConditionalOnMissingBean( IPessoalRepository.class )
 @Component
 public class PessoalMemRepo implements IPessoalRepository {
 
-    private HashMap< Integer, Pessoal > _repo;
+    private HashMap< Long, Pessoal > _repo;
+    private long _repoSize;
 
     public PessoalMemRepo() {
 
@@ -27,29 +31,31 @@ public class PessoalMemRepo implements IPessoalRepository {
     }
 
     @Override
-    public Integer insert( Pessoal element ) {
-        Integer numMecanografico = element.getNumMecanografico() ;// PK
-        _repo.put( numMecanografico, element );
-        return numMecanografico;
+    public Long insert( Pessoal element ) {
+        Long id = new Long( _repoSize );
+        _repoSize++;
+        element.setId( id );
+        _repo.put( id, element );
+        return id;
     }
 
     @Override
-    public Pessoal selectOne( Integer integer ){
-        return _repo.get( integer );
+    public Pessoal selectOne( Long id ){
+        return _repo.get( id );
     }
 
     @Override
     public Collection<Pessoal> selectAll() {
+        return _repo.values();
+    }
+
+    @Override
+    public void delete( Long integer) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void delete(Integer integer) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void update(Integer integer) {
+    public void update( Long integer) {
         throw new NotImplementedException();
     }
 
