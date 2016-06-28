@@ -19,6 +19,8 @@ public interface IPessoalService {
 
 
     /**
+     *
+     * @param nummecanografico
      * @param postofuncional_id Identificador do Posto Funcional (Opcional)
      * @param turno_id Identificadro do Turno (Opcional)
      * @param instalacao_id Identificador da Instalação (Opcional)
@@ -28,7 +30,7 @@ public interface IPessoalService {
      * @return Colecção de elementos do pessoal
      */
     Collection<ElementoDoPessoal> obterElementosDoPessoal(
-            Optional<Long> postofuncional_id,
+            Optional<String> nummecanografico, Optional<Long> postofuncional_id,
             Optional<Long> turno_id,
             Optional<Long> instalacao_id,
             Optional<Long> categoria_id,

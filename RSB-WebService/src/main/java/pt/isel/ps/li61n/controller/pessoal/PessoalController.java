@@ -56,11 +56,12 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterElementosDoPessoal(
-            @RequestParam(value = "postofuncional_id", required = true) Optional<Long> postofuncional_id,
-            @RequestParam(value = "turno_id", required = true) Optional<Long> turno_id,
-            @RequestParam(value = "instalacao_id", required = true) Optional<Long> instalacao_id,
-            @RequestParam(value = "categoria_id", required = true) Optional<Long> categoria_id,
-            @RequestParam(value = "formacao_id", required = true) Optional<Long> formacao_id,
+            @RequestParam(value = "nummecanografico", required = false) Optional<String> nummecanografico,
+            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
             @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
             HttpServletRequest request
     ) throws Exception {
@@ -69,6 +70,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             final List<PessoalDTO> pessoalDTOs = new LinkedList<>();
             pessoalService.obterElementosDoPessoal(
+                    nummecanografico,
                     postofuncional_id,
                     turno_id,
                     instalacao_id,

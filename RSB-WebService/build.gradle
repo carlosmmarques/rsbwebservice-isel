@@ -46,6 +46,7 @@ dependencies {
 	// DB:
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+//	testCompile('jsonpath:com.jayway.jsonpath')
 }
 
 

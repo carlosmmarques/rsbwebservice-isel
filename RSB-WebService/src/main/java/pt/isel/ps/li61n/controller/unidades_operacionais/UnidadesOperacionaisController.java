@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
-import pt.isel.ps.li61n.controller.dto.*;
+import pt.isel.ps.li61n.controller.dto.GuarnicaoDTO;
+import pt.isel.ps.li61n.controller.dto.TipoUnidadeOperacionalDTO;
+import pt.isel.ps.li61n.controller.dto.UnidadeOperacionalDTO;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
-import pt.isel.ps.li61n.model.entities.*;
+import pt.isel.ps.li61n.model.entities.Guarnicao;
+import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
+import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
 import pt.isel.ps.li61n.model.services.IUnidadeOperacionalService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +34,7 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping(value = "/unidadeoperacional")
-public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOperacional>{
+public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOperacional> {
     /**
      * Instância do Serviço
      */
@@ -66,7 +70,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     }
 
     /**
-     * @param id Identificador da Unidade Operacional
+     * @param id      Identificador da Unidade Operacional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
@@ -91,12 +95,12 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
 
 
     /**
-     * @param designacao             Designação do Unidade Operacional
+     * @param designacao                Designação do Unidade Operacional
      * @param tipounidadeoperacional_id Tipo da Unidade Operacional
-     * @param operacional            Indica se a Unidade Operacional está em condições de operacionalidade
+     * @param operacional               Indica se a Unidade Operacional está em condições de operacionalidade
      * @param instalacao_id             Instalação a que a unidade está atribuida
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                  nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -124,13 +128,13 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
 
 
     /**
-     * @param id                     Identificador da Unidade Esturtural a actualizar
-     * @param designacao             Designação do Unidade Operacional
+     * @param id                        Identificador da Unidade Esturtural a actualizar
+     * @param designacao                Designação do Unidade Operacional
      * @param tipounidadeoperacional_id Tipo da Unidade Operacional
-     * @param operacional            Indica se a Unidade Operacional está em condições de operacionalidade
+     * @param operacional               Indica se a Unidade Operacional está em condições de operacionalidade
      * @param instalacao_id             Instalação a que a unidade está atribuida
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                  nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
@@ -161,7 +165,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
 
 
     /**
-     * @param id Identificador da Unidade Operacional a eliminar
+     * @param id      Identificador da Unidade Operacional a eliminar
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
@@ -210,7 +214,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
 
 
     /**
-     * @param id Identificador do Tipo de Unidade Operacional
+     * @param id      Identificador do Tipo de Unidade Operacional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
@@ -240,8 +244,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     /**
      * @param designacao Designação do Tipo de Unidade Operacional
      * @param descricao  Descrição do Tipo de Unidade Operacional
-     * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                  nomeadamente do URI.
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -275,8 +279,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param id         Identificador do Tipo de Unidade Operacional
      * @param designacao Designação do Tipo de Unidade Operacional
      * @param descricao  Descrição do Tipo de Unidade Operacional
-     * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                  nomeadamente do URI.
+     * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -308,7 +312,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     }
 
     /**
-     * @param id Identificador do Tipo de Unidade Operacional
+     * @param id      Identificador do Tipo de Unidade Operacional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
@@ -338,8 +342,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
 
     /**
      * @param unidadeoperacional_id Identificador da Unidade Operacional a que pertencem as instalações
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
@@ -368,8 +372,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     /**
      * @param unidadeoperacional_id Identificador da Unidade Operacional
      * @param guarnicao_id          Identificador da Guarnicao
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      * @throws Exception
      */
@@ -401,8 +405,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param responsabilidadeOperacional_id Identificador da ResponsabilidadeOperacional
      * @param qtdminima                      Quantidade Mínima de meios
      * @param qtdmaxima                      Quantidade Máxima de meios
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                       nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -420,7 +424,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Guarnicao guarnicao = unidadeOperacionalService
                     .inserirGuarnicao(
-                        unidadeoperacional_id,
+                            unidadeoperacional_id,
                             responsabilidadeOperacional_id,
                             qtdminima,
                             qtdmaxima
@@ -442,8 +446,8 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param responsabilidadeOperacional_id Identificador da ResponsabilidadeOperacional
      * @param qtdminima                      Quantidade Mínima de meios
      * @param qtdmaxima                      Quantidade Máxima de meios
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                       nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -461,7 +465,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Guarnicao guarnicao = unidadeOperacionalService.actualizarGuarnicao(
-                guarnicao_id,
+                    guarnicao_id,
                     unidadeOperacional_id,
                     responsabilidadeOperacional_id,
                     qtdminima,
@@ -479,10 +483,10 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     }
 
     /**
-     * @param guarnicao_id Identificador da Guarnicao
+     * @param guarnicao_id          Identificador da Guarnicao
      * @param unidadeoperacional_id
-     * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                                 nomeadamente do URI.
+     * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -497,7 +501,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Guarnicao guarnicao = unidadeOperacionalService.eliminarGuarnicao(
-                guarnicao_id,
+                    guarnicao_id,
                     unidadeoperacional_id
             );
             return new ResponseEntity<>(

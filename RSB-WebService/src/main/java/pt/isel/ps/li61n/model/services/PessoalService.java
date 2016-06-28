@@ -70,6 +70,8 @@ public class PessoalService implements IPessoalService {
 
 
     /**
+     *
+     * @param nummecanografico
      * @param postofuncional_id              Identificador do Posto Funcional (Opcional)
      * @param turno_id                       Identificadro do Turno (Opcional)
      * @param instalacao_id                  Identificador da Instalação (Opcional)
@@ -81,6 +83,7 @@ public class PessoalService implements IPessoalService {
     @Override
     @Transactional(readOnly = true)
     public Collection<ElementoDoPessoal> obterElementosDoPessoal(
+            Optional<String> nummecanografico,
             Optional<Long> postofuncional_id,
             Optional<Long> turno_id,
             Optional<Long> instalacao_id,
@@ -89,6 +92,7 @@ public class PessoalService implements IPessoalService {
             Optional<Long> responsabilidadeoperacional_id
     ) throws Exception {
         List pessoas = pessoalRepo.findAll().stream()
+                .filter(pessoa -> nummecanografico.map(v-> v.equals(pessoa.getNumMecanografico())).orElse(true))
                 .filter(pessoa -> postofuncional_id.map(v -> v.equals(pessoa.getPostoFuncional().getId())).orElse(true))
                 .filter(pessoa -> turno_id.map(v -> v.equals(pessoa.getTurno().getId())).orElse(true))
                 .filter(pessoa -> instalacao_id.map(v -> v.equals(pessoa.getInstalacao().getId())).orElse(true))

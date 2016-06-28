@@ -22,7 +22,7 @@ public class ElementoDoPessoal extends RsbEntidadeAbstracta {
     @Column(nullable = true)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String idInterno;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String Matricula;
     @Column(unique = true, nullable = false)
