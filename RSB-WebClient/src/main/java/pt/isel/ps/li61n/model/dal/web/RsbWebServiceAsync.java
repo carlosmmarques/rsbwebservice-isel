@@ -16,12 +16,18 @@
 package pt.isel.ps.li61n.model.dal.web;
 
 import com.google.gson.Gson;
+import org.asynchttpclient.Param;
 import org.asynchttpclient.Response;
+import org.springframework.stereotype.Component;
+import pt.isel.ps.li61n.model.dal.web.dtos.ErrorDto;
+import pt.isel.ps.li61n.model.dal.web.exceptions.WebServiceException;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.util.web.HttpAsync;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.lang.reflect.Type;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created on 24/06/2016.
@@ -29,29 +35,43 @@ import java.lang.reflect.Type;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@Component
 public class RsbWebServiceAsync {
 
-    public static final String API_BASE_URL = "http://localhost:1234";
+    public static final String
+        API_BASE_URL = "http://localhost:1234"
+        ,CATEGORIAS_URL = "/pessoal/categoria"
+        ,POSTOS_FUNCIONAIS_URL = "/pessoal/postofuncional"
+        ,TIPOS_PRESENCA_URL = "/presenca/tipo"
+        ,UNIDADES_ESTRUTURAIS_URL = "/unidadeestrutural"
+        ,TIPOS_UNIDADE_ESTRUTURAL_URL = "/unidadeestrutural/tipo"
+        ,INSTALACOES_URL = "/unidadeestrutural/%s/instalacao"
+
+        ,TURNOS_URL = "/turno"
+    ;
 
     //TODO: MELHORAR
-    final String user = "user";
-    final String password = "password";
+    private static final String user = "user";
+    private static final String password = "password";
 
-    private final Gson _jsonReader;
-    private final HttpAsync _httpAsync;
+    private static final Gson _jsonReader = new Gson();
+    private static final HttpAsync _httpAsync = new HttpAsync();
 
-    public RsbWebServiceAsync(Gson _jsonReader, HttpAsync _httpAsync ) {
+    /*
+    public RsbWebServiceAsync( Gson _jsonReader, HttpAsync _httpAsync ) {
         this._jsonReader = _jsonReader;
         this._httpAsync = _httpAsync;
     }
 
     public RsbWebServiceAsync(){
         this( new Gson(), new HttpAsync() );
+        System.out.println( "RsbWebServiceAsync" );
     }
+    */
 
     // TODO: Reflectir sobre a possibilidade de trabalhar com Type em vez de 'Class'
 
-    public < T > CompletableFuture< T >  callActionAndConvert( Class< T >  destKlass, String action, Object...args ) {
+    public static < T > CompletableFuture< T >  callActionAndConvert( Class< T >  destKlass, String action, Object...args ) {
         final String uri = String.format( action, args );
         return _httpAsync
                 .getDataAsyncWithBasicAuth(
@@ -65,21 +85,87 @@ public class RsbWebServiceAsync {
                         String msg = "Status code = " + statusCode;
                         System.out.println( msg );
                         if( statusCode != 200 ) {
-                            // TODO: Tratar dos erros!!
-                            throw new RuntimeException( msg );
+                            ErrorDto errorDto = fromJson( resp, ErrorDto.class );
+                            throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
                         }
                         return  fromJson( resp, destKlass);
                     }
                 );
     }
 
+    public static < T > CompletableFuture< T >  callActionAndConvert(
+                                            Class< T >  destKlass
+                                            ,List<Param> parameters
+                                            ,String action
+                                            ,Object...args
+    ) {
+        final String uri = String.format( action, args );
 
-    private <T> T fromJson( Response resp, Class<T> destKlass  ) {
+        CompletableFuture< Response > aux = _httpAsync
+                                        .getDataAsyncWithBasicAuth(
+                                            API_BASE_URL + uri
+                                            ,user
+                                            ,password
+                                            ,parameters
+                                        );
+        Response resp = null;
+        try {
+            resp = aux.get();
+        }
+        catch(InterruptedException | ExecutionException e ) {
+
+        }
+        CompletableFuture result = new CompletableFuture();
+
+        int statusCode = resp.getStatusCode();
+        String msg = "Status code = " + statusCode;
+        System.out.println( msg );
+        if( statusCode != 200 ) {
+            ErrorDto errorDto = fromJson( resp, ErrorDto.class );
+            result.completeExceptionally( new WebServiceException( errorDto.url, errorDto.message, statusCode ) );
+        }
+        else{
+            result.complete(  fromJson( resp, destKlass)  );
+        }
+        return result;
+    }
+
+
+    public static < T > CompletableFuture< T >  callPostActionAndConvert(
+                                                Class< T >  destKlass
+                                                ,List< Param > parameters
+                                                ,String action
+                                                ,Object...args
+    ) {
+        final String uri = String.format( action, args );
+        return _httpAsync
+                .postDataAsyncWithBasicAuth(
+                        API_BASE_URL + uri
+                        ,user
+                        ,password
+                        ,parameters
+                )
+                .thenApply(
+                        resp -> {
+                            int statusCode = resp.getStatusCode();
+                            String msg = "Status code = " + statusCode;
+                            System.out.println( msg );
+                            if( statusCode >= 300 ) {
+                                ErrorDto errorDto = fromJson( resp, ErrorDto.class );
+                                throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
+                            }
+                            return  fromJson( resp, destKlass );
+                        }
+                );
+    }
+
+
+    private static <T> T fromJson( Response resp, Class<T> destKlass  ) {
         return _jsonReader.fromJson( resp.getResponseBody(), destKlass );
     }
 
 
-    public <T> CompletableFuture< T >  callAndConvert( Class<T> destKlass, String uri ) {
+    public static <T> CompletableFuture< T >  callAndConvert( Class<T> destKlass, String uri ) {
         //final String uri = String.format( action, args );
         return _httpAsync
                 .getDataAsyncWithBasicAuth(
@@ -93,8 +179,8 @@ public class RsbWebServiceAsync {
                             String msg = "Status code = " + statusCode;
                             System.out.println( msg );
                             if( statusCode != 200 ) {
-                                // TODO: Tratar dos erros!!
-                                throw new RuntimeException( msg );
+                                ErrorDto errorDto = fromJson( resp, ErrorDto.class );
+                                throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
                             }
                             return  fromJson( resp, destKlass );
                         }

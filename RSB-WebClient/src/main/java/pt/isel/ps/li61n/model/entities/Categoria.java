@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.entities;
 
+import java.time.LocalDate;
 import java.util.Queue;
 
 /**
@@ -10,15 +11,15 @@ import java.util.Queue;
  */
 public class Categoria extends Identity< Long > {
 
-    private String descrição;
+    private String descricao;
     private String abreviatura;
 
-    public String getDescrição() {
-        return descrição;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescrição(String descrição) {
-        this.descrição = descrição;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getAbreviatura() {

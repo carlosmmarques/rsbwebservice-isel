@@ -6,7 +6,7 @@
     <title>Lista do Pessoal</title>
 </head>
 <body>
-    <!-- Lista do Pessoal -->
+    <!-- Lista do Elemento -->
     <div th:unless="${#lists.isEmpty(pessoal)}">
 
         <h2> Lista do pessoal.</h2>
@@ -45,7 +45,7 @@
         <h3>Nesta página poderá fazer:</h3>
         <ul>
             <li><!-- Registar uma pessoa -->
-                <a href="#" ><!--th:href="@{/pessoal/insert}">-->
+                <a href="/insert" th:href="@{/pessoal/registar}">
                     Registar uma pessoa.
                 </a>
             </li>

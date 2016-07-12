@@ -6,5 +6,33 @@ package pt.isel.ps.li61n.model.entities;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class Instalacao {
+public class Instalacao extends Identity<Long> {
+
+    private String localizacao;
+    private String designacao;
+    private String descricao;
+
+    public String getLocalizacao() {
+        return localizacao;
+    }
+
+    public void setLocalizacao(String localizacao) {
+        this.localizacao = localizacao;
+    }
+
+    public String getDesignacao() {
+        return designacao;
+    }
+
+    public void setDesignacao(String designacao) {
+        this.designacao = designacao;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }

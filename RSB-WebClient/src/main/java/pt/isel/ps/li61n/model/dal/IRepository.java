@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model.dal;
 
+import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
+
 import java.util.Collection;
 
 /**
@@ -10,11 +12,11 @@ import java.util.Collection;
  */
 public interface IRepository < Id, Type > {
 
-    Id insert( Type element );
+    Id insert( Type element ) throws RepositoryException;
 
-    Type selectOne( Id id );
+    Type selectOne( Id id ) throws RepositoryException;
 
-    Collection< Type > selectAll();
+    Collection< Type > selectAll() throws RepositoryException;
 
     void delete( Id id );
 

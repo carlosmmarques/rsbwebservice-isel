@@ -1,7 +1,9 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
-import pt.isel.ps.li61n.model.dal.IUnidadeEstruturalRepository;
+import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
+import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -14,14 +16,14 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@ConditionalOnMissingBean( IUnidadesEstruturaisRepository.class )
 @Component
-public class UnidadeEstruturalMemRepo
-                implements IUnidadeEstruturalRepository {
+public class UnidadesEstruturaisMemRepo implements IUnidadesEstruturaisRepository {
 
     private HashMap< Long, UnidadeEstrutural > _repo;
     private long _repoSize;
 
-    public UnidadeEstruturalMemRepo( ){
+    public UnidadesEstruturaisMemRepo( ){
         _repo = new HashMap<>();
         _repoSize = 0;
 
@@ -54,6 +56,11 @@ public class UnidadeEstruturalMemRepo
 
     @Override
     public void update(Long aLong) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Collection< Instalacao > selectAllInstalacoes() {
         throw new NotImplementedException();
     }
 

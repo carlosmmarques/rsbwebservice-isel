@@ -6,7 +6,7 @@
     <title>Lista de Unidades Estruturais</title>
 </head>
 <body>
-    <!-- Lista do Pessoal -->
+    <!-- Lista do Elemento -->
     <div th:unless="${#lists.isEmpty(ues)}">
 
         <h2> Lista de unidades estruturais.</h2>
@@ -26,7 +26,7 @@
                         </a>
                     </td>
                     <td>
-                        <span th:text="${ue.getTipo().getDesignacao()}">Companhia</span>
+                        <span th:if="${ue.getTipo() != null }" th:text="${ue.getTipo().getDesignacao()}">Companhia</span>
 
                     </td>
                 </tr>

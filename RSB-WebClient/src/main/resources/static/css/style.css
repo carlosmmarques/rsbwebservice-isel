@@ -5,7 +5,7 @@ table#mapaforca {
 }
 
 td, th{
-    border: 0.5px solid black;
+    border: 1 px solid black;
     text-align: center;
     width: auto;
 }
@@ -15,3 +15,18 @@ td, th{
 /*
 td, th{ border: 1px solid red }
 */
+
+
+/* Erros nos formulários */
+div.errors{
+    background-color: #ffcccc;
+    border: 2px solid red;
+}
+
+label.error{
+    color: red;
+}
+
+input.error{
+    background-color: #ffcccc;
+}

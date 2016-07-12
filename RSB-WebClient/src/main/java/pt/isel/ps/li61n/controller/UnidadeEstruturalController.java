@@ -7,7 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pt.isel.ps.li61n.model.IUnidadeEstruturalLogic;
+import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
+import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import pt.isel.ps.li61n.viewModel.CreateUnidadeEstruturalViewModel;
 
@@ -38,10 +39,10 @@ public class UnidadeEstruturalController {
         ,MODEL_UE_ELEMENT = "ue"
     ;
 
-    private IUnidadeEstruturalLogic _logic;
+    private IUnidadesEstruturaisLogic _logic;
 
     @Autowired
-    public UnidadeEstruturalController( IUnidadeEstruturalLogic logic ){
+    public UnidadeEstruturalController( IUnidadesEstruturaisLogic logic ){
         this._logic = logic;
     }
 
@@ -74,6 +75,7 @@ public class UnidadeEstruturalController {
         //obter o elemento com 'id'
         UnidadeEstrutural ue = _logic.getOne( id );
 
+        /*
         if( ue != null ){
             // obter o tipo se a ue não tiver
             if( ue.getTipo() == null ){
@@ -122,15 +124,15 @@ public class UnidadeEstruturalController {
      * @return
      */
     @RequestMapping( method = RequestMethod.POST )
-    public String insert( UnidadeEstrutural ue ){
+    public String insert( UnidadeEstrutural ue ) throws PropertyEntityException {
 
         // Representação de "Nenhuma"
         if( ue.getUnidadeEstruturalMae_id() == -1L )
             ue.setUnidadeEstruturalMae_id( null );
 
-        _logic.create( ue );
-        JdbcTemplate test;
-        return "redirect:/unidadesEstruturais/" + ue.getId();
+        Long id = _logic.create( ue );
+
+        return "redirect:/unidadesEstruturais/" + id.toString();
     }
 
     @RequestMapping(

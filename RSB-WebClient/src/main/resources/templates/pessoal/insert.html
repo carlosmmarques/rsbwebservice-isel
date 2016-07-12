@@ -4,16 +4,112 @@
 >
     <head>
         <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
         <title>Registar Pessoa</title>
     </head>
     <body>
         <!-- Formulário para inserir uma pessoa -->
+        <h1>Registar elemento:</h1>
         <div>
-        INSERIR FORMULÁRIO PARA REGISTAR PESSOA!
+            <form th:action="${action}" method="POST" th:object="${insertElementoUI}">
+                <div class="errors" th:if="${#fields.hasAnyErrors()}">
+                    <!-- Lista de erros -->
+                    <ul>
+                        <li th:each="err : ${#fields.allErrors()}"
+                            th:text="${err}">Input is incorrect</li>
+                    </ul>
+                </div>
+                <!-- Nome -->
+                <label th:class="${#fields.hasErrors('nome')} ? 'error'">Nome completo:</label>
+                <input type="text" th:field="*{nome}" th:class="${#fields.hasErrors('nome')} ? 'error'"></input><br></br>
+                <!-- Data de nascimento -->
+                <label th:class="${#fields.hasErrors('dataNascimento')} ? 'error'">Data de nascimento:</label>
+                <input type="text" th:field="*{dataNascimento}" th:class="${#fields.hasErrors('dataNascimento')} ? 'error'">
+                </input><br></br>
+                <!-- Número mecanográfico -->
+                <label th:class="${#fields.hasErrors('numMecanografico')} ? 'error'">Número mecanográfico:</label>
+                <input type="number" th:field="*{numMecanografico}" th:class="${#fields.hasErrors('numMecanografico')} ? 'error'">
+                </input><br></br>
+                <!-- Matrícula -->
+                <label th:class="${#fields.hasErrors('matricula')} ? 'error'">Matrícula:</label>
+                <input type="number" th:field="*{matricula}" th:class="${#fields.hasErrors('matricula')} ? 'error'">
+                </input><br></br>
+                <!-- Data de Ingresso -->
+                <label th:class="${#fields.hasErrors('dataIngresso')} ? 'error'">Data de ingresso:</label>
+                <input type="text" th:field="*{dataIngresso}" th:class="${#fields.hasErrors('dataIngresso')} ? 'error'">
+                </input>
+                <br></br>
+
+                <!--Categoria: ... -->
+                <span>Categoria:
+                    <select th:field="*{categoriaId}" >
+                        <option th:each="categoria:${categorias}"
+                                th:value="${categoria.getId()}"
+                                th:text="${categoria.getDescricao()}"
+                        >Lista de Categorias</option>
+                    </select>
+                    <br></br>
+                </span>
+                <br></br>
+
+                <!--Identificador Interno: <input type="text" name="idInterno"></input>-->
+
+
+                <!--Contacto: <input type="number" name="matricula"></input><br></br>-->
+
+                <!-- Posto Funcional ... -->
+                <span>Posto funcional (por omissão):
+                    <select th:field="*{postoFuncionalId}" >
+                        <option th:each="posto:${postos}"
+                                th:value="${posto.getId()}"
+                                th:text="${posto.getDesignacao()}"
+                        >Lista de postos</option>
+                    </select>
+                    <br></br>
+                </span>
+                <br></br>
+
+                <!-- Instalaaco ... -->
+                <span>Instalação (por omissão):
+                    <select th:field="*{instalacaoId}" >
+                        <option th:each="instalacao:${instalacoes}"
+                                th:value="${instalacao.getId()}"
+                                th:text="${instalacao.getDesignacao()}"
+                        >Lista de Instalações</option>
+                    </select>
+                    <br></br>
+                </span>
+                <br></br>
+
+                <!-- Tipo de presença ... -->
+                <span>Tipo de presença (por omissão):
+                    <select th:field="*{tipoPresencaId}" >
+                        <option th:each="tipo:${tiposPresenca}"
+                                th:value="${tipo.getId()}"
+                                th:text="${tipo.getDescricao()}"
+                        >Lista de Tipos de Presença</option>
+                    </select>
+                    <br></br>
+                </span>
+                <br></br>
+
+                <!-- Turno ... -->
+                <span>Turno (por omissão):
+                    <select th:field="*{turnoId}" >
+                        <option th:each="turno:${turnos}"
+                                th:value="${turno.getId()}"
+                                th:text="${turno.getDesignacao()}"
+                        >Lista de turnos</option>
+                    </select>
+                    <br></br>
+                </span>
+                <br></br>
+
+
+                <input type="submit" value="Registar"></input>
+            </form>
         </div>
-
-
+        <!-- footer -->
+        <div th:replace="templates :: footer"></div>
     </body>
-    <!-- footer -->
-    <div th:replace="templates :: footer"></div>
 </html>

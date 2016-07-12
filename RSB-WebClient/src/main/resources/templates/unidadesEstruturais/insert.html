@@ -17,10 +17,10 @@
                     <select name="tipo_id" >
                         <option th:each="tipo:${viewModel.tiposUnidadesEstruturais}"
                                 th:value="${tipo.getId()}"
-                                th:text="${tipo.getDesignacao()}">
-                        </option>
-
-                    </select><br></br>
+                                th:text="${tipo.getDesignacao()}"
+                        >Tipos de Unidades estruturais</option>
+                    </select>
+                    <br></br>
                 </span>
                 <span th:unless="${#lists.isEmpty(viewModel.unidadesEstruturaisMae)}">
                     Unidade Estrutural Mãe:
