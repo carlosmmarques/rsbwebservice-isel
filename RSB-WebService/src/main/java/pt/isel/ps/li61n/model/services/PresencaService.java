@@ -82,10 +82,12 @@ public class PresencaService implements IPresencaService {
                                 for (LocalDate date = dtInicio; date.isBefore(dtFim); date = date.plusDays(1)) {
                                     try {
                                         logger.debug(" - - - a tentar gerar presença para o dia: " + date.toString() + ".");
+                                        float numHoras = obterNumeroDehoras(turno, date);
+                                        if (numHoras == 0f) continue;
                                         inserirPresenca(
                                                 Date.valueOf(date),
                                                 obterHoraInicio(turno, date),
-                                                obterNumeroDehoras(turno, date),
+                                                numHoras,
                                                 periodo.getId(),
                                                 turno.getId(),
                                                 elementoDoPessoal.getInstalacao().getId(),
@@ -103,6 +105,12 @@ public class PresencaService implements IPresencaService {
                 });
     }
 
+    /**
+     *
+     * @param turno
+     * @param date
+     * @return hora de inicio da presença nesta data
+     */
     private Time obterHoraInicio(Turno turno, LocalDate date) {
 
         logger.debug(" - - - - A calcular a hora de inicio da presença: " + turno.getDesignacao() + " para a data " + date.toString() + ".");
@@ -189,7 +197,13 @@ public class PresencaService implements IPresencaService {
 
         for (PeriodoCicloTurno p : periodos) {
             numHoras = p.getNumHoras();
-            if (atrasoCiclo <= 0) break;
+            if (atrasoCiclo <= 0) {
+                if (p.getPeriodoDescanso()) {
+                    logger.debug("O periodo em causa é de descanso, não serão registadas horas");
+                    return 0f;
+                }
+                break;
+            }
             atrasoCiclo = atrasoCiclo - numHoras;
         }
 
