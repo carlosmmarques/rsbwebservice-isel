@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
 import java.sql.Date;
@@ -22,14 +23,14 @@ public interface IPresencaRepositorio extends JpaRepository<Presenca, Long> {
 
 
     /**
-     * @param date                 Data da presença
-     * @param elementodopessoal_id Identificador do elemento do pessoal que executa a presença
+     * @param data              Data da presença
+     * @param elementoDoPessoal Identificador do elemento do pessoal que executa a presença
      * @return
      */
-    @Query("SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal")
+    @Query(value = "SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal")
     public Optional<Presenca> findByDataAndElementoDoPessoal(
-            @Param("data") Date date,
-            @Param("elementodopessoal") Long elementodopessoal_id
+            @Param("data") Date data,
+            @Param("elementodopessoal") ElementoDoPessoal elementoDoPessoal
     );
 
 }

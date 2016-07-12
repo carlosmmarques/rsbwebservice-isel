@@ -6,6 +6,7 @@ import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -73,6 +74,7 @@ public interface IPresencaService {
      */
     Presenca inserirPresenca(
             Date data,
+            Time horainicio,
             Float numhoras,
             Long periodo_id,
             Long turno_id,

@@ -3,21 +3,21 @@ package pt.isel.ps.li61n.model.services;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
-import pt.isel.ps.li61n.model.entities.Periodo;
-import pt.isel.ps.li61n.model.entities.Presenca;
-import pt.isel.ps.li61n.model.entities.TipoPresenca;
+import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.*;
 
 import java.sql.Date;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,18 +55,153 @@ public class PresencaService implements IPresencaService {
 
 
     /**
-     * @param periodo O periodo em relação
+     * @param periodo O periodo em relação ao qual pretendemos popular as presenças
      * @throws Exception
      */
-    private void popularPresencas(Periodo periodo) throws Exception{
-        // TODO
+    private void popularPresencas(Periodo periodo) throws Exception {
+
+        logger.debug("A popular presenças para o periodo [" + periodo.getDtInicio() + " - " + periodo.getDtFim() + "]");
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(periodo.getDtInicio());
+        cal.add(Calendar.DATE, -1);
+
+        final LocalDate
+                dtInicio = periodo.getDtInicio().toLocalDate(),
+                dtFim = periodo.getDtFim().toLocalDate();
+
+
+        turnoRepo.findAll().stream()
+                .filter(turno -> turno.getDtInicioCiclo().compareTo(periodo.getDtInicio()) < 0)
+                .forEach(turno -> {
+                    logger.debug(" - Turno " + turno.getId() + " - " + turno.getDesignacao() + ".");
+                    pessoalRepo.findAll().stream()
+                            .filter(elementoDoPessoal -> elementoDoPessoal.getTurno().equals(turno))
+                            .forEach(elementoDoPessoal -> {
+                                logger.debug(" - - elemento: " + elementoDoPessoal.getId() + " - " + elementoDoPessoal.getNome() + ".");
+                                for (LocalDate date = dtInicio; date.isBefore(dtFim); date = date.plusDays(1)) {
+                                    try {
+                                        logger.debug(" - - - a tentar gerar presença para o dia: " + date.toString() + ".");
+                                        inserirPresenca(
+                                                Date.valueOf(date),
+                                                obterHoraInicio(turno, date),
+                                                obterNumeroDehoras(turno, date),
+                                                periodo.getId(),
+                                                turno.getId(),
+                                                elementoDoPessoal.getInstalacao().getId(),
+                                                elementoDoPessoal.getPostoFuncional().getId(),
+                                                elementoDoPessoal.getTipoPresenca().getId(),
+                                                elementoDoPessoal.getId(),
+                                                Optional.empty(),
+                                                Optional.empty()
+                                        );
+                                    } catch (Exception e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            });
+                });
+    }
+
+    private Time obterHoraInicio(Turno turno, LocalDate date) {
+
+        logger.debug(" - - - - A calcular a hora de inicio da presença: " + turno.getDesignacao() + " para a data " + date.toString() + ".");
+
+        Date dtInicioTurno = turno.getDtInicioCiclo();
+        Time timeInicioTurno = turno.getHrInicioCiclo();
+
+        // periodos de ciclo ordenados de forma descendente.
+        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno().getCiclos().stream()
+                .sorted((o1, o2) -> o2.getOrdemPeriodoCiclo().compareTo(o1.getOrdemPeriodoCiclo()))
+                .collect(Collectors.toList());
+
+        // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
+        final float dimensaoDoCiclo = periodos.stream()
+                .map(PeriodoCicloTurno::getNumHoras)
+                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
+                .get()
+                /24;
+
+        logger.debug(" - - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
+
+        // dias decorridos desde a data de inicio do turno
+        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
+
+        logger.debug(" - - - - - Dias decorridos desde o inicio do turno: " + diasDecorridos + ".");
+
+        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
+        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
+
+        logger.debug(" - - - - - Atraso do ciclo à data: " + atrasoCiclo + " horas decorridas desde o ultimo reinicio de ciclo.");
+
+        LocalDateTime dataHrInicio = LocalDateTime.of(dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
+
+        float numHoras = 0;
+
+        for (PeriodoCicloTurno p : periodos) {
+            numHoras = p.getNumHoras();
+            if (atrasoCiclo <= 0){
+                break;
+            }
+            atrasoCiclo = atrasoCiclo - numHoras;
+        }
+
+        dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
+
+        logger.debug(" - - - - - Hora de inicio do periodo de presença: " + dataHrInicio.toString() + ".");
+
+        return java.sql.Time.valueOf(dataHrInicio.toLocalTime());
+
+    }
+
+    /**
+     *
+     * @param turno
+     * @param date
+     * @return Numero de Horas a registar nesta data para este turno.
+     */
+    private Float obterNumeroDehoras(Turno turno, LocalDate date) {
+
+        logger.debug(" - - - - A calcular o numero de horas da presença: " + turno.getDesignacao() + " para a data " + date.toString() + ".");
+
+        Date dtInicioTurno = turno.getDtInicioCiclo();
+        Time timeInicioTurno = turno.getHrInicioCiclo();
+
+        // periodos de ciclo ordenados de forma descendente.
+        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno().getCiclos().stream()
+                .sorted((o1, o2) -> o2.getOrdemPeriodoCiclo().compareTo(o1.getOrdemPeriodoCiclo()))
+                .collect(Collectors.toList());
+
+        // dimensão do ciclo: numero de dias totais de um ciclo de turno
+        final float dimensaoDoCiclo = periodos.stream()
+                .map(PeriodoCicloTurno::getNumHoras)
+                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
+                .get()
+                /24;
+
+        // dias decorridos desde a data de inicio do turno
+        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
+
+        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
+        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
+
+        float numHoras = 0;
+
+        for (PeriodoCicloTurno p : periodos) {
+            numHoras = p.getNumHoras();
+            if (atrasoCiclo <= 0) break;
+            atrasoCiclo = atrasoCiclo - numHoras;
+        }
+
+        return numHoras;
+
     }
 
     /**
      * @param datainicio           Data de Inicio
      * @param datafim              Data de Fim
      * @param periodo_id           Identificador do Periodo
-     * @param turno_id             Identificadro do Turno (Opcional)
+     * @param turno_id             Identificador do Turno (Opcional)
      * @param instalacao_id        Identificador da Instalação (Opcional)
      * @param postofuncional_id    Identificador do Posto Funcional (Opcional)
      * @param tipopresenca_id      Identificador do Tipo de Presença
@@ -136,11 +271,10 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Presenca inserirPresenca(
             Date data,
+            Time horainicio,
             Float numhoras,
             Long periodo_id,
             Long turno_id,
@@ -153,26 +287,34 @@ public class PresencaService implements IPresencaService {
     ) throws Exception {
         Presenca presenca;
         try {
-            presenca = presencaRepo.findByDataAndElementoDoPessoal(data, elementodopessoal_id).get();
+            presenca = presencaRepo.findByDataAndElementoDoPessoal(data, pessoalRepo.findOne(elementodopessoal_id)).get();
             if (presenca.getEliminado())
                 throw new RecursoEliminadoException(String.format("O registo de presença solicitado foi eliminado: %s", presenca.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
             // Presença não existe na BD, vamos criar:
-            logger.debug("Não existe presneça ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
+            logger.debug("Não existe presença ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
             presenca = new Presenca();
             presenca.setData(data);
+            presenca.setHoraInicio(horainicio);
             presenca.setNumHoras(numhoras);
             presenca.setPeriodo(periodoRepo.findOne(periodo_id));
             presenca.setTurnoEfectivo(turnoRepo.findOne(turno_id));
             presenca.setInstalacaoEfectiva(instalacaoRepo.findOne(instalacao_id));
             presenca.setPostoFuncionalEfectivo(postoFuncionalRepo.findOne(postofuncional_id));
             presenca.setTipoPresencaEfectiva(tipoPresencaRepo.findOne(tipopresenca_id));
+            presenca.setElementoDoPessoal(pessoalRepo.findOne(elementodopessoal_id));
             final Presenca[] presencaImutavel = {presenca};
-            elementoreforco_id.ifPresent(e -> presencaImutavel[0].setElementoReforco(pessoalRepo.findOne(e)));
-            elementoreforcado_id.ifPresent(e -> presencaImutavel[0].setElementoReforcado(pessoalRepo.findOne(e)));
+            elementoreforco_id.ifPresent(e -> {
+                ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(e);
+                presencaImutavel[0].setElementoReforco(elementoDoPessoal);
+            });
+            elementoreforcado_id.ifPresent(e -> {
+                ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(e);
+                presencaImutavel[0].setElementoReforcado(elementoDoPessoal);
+            });
             return presencaRepo.save(presenca);
         }
-        //presença existe na BD, vamos lan;ar a respectiva excepção:
+        //presença existe na BD, vamos lançar a respectiva excepção:
         throw new ConflictoException(String.format("Já existe uma presença para o elemento %s na data %s", elementodopessoal_id, data));
     }
 
@@ -192,9 +334,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Presenca actualizarPresenca(
             Long id,
             Optional<Date> data,
@@ -228,9 +368,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Presenca eliminarPresenca(Long id) throws Exception {
         Presenca presenca = obterPresenca(id);
         presenca.setEliminado(true);
@@ -274,9 +412,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public TipoPresenca inserirTipoPresenca(Boolean ausencia, Boolean reforco, String abreviatura, String descricao) throws Exception {
 
         TipoPresenca tipoPresenca = new TipoPresenca();
@@ -299,9 +435,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
-    @Transactional(readOnly = false
-            //, isolation = Isolation.SERIALIZABLE
-    )
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public TipoPresenca actualizarTipoPresenca(
             String id,
             Optional<Boolean> ausencia,
@@ -323,6 +457,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public TipoPresenca eliminarTipoPresenca(String id) throws Exception {
         TipoPresenca tipoPresenca = obterTipoPresenca(id);
         tipoPresenca.setEliminado(true);
@@ -336,6 +471,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<Periodo> obterPeriodos(Optional<Date> datainicio, Optional<Date> datafim) throws Exception {
         return periodoRepo.findAll().stream()
                 .filter(periodo -> periodo.getEliminado() != null && !periodo.getEliminado())
@@ -349,6 +485,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = true)
     public Periodo obterPeriodo(Long id) throws Exception {
         Periodo periodo = periodoRepo.findOne(id);
         if (periodo == null)
@@ -365,11 +502,12 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Periodo inserirPeriodo(Date datainicio, Date datafim) throws Exception {
 
         Periodo periodo;
 
-        try{
+        try {
             periodo = periodoRepo.findByDataInicioAndDataFim(datafim, datafim).get();
             if (periodo.getEliminado())
                 throw new RecursoEliminadoException(String.format("O registo de periodo solicitado foi eliminado: %s", periodo.getId()));
@@ -379,8 +517,9 @@ public class PresencaService implements IPresencaService {
             periodo = new Periodo();
             periodo.setDtInicio(datainicio);
             periodo.setDtFim(datafim);
+            periodo = periodoRepo.save(periodo);
             popularPresencas(periodo);
-            return periodoRepo.save(periodo);
+            return periodo;
         }
         //presença existe na BD, vamos lançar a respectiva excepção:
         throw new ConflictoException(String.format("Já existe um periodo compreendido entre as datas %s e %s", datainicio, datafim));
@@ -395,6 +534,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Periodo actualizarPeriodo(Long id, Optional<Date> datainicio, Optional<Date> datafim) throws Exception {
         Periodo periodo = obterPeriodo(id);
         datainicio.ifPresent(periodo::setDtInicio);
@@ -408,6 +548,7 @@ public class PresencaService implements IPresencaService {
      * @throws Exception
      */
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Periodo eliminarPeriodo(Long id) throws Exception {
         Periodo periodo = obterPeriodo(id);
         periodo.setEliminado(true);

@@ -30,4 +30,13 @@ public interface IPeriodoRepositorio extends JpaRepository<Periodo, Long> {
             @Param("datafim") Date datafim
     );
 
+    /**
+     * @param datainicio                 Data de Inicio
+     * @return
+     */
+    @Query("SELECT p FROM Periodo p WHERE p.dtInicio >= :datainicio")
+    Optional<Periodo> findByDataInicio(
+            @Param("datainicio") Date datainicio
+    );
+
 }

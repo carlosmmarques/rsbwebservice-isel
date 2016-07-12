@@ -21,6 +21,7 @@ import pt.isel.ps.li61n.model.services.IPresencaService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -147,6 +148,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirPresenca(
             @RequestParam(value = "data", required = true) Date data,
+            @RequestParam(value = "horainicio", required = true) Time horainicio,
             @RequestParam(value = "numhoras", required = true) Float numhoras,
             @RequestParam(value = "periodo_id", required = true) Long periodo_id,
             @RequestParam(value = "turno_id", required = true) Long turno_id,
@@ -164,6 +166,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
             Presenca presenca = presencasService
                     .inserirPresenca(
                             data,
+                            horainicio,
                             numhoras,
                             periodo_id,
                             turno_id,
