@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <title>Oops!</title>
+    </head>
+    <body>
+        <h1>Isto é embaraçoso... Aconteceu um erro imprevisto...</h1>
+        <div>
+            <h2>Tentou aceder à página <span th:text="${path}">url</span> (<span th:text="${status}">status code</span>)</h2><br></br>
+            <h3>Motivo do erro:</h3>
+            <h4><span th:text="${error}">razão</span> (<span th:text="${exception}">Classe do erro</span>)</h4>
+            <p><span th:text="${'Detalhes: ' + message}">Detalhes da mensagem</span></p>
+            <br></br>
+            <p><span th:text="${trace}">trace</span></p>
+        </div>
+        <!-- footer -->
+        <div th:replace="templates :: footer"></div>
+    </body>
+</html>

@@ -1,13 +1,10 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
 import org.springframework.stereotype.Component;
-import pt.isel.ps.li61n.model.dal.IPeriodoRepository;
-import pt.isel.ps.li61n.model.dal.IRepository;
+import pt.isel.ps.li61n.model.dal.IPeriodosRepository;
 import pt.isel.ps.li61n.model.entities.Periodo;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,12 +16,12 @@ import java.util.HashMap;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Component
-public class PeriodosMemRepo implements IPeriodoRepository {
+public class PeriodosRepository implements IPeriodosRepository {
 
     private HashMap< Long, Periodo > _repo;
     private long _repoSize;
 
-    public PeriodosMemRepo() {
+    public PeriodosRepository() {
         _repo = new HashMap<>();
         _repoSize = 0;
 

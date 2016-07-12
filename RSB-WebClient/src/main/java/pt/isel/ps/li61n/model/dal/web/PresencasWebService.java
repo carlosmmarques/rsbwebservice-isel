@@ -2,8 +2,9 @@ package pt.isel.ps.li61n.model.dal.web;
 
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
+import pt.isel.ps.li61n.model.dal.web.dtos.ElementoDto;
 import pt.isel.ps.li61n.model.dal.web.dtos.PresencaDto;
-import pt.isel.ps.li61n.model.entities.Pessoal;
+import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.PostoFuncional;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -16,8 +17,6 @@ import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static pt.isel.ps.li61n.RsbWebClientApplication.PESSOAL;
-
 /**
  * Created on 27/06/2016.
  *
@@ -26,6 +25,10 @@ import static pt.isel.ps.li61n.RsbWebClientApplication.PESSOAL;
  */
 @Component
 public class PresencasWebService extends AbstractWebService implements IPresencasRepository {
+
+    public PresencasWebService() {
+        System.out.println( "New PrsencasWebService" );
+    }
 
     @Override
     public Long insert(Presenca element) {
@@ -40,13 +43,14 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     @Override
     public Collection<Presenca> selectAll() {
 
-        CompletableFuture< PresencaDto[] > getPresencas =
-                _rsbWebService
-                    .callActionAndConvert(
-                        PresencaDto[].class
-                        ,"/presenca"
-                    )
-        ;
+        CompletableFuture< PresencaDto[] > getPresencas;
+
+        getPresencas = RsbWebServiceAsync
+                        .callActionAndConvert(
+                            PresencaDto[].class
+                            ,"/presenca"
+                        );
+
         PresencaDto[] presencas = null;
 
         try{
@@ -59,7 +63,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         Collection< Presenca > result = new LinkedList<>();
 
         // V2 -> Cache
-        HashMap< String, Pessoal > cachePessoal = new HashMap<>();
+        HashMap< String, Elemento> cachePessoal = new HashMap<>();
         HashMap< String, PostoFuncional> cachePosto = new HashMap<>();
 
         // Converter para Presencas
@@ -73,7 +77,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             //p.setPeriodoId(  );
 
             // obter o elemento do registo de presença
-            Pessoal elemento = getElementoPessoal(
+            Elemento elemento = getElementoPessoal(
                                     dto.uri_elementodopessoal
                                     ,cachePessoal
             );
@@ -87,7 +91,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             // Elemento de reforço/reforçado
             // (assumido que não pode existir um registo com os dois "tipos" de elementos)
             //
-            Pessoal reforçoReforcado =  getElementoPessoal(
+            Elemento reforçoReforcado =  getElementoPessoal(
                                 dto.uri_elementoreforco
                                 ,cachePessoal
             );
@@ -121,7 +125,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             //
             // Posto Funcional
             //
-            PostoFuncional posto = getElemento(
+            PostoFuncional posto = getResourceWithCache(
                                     dto.uri_postofuncionalefectivo
                                     ,cachePosto
                                     ,PostoFuncional.class
@@ -138,8 +142,19 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         return result;
     }
 
-    private Pessoal getElementoPessoal( String uri, HashMap<String, Pessoal> cachePessoal ) {
-        return getElemento( uri, cachePessoal, Pessoal.class );
+    private Elemento getElementoPessoal(String uri, HashMap<String, Elemento> cachePessoal ) {
+        Elemento result = cachePessoal.get( uri );
+        if( result == null  ){
+            // Obter o elemento
+            ElementoDto dto = getResource( uri, ElementoDto.class );
+            if( dto != null ){
+                result = PessoalWebService.convertDtoToModel( dto, false );
+
+                // colocar em cache
+                cachePessoal.put( uri, result );
+            }
+        }
+        return result;
     }
 
 

@@ -23,15 +23,15 @@ public class Presenca extends Identity< Long > {
     // FK periodo
     private Long periodoId;
 
-    // Fk Pessoal -> Obter IdInterno
+    // Fk Elemento -> Obter IdInterno
     //private long elementoId;
-    private Pessoal elemento;
+    private Elemento elemento;
 
     // FK TipoPresenca
     private String tipoPresencaId;
 
     // FK pessoal -> obter IdInterno;
-    private Pessoal elementoReforcoReforcado;
+    private Elemento elementoReforcoReforcado;
 
     // FK pessoal -> obter IdInterno;
     //private String elementoReforcadoId;
@@ -55,7 +55,7 @@ public class Presenca extends Identity< Long > {
     //
     /////////////////////////////////////
 
-    public void setElementoReforcoReforcado( Pessoal elementoReforcoReforcado ) {
+    public void setElementoReforcoReforcado( Elemento elementoReforcoReforcado ) {
         this.elementoReforcoReforcado = elementoReforcoReforcado;
     }
 
@@ -123,11 +123,11 @@ public class Presenca extends Identity< Long > {
         this.turnoId = turnoId;
     }
 
-    public Pessoal getElemento() {
+    public Elemento getElemento() {
         return elemento;
     }
 
-    public void setElemento(Pessoal elemento) {
+    public void setElemento(Elemento elemento) {
         this.elemento = elemento;
     }
 
@@ -148,16 +148,16 @@ public class Presenca extends Identity< Long > {
     }
 
     /*
-    public Pessoal getElemento() {
+    public Elemento getResourceWithCache() {
         return elemento;
     }
 
-    public void setElemento( Pessoal elemento ) {
+    public void setElemento( Elemento elemento ) {
         this.elemento = elemento;
     }
     */
 
-    public Pessoal getElementoReforcoReforcadoId() {
+    public Elemento getElementoReforcoReforcadoId() {
         return elementoReforcoReforcado;
     }
 }

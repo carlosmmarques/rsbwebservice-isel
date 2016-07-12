@@ -6,7 +6,7 @@ package pt.isel.ps.li61n.model.dal.web.dtos;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class PessoalDto {
+public class ElementoDto {
 
     public final Long id;
 
@@ -23,7 +23,7 @@ public class PessoalDto {
                     ,numMecanografico // converter para inteiro
     ;
 
-    public PessoalDto(
+    public ElementoDto(
             Long id
             ,String uri_pessoa
             ,String uri_instalacaoPorOmissao

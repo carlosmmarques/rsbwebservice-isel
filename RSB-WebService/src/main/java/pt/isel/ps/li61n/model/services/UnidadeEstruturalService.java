@@ -95,11 +95,14 @@ public class UnidadeEstruturalService implements IUnidadeEstruturalService {
 
         UnidadeEstrutural unidadeEstrutural = new UnidadeEstrutural();
         TipoUnidadeEstrutural tipoUnidadeEstrutural = obterTipoUnidadeEstutural(tipounidadeestrutural_id);
-        UnidadeEstrutural unidadeEstruturalMae = obterUnidadeEstrutural(unidadeestruturalmae_id);
+        if( unidadeestruturalmae_id != null ){
+            UnidadeEstrutural unidadeEstruturalMae = obterUnidadeEstrutural(unidadeestruturalmae_id);
+            unidadeEstrutural.setUnidadeEstruturalMae(unidadeEstruturalMae);
+        }
 
         unidadeEstrutural.setDesignacao(designacao);
         unidadeEstrutural.setTipoUnidadeEstrutural(tipoUnidadeEstrutural);
-        unidadeEstrutural.setUnidadeEstruturalMae(unidadeEstruturalMae);
+
         unidadeEstrutural.setNivelHierarquico(nivelhierarquico);
 
         return unidadeEstruturalRepo.save(unidadeEstrutural);

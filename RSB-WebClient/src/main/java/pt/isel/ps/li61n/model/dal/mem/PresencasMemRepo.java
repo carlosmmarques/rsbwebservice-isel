@@ -78,7 +78,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         float numHoras = 12;
         long instalacaoId_default = 3; // Simular que é do "Quartel de Alvalade"
         long turnoId_default = 1L;   // Simular que é o "turno 1" (Turno.Descricao)
-        int elementoId = 955615; // Simular que Pessoal.getIdInterno() = "510";
+        int elementoId = 955615; // Simular que Elemento.getIdInterno() = "510";
 
         Presenca dia3Dez2015 = new Presenca();
         dia3Dez2015.setData( LocalDate.of( 2015, Month.DECEMBER, 3 ) );
@@ -311,7 +311,7 @@ public class PresencasMemRepo implements IPresencasRepository {
 
         instalacaoId_default = 4; // Simular que é do "Quartel de Benfica"
         turnoId_default = 3L;   // Simular que é o "turno 3" (Turno.Descricao)
-            elementoId = 955495; // Simular que Pessoal.getIdInterno() = "503";
+            elementoId = 955495; // Simular que Elemento.getIdInterno() = "503";
 
         Presenca dia1Dez2015 = new Presenca();
         dia1Dez2015.setData( LocalDate.of( 2015, Month.DECEMBER, 1 ) );

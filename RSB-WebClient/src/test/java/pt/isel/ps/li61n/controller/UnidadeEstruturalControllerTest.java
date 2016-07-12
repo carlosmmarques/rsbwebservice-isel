@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
-import pt.isel.ps.li61n.model.IUnidadeEstruturalLogic;
+import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 
 import static org.hamcrest.Matchers.*;
@@ -25,13 +25,11 @@ public class UnidadeEstruturalControllerTest {
     private String _ue_url_base = UNIDADES_ESTRUTURAIS_URL;
 
     //private MockMvc _mockMvc;
-    private IUnidadeEstruturalLogic _mockLogic;
-
-
+    private IUnidadesEstruturaisLogic _mockLogic;
 
     @Before
     public void prepare(){
-        _mockLogic = mock( IUnidadeEstruturalLogic.class );
+        _mockLogic = mock( IUnidadesEstruturaisLogic.class );
     }
 
     /**

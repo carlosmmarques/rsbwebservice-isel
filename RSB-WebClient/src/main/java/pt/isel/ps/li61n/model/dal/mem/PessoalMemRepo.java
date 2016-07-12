@@ -1,14 +1,15 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPessoalRepository;
-import pt.isel.ps.li61n.model.entities.Pessoal;
+import pt.isel.ps.li61n.model.entities.Elemento;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Created on 22/06/2016.
@@ -16,22 +17,22 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-@ConditionalOnMissingBean( IPessoalRepository.class )
+@Profile( "mem" )
+//@ConditionalOnMissingBean( IPessoalRepository.class )
 @Component
 public class PessoalMemRepo implements IPessoalRepository {
 
-    private HashMap< Long, Pessoal > _repo;
+    private HashMap< Long, Elemento> _repo;
     private long _repoSize;
 
     public PessoalMemRepo() {
-
         _repo = new HashMap<>();
 
         populate();
     }
 
     @Override
-    public Long insert( Pessoal element ) {
+    public Long insert( Elemento element ) {
         Long id = new Long( _repoSize );
         _repoSize++;
         element.setId( id );
@@ -40,12 +41,12 @@ public class PessoalMemRepo implements IPessoalRepository {
     }
 
     @Override
-    public Pessoal selectOne( Long id ){
+    public Elemento selectOne(Long id ){
         return _repo.get( id );
     }
 
     @Override
-    public Collection<Pessoal> selectAll() {
+    public Collection<Elemento> selectAll() {
         return _repo.values();
     }
 
@@ -60,11 +61,11 @@ public class PessoalMemRepo implements IPessoalRepository {
     }
 
     private void populate() {
-
+        /*
         // ficticios
         for ( int i = 0; i < 10 ; i++ ) {
             int aux = i + i * 10 + i * 100+ i * 100 + i * 1_000 + i * 10_000 + i * 100_000;
-            Pessoal p = new Pessoal(
+            Elemento p = new Elemento(
                     aux
                     , "" + i
                     , "name " + aux
@@ -77,46 +78,52 @@ public class PessoalMemRepo implements IPessoalRepository {
         //
         String postoFuncional = "B.Sap";
 
-        Pessoal bSap510 = new Pessoal(
+        Elemento bSap510 = new Elemento(
             955615
             ,"510"
             ,postoFuncional
         );
         insert( bSap510 );
 
-        Pessoal bSap503 = new Pessoal(
+        Elemento bSap503 = new Elemento(
                 955495
                 ,"503"
                 ,postoFuncional
         );
         insert( bSap503 );
 
-        Pessoal bSap571 = new Pessoal(
+        Elemento bSap571 = new Elemento(
                 955603
                 ,"571"
                 ,postoFuncional
         );
         insert( bSap571 );
 
-        Pessoal bSap666 = new Pessoal(
+        Elemento bSap666 = new Elemento(
                 955490
                 ,"666"
                 ,postoFuncional
         );
         insert( bSap666 );
 
-        Pessoal bSap567 = new Pessoal(
+        Elemento bSap567 = new Elemento(
                 955511
                 ,"567"
                 ,postoFuncional
         );
         insert( bSap567 );
 
-        Pessoal bSap900 = new Pessoal(
+        Elemento bSap900 = new Elemento(
                 764009
                 ,"900"
                 ,postoFuncional
         );
         insert( bSap900 );
+        */
+    }
+
+    @Override
+    public Elemento getOneByNumMecanografico(Integer numMecanografico) {
+        throw new NotImplementedException();
     }
 }

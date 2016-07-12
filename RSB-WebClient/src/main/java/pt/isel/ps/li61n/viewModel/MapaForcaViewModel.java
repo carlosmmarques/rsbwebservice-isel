@@ -1,7 +1,7 @@
 package pt.isel.ps.li61n.viewModel;
 
 import pt.isel.ps.li61n.model.IPessoalLogic;
-import pt.isel.ps.li61n.model.entities.Pessoal;
+import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.util.web.UrlGenerator;
 
@@ -32,7 +32,7 @@ public class MapaForcaViewModel {
     private IPessoalLogic _pessoalLogic;
 
     // Cache
-    //private HashMap< Integer, Pessoal > _pessoal;
+    //private HashMap< Integer, Elemento > _pessoal;
 
     public MapaForcaViewModel(
             String designacaoUnidadeEstrutural,
@@ -96,7 +96,7 @@ public class MapaForcaViewModel {
 
         for( Presenca p : presencas ) {
 
-            Pessoal elemento = p.getElemento();
+            Elemento elemento = p.getElemento();
             Long elementoId = elemento.getId();
             //
             // gerar ou obter contentor de registos presenças
@@ -107,7 +107,7 @@ public class MapaForcaViewModel {
             }
             else{ // Criar registo de presenças
 
-                //Pessoal elemento = _pessoalLogic.getOne( elementoId );
+                //Elemento elemento = _pessoalLogic.getOne( elementoId );
 
                 registos = new String[ numDias * numTurnosPorDia ];
 

@@ -15,13 +15,12 @@
 */
 package pt.isel.ps.li61n.util.web;
 
+import com.google.gson.Gson;
 import org.asynchttpclient.*;
-import org.asynchttpclient.netty.handler.HttpHandler;
-import sun.security.util.Password;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.asynchttpclient.Dsl.basicAuthRealm;
@@ -35,7 +34,6 @@ import static org.asynchttpclient.Dsl.basicAuthRealm;
 public class HttpAsync implements AutoCloseable {
 
     private final AsyncHttpClient _client = new DefaultAsyncHttpClient();
-
 
     //TODO: Refactoring com getDataAsync e dps fazer uma versão que possa fazer gets, puts, ...
     public CompletableFuture< Response > getDataAsyncWithBasicAuth(
@@ -62,6 +60,102 @@ public class HttpAsync implements AutoCloseable {
                 );
         return promise;
     }
+
+
+    private Gson _gson = new Gson();
+
+    public CompletableFuture< Response > getDataAsyncWithBasicAuth(
+            String path
+            ,String user
+            ,String password
+            ,List< Param > parameters
+    ){
+        CompletableFuture< Response > promise = new CompletableFuture<>();
+        _client
+                .prepareGet( path )
+                .addQueryParams( parameters )
+
+                // Pra ter Basic Authentication
+                .setRealm( basicAuthRealm( user, password ).build() )
+
+                .execute(
+                        new AsyncCompletionHandler< Object >() {
+
+                            @Override
+                            public Object onCompleted( Response response ) throws Exception {
+
+                                /*
+                                int statusCode = response.getStatusCode();
+                                String msg = "Status code = " + statusCode;
+                                System.out.println( msg );
+                                if( statusCode != 200 ) {
+                                    ErrorDto errorDto = _gson.fromJson(
+                                            response.getResponseBody()
+                                            ,ErrorDto.class
+                                    );
+                                    throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
+                                }
+                                */
+                                promise.complete( response );
+                                return response;
+                            }
+                        }
+                );
+        return promise;
+    }
+
+
+
+    //TODO: Refactoring com getDataAsync e dps fazer uma versão que possa fazer gets, puts, ...
+    public CompletableFuture< Response > postDataAsyncWithBasicAuth(
+            String path
+            ,String user
+            ,String password
+            ,List<Param> parameters
+    ){
+        CompletableFuture< Response > promise = new CompletableFuture<>();
+        _client
+                .preparePost( path )
+                .setFormParams( parameters )
+
+                // Pra ter Basic Authentication
+                .setRealm( basicAuthRealm( user, password ).build() )
+
+                .execute(
+                        new AsyncCompletionHandler< Object >() {
+
+                            @Override
+                            public Object onCompleted( Response response ) throws Exception {
+                                promise.complete( response );
+                                return response;
+                            }
+                        }
+                );
+        return promise;
+    }
+
+    public CompletableFuture< Response > postDataAsync(
+            String path
+            ,List<Param> parameters
+    ){
+        CompletableFuture< Response > promise = new CompletableFuture<>();
+        _client
+                .preparePost( path )
+                .setFormParams( parameters )
+
+                .execute(
+                        new AsyncCompletionHandler< Object >() {
+
+                            @Override
+                            public Object onCompleted( Response response ) throws Exception {
+                                promise.complete( response );
+                                return response;
+                            }
+                        }
+                );
+        return promise;
+    }
+
 
     public CompletableFuture< Response > getDataAsync( String path ){
 

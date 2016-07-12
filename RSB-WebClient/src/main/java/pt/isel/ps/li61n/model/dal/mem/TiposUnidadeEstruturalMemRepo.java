@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.ITiposUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
@@ -13,6 +14,7 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@ConditionalOnMissingBean( ITiposUnidadeEstruturalRepository.class )
 @Component
 public class TiposUnidadeEstruturalMemRepo implements ITiposUnidadeEstruturalRepository {
 
@@ -21,7 +23,7 @@ public class TiposUnidadeEstruturalMemRepo implements ITiposUnidadeEstruturalRep
 
     public TiposUnidadeEstruturalMemRepo( ){
         _repo = new HashMap<>();
-        _repoSize = 0;
+        _repoSize = 1;
 
         populate();
     }
@@ -81,7 +83,5 @@ public class TiposUnidadeEstruturalMemRepo implements ITiposUnidadeEstruturalRep
         seccao.setDescricao( "unidades elementares que são subdivisão de um órgão ou de um serviço" );
         seccao.setNivelHierarquico( 3 );
         insert( seccao );
-
     }
-
 }

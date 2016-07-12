@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model;
 
+import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
+
 import java.util.Collection;
 
 /**
@@ -14,7 +16,7 @@ public interface ILogic< Id, Type > {
 
     Type getOne( Id id );
 
-    Id create( Type element ); // return id??
+    Id create( Type element ) throws PropertyEntityException; // return id??
 
     //void update ( E e );
 }

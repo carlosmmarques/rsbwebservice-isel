@@ -106,8 +106,8 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     public Callable<?> inserirUnidadeEstrutural(
             @RequestParam(value = "designacao", required = true) String designacao,
             @RequestParam(value = "tipounidadeestrutural_id", required = true) Long tipounidadeestrutural_id,
-            @RequestParam(value = "unidadeestruturalmae_id", required = true) Long unidadeestruturalmae_id,
-            @RequestParam(value = "nivelhierarquico", required = true) Integer nivelhierarquico,
+            @RequestParam(value = "unidadeestruturalmae_id", required = false) Long unidadeestruturalmae_id,
+            @RequestParam(value = "nivelhierarquico", required = false) Integer nivelhierarquico,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -358,7 +358,7 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterInstalacoes(
-            @PathVariable Long unidadeEstrutural_id,
+            @PathVariable( "unidadeestrutural_id" ) Long unidadeEstrutural_id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -388,7 +388,7 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao/{instalacao_id}", method = RequestMethod.GET)
     @ResponseBody
     public Callable<?> obterInstalacao(
-            @PathVariable Long unidadeEstrutural_id,
+            @PathVariable( "unidadeestrutural_id" ) Long unidadeEstrutural_id,
             @PathVariable Long instalacao_id,
             HttpServletRequest request
     ) throws Exception {
