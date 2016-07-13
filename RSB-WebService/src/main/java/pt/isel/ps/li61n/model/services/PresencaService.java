@@ -78,15 +78,58 @@ public class PresencaService implements IPresencaService {
                     pessoalRepo.findAll().stream()
                             .filter(elementoDoPessoal -> elementoDoPessoal.getTurno().equals(turno))
                             .forEach(elementoDoPessoal -> {
-                                logger.debug(" - - elemento: " + elementoDoPessoal.getId() + " - " + elementoDoPessoal.getNome() + ".");
+                                logger.debug(" - - elemento: " + elementoDoPessoal.getId() + " - " +
+                                        elementoDoPessoal.getNome() + ".");
                                 for (LocalDate date = dtInicio; date.isBefore(dtFim); date = date.plusDays(1)) {
                                     try {
-                                        logger.debug(" - - - a tentar gerar presença para o dia: " + date.toString() + ".");
-                                        float numHoras = obterNumeroDehoras(turno, date);
+                                        logger.debug(" - - - A calcular o numero de horas e hora de inicio da " +
+                                                "presença na data " + date.toString() + ".");
+                                        final Date dtInicioTurno = turno.getDtInicioCiclo();
+                                        final Time timeInicioTurno = turno.getHrInicioCiclo();
+                                        // periodos de ciclo ordenados de forma ascendente.
+                                        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno()
+                                                .getCiclos().stream()
+                                                .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
+                                                .collect(Collectors.toList());
+                                        // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
+                                        final float dimensaoDoCiclo = periodos.stream()
+                                                .map(PeriodoCicloTurno::getNumHoras)
+                                                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
+                                                .get()
+                                                / 24;
+                                        logger.debug(" - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
+                                        // dias decorridos desde a data de inicio do turno
+                                        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
+                                        logger.debug(" - - - - Dias decorridos desde o inicio do turno: " +
+                                                diasDecorridos + ".");
+                                        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
+                                        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
+                                        logger.debug(" - - - - Atraso do ciclo à data: " + atrasoCiclo +
+                                                " horas decorridas desde o ultimo reinicio de ciclo.");
+                                        LocalDateTime dataHrInicio = LocalDateTime.of(
+                                                dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
+                                        float numHoras = 0;
+
+                                        for (PeriodoCicloTurno p : periodos) {
+                                            numHoras = p.getNumHoras();
+                                            if (atrasoCiclo <= 0) {
+                                                if (p.getPeriodoDescanso()) {
+                                                    logger.debug(" - - - - - O periodo em causa é de descanso, não serão registadas horas");
+                                                    numHoras = 0f;
+                                                }
+                                                break;
+                                            }
+                                            atrasoCiclo = atrasoCiclo - numHoras;
+                                            if (atrasoCiclo < 0)
+                                                if (p.getPeriodoDescanso()) numHoras = 0f;
+                                        }
+                                        dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
+                                        //float numHoras = obterNumeroDehoras(turno, date);
                                         if (numHoras == 0f) continue;
+                                        logger.debug(" - - - a tentar inserir presença para a data: " + date.toString() + ".");
                                         inserirPresenca(
                                                 Date.valueOf(date),
-                                                obterHoraInicio(turno, date),
+                                                java.sql.Time.valueOf(dataHrInicio.toLocalTime()),
                                                 numHoras,
                                                 periodo.getId(),
                                                 turno.getId(),
@@ -103,111 +146,6 @@ public class PresencaService implements IPresencaService {
                                 }
                             });
                 });
-    }
-
-    /**
-     * @param turno
-     * @param date
-     * @return hora de inicio da presença nesta data
-     */
-    private Time obterHoraInicio(Turno turno, LocalDate date) {
-
-        logger.debug(" - - - - A calcular a hora de inicio da presença: " + turno.getDesignacao() + " para a data " + date.toString() + ".");
-
-        Date dtInicioTurno = turno.getDtInicioCiclo();
-        Time timeInicioTurno = turno.getHrInicioCiclo();
-
-        // periodos de ciclo ordenados de forma descendente.
-        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno().getCiclos().stream()
-                .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
-                .collect(Collectors.toList());
-
-        // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
-        final float dimensaoDoCiclo = periodos.stream()
-                .map(PeriodoCicloTurno::getNumHoras)
-                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
-                .get()
-                / 24;
-
-        logger.debug(" - - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
-
-        // dias decorridos desde a data de inicio do turno
-        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
-
-        logger.debug(" - - - - - Dias decorridos desde o inicio do turno: " + diasDecorridos + ".");
-
-        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
-        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
-
-        logger.debug(" - - - - - Atraso do ciclo à data: " + atrasoCiclo + " horas decorridas desde o ultimo reinicio de ciclo.");
-
-        LocalDateTime dataHrInicio = LocalDateTime.of(dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
-
-        float numHoras = 0;
-
-        for (PeriodoCicloTurno p : periodos) {
-            numHoras = p.getNumHoras();
-            if (atrasoCiclo <= 0) {
-                break;
-            }
-            atrasoCiclo = atrasoCiclo - numHoras;
-        }
-
-        dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
-
-        logger.debug(" - - - - - Hora de inicio do periodo de presença: " + dataHrInicio.toString() + ".");
-
-        return java.sql.Time.valueOf(dataHrInicio.toLocalTime());
-
-    }
-
-    /**
-     * @param turno
-     * @param date
-     * @return Numero de Horas a registar nesta data para este turno.
-     */
-    private Float obterNumeroDehoras(Turno turno, LocalDate date) {
-
-        logger.debug(" - - - - A calcular o numero de horas da presença com o Turno '" + turno.getDesignacao() + "' " +
-                "na data " + date.toString() + ".");
-
-        Date dtInicioTurno = turno.getDtInicioCiclo();
-        Time timeInicioTurno = turno.getHrInicioCiclo();
-
-        // periodos de ciclo ordenados de forma descendente.
-        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno().getCiclos().stream()
-                .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
-                .collect(Collectors.toList());
-
-        // dimensão do ciclo: numero de dias totais de um ciclo de turno
-        final float dimensaoDoCiclo = periodos.stream()
-                .map(PeriodoCicloTurno::getNumHoras)
-                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
-                .get()
-                / 24;
-
-        // dias decorridos desde a data de inicio do turno
-        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
-
-        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
-        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
-
-        float numHoras = 0;
-
-        for (PeriodoCicloTurno p : periodos) {
-            numHoras = p.getNumHoras();
-            if (atrasoCiclo <= 0) {
-                if (p.getPeriodoDescanso()) {
-                    logger.debug("O periodo em causa é de descanso, não serão registadas horas");
-                    numHoras = 0f;
-                }
-                break;
-            }
-            atrasoCiclo = atrasoCiclo - numHoras;
-            if (atrasoCiclo < 0)
-                if (p.getPeriodoDescanso()) numHoras = 0f;
-        }
-        return numHoras;
     }
 
     /**
