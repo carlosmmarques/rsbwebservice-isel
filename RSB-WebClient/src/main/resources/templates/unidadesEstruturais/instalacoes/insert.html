@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"></meta>
-    <title>Inserir instalação</title>
-</head>
-<body>
-    Inserir uma instalação!
-    Não esquecer depois de criar fazer, redirect!!!
-</body>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="../../../static/css/style.css" th:href="@{/css/style.css}"></link>
+        <title>Inserir instalação</title>
+    </head>
+    <body>
+        <h1>Inserir uma instalação</h1>
+        <!-- Formulário para criar uma instalação -->
+        <form action="/unidadesEstruturais/{ue_id}/instalacao"
+              th:action="${action}" method="POST" th:object="${insertInstalacaoViewModel}"
+        >
+            <!-- Lista de erros -->
+            <div th:replace="templates :: errorsDiv"></div>
+
+            <!-- Designação -->
+            <label th:class="${#fields.hasErrors('designacao')} ? 'error'">Designação:</label>
+            <input type="text"
+                   th:field="*{designacao}"
+                   th:class="${#fields.hasErrors('designacao')} ? 'error'"
+            ></input>
+            <br></br>
+
+            <!-- Descrição -->
+            <label th:class="${#fields.hasErrors('descricao')} ? 'error'">Descrição:</label>
+            <input type="text"
+                   th:field="*{descricao}"
+                   th:class="${#fields.hasErrors('descricao')} ? 'error'"
+            ></input>
+            <br></br>
+
+            <!-- localizacao -->
+            <label th:class="${#fields.hasErrors('localizacao')} ? 'error'">Localização:</label>
+            <input type="text"
+                   th:field="*{localizacao}"
+                   th:class="${#fields.hasErrors('localizacao')} ? 'error'"
+            ></input>
+            <br></br>
+
+
+            <input type="submit" value="Registar"></input>
+        </form>
+    </body>
 </html>

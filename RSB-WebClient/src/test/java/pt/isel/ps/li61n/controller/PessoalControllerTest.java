@@ -8,7 +8,6 @@ import pt.isel.ps.li61n.model.IPresencasLogic;
 import pt.isel.ps.li61n.model.ITurnosLogic;
 import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
 import pt.isel.ps.li61n.model.entities.Elemento;
-import pt.isel.ps.li61n.util.web.UrlGenerator;
 
 import java.time.LocalDate;
 import java.time.Month;

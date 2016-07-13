@@ -9,6 +9,17 @@
     </head>
     <body>
 
+        <!-- Lista de erros -->
+        <div th:fragment="errorsDiv" class="errors" th:if="${#fields.hasAnyErrors()}">
+            <ul>
+                <li th:each="err : ${#fields.allErrors()}"
+                    th:text="${err}">Erros de input</li>
+            </ul>
+        </div>
+
+
+
+
         <footer th:fragment="footer" >
             <br></br>
             <!--<a href="#" th:href="@{../}">

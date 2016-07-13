@@ -12,6 +12,8 @@ public class Instalacao extends Identity<Long> {
     private String designacao;
     private String descricao;
 
+    private Long unidadeEstruturalId;
+
     public String getLocalizacao() {
         return localizacao;
     }
@@ -34,5 +36,13 @@ public class Instalacao extends Identity<Long> {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Long getUnidadeEstruturalId() {
+        return unidadeEstruturalId;
+    }
+
+    public void setUnidadeEstruturalId(Long unidadeEstruturalId) {
+        this.unidadeEstruturalId = unidadeEstruturalId;
     }
 }
