@@ -464,7 +464,7 @@ public class PresencaService implements IPresencaService {
                 throw new RecursoEliminadoException(String.format("O registo de periodo solicitado foi eliminado: %s", periodo.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
             // Presença não existe na BD, vamos criar e popular as respectivas presenças:
-            logger.debug("Não existe presença ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
+            logger.debug("Não existe periodo ou foi eliminado. Vamos criar um periodo novo.", ex.getCause());
             periodo = new Periodo();
             periodo.setDtInicio(datainicio);
             periodo.setDtFim(datafim);
