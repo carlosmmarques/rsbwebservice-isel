@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
@@ -16,6 +17,7 @@ import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.services.IPessoalService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -55,14 +57,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Retorno do método no corpo da resposta
+    @Validated
     public Callable<?> obterElementosDoPessoal(
-            @RequestParam(value = "nummecanografico", required = false) Optional<String> nummecanografico,
-            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
-            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
-            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
-            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
-            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
-            @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
+            @Valid @RequestParam(value = "nummecanografico", required = false) Optional<String> nummecanografico,
+            @Valid @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @Valid @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @Valid @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @Valid @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @Valid @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
+            @Valid @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));

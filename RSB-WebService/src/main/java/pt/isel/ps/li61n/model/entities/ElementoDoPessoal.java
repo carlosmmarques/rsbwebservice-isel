@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "pessoal")
-public class ElementoDoPessoal extends RsbEntidadeAbstracta {
+public class ElementoDoPessoal extends EntidadeAbstractaComIdentificador {
 
     @Column(nullable = true)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})

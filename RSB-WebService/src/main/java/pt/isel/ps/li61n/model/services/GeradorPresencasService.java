@@ -183,10 +183,12 @@ public class GeradorPresencasService implements IGeradorPresencasService {
                     .get()
                     / 24;
             logger.debug(" - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
+
             // dias decorridos desde a data de inicio do turno
             final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
             logger.debug(" - - - - Dias decorridos desde o inicio do turno: " +
                     diasDecorridos + ".");
+
             // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
             float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
             logger.debug(" - - - - Atraso do ciclo à data: " + atrasoCiclo +
@@ -195,6 +197,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
                     dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
             numHoras = 0;
 
+            // apuramento do numero de horas e data e hora de inicio da presença por ajuste do atraso do ciclo.
             for (PeriodoCicloTurno p : periodos) {
                 numHoras = p.getNumHoras();
                 if (atrasoCiclo <= 0) {
@@ -202,14 +205,19 @@ public class GeradorPresencasService implements IGeradorPresencasService {
                         logger.debug(" - - - - - O periodo em causa é de descanso, não serão registadas horas");
                         numHoras = 0f;
                     }
+                    logger.debug(" - - - - - - Ok! Periodo com ordem " + p.getOrdemPeriodoCiclo() + " elegido!");
                     break;
                 }
                 atrasoCiclo = atrasoCiclo - numHoras;
-                if (atrasoCiclo < 0)
+                logger.debug(" - - - - - Atraso ajustado para " + atrasoCiclo + " dias.");
+                if (atrasoCiclo < 0){
+                    logger.debug(" - - - - - - Periodo com ordem " + p.getOrdemPeriodoCiclo() +
+                            " ultrapassa o atraso.");
                     if (p.getPeriodoDescanso()) numHoras = 0f;
+                }
             }
-
             dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
+            logger.debug(" - - - - - Calculo da data e hora para o registo de presença: " + dataHrInicio);
             return this;
         }
     }

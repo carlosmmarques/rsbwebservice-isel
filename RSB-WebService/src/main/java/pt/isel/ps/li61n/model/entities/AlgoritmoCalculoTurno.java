@@ -16,7 +16,7 @@ import java.util.Set;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class AlgoritmoCalculoTurno extends RsbEntidadeAbstracta {
+public class AlgoritmoCalculoTurno extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;

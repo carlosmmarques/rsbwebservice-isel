@@ -13,7 +13,7 @@ import javax.persistence.*;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Instalacao extends RsbEntidadeAbstracta {
+public class Instalacao extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "unidadeEstrutural_id", nullable = false)

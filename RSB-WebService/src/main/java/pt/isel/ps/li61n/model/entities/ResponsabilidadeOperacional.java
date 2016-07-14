@@ -14,7 +14,7 @@ import java.util.List;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class ResponsabilidadeOperacional extends RsbEntidadeAbstracta {
+public class ResponsabilidadeOperacional extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")

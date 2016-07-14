@@ -21,6 +21,7 @@ import pt.isel.ps.li61n.model.entities.TipoPresenca;
 import pt.isel.ps.li61n.model.services.IPresencaService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Collection;
@@ -544,8 +545,8 @@ public class PresencaController extends RsbBaseController<Presenca> {
     @RequestMapping(value = "/popularperiodo", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP PUT
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> actualizarPresencasDeElemento(
-            @RequestParam(value = "elementodopessoal_id", required = true) Long elementodopessoal_id,
-            @RequestParam(value = "periodo_id", required = true) Long periodo_id,
+            @Valid @RequestParam(value = "elementodopessoal_id", required = true) Long elementodopessoal_id,
+            @Valid @RequestParam(value = "periodo_id", required = true) Long periodo_id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));

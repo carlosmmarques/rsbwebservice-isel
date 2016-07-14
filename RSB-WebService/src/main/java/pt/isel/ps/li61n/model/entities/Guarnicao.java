@@ -15,7 +15,7 @@ import javax.persistence.*;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Guarnicao extends RsbEntidadeAbstracta {
+public class Guarnicao extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne(optional = false)
     @JoinColumn (name= "unidadeOperacional_id")

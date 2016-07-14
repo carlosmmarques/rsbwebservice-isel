@@ -13,7 +13,7 @@ import javax.persistence.Entity;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoUnidadeOperacional extends RsbEntidadeAbstracta {
+public class TipoUnidadeOperacional extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;

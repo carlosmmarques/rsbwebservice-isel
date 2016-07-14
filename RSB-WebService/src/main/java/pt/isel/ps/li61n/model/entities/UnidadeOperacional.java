@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class UnidadeOperacional extends RsbEntidadeAbstracta {
+public class UnidadeOperacional extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;

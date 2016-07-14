@@ -16,7 +16,7 @@ import java.sql.Time;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Turno extends RsbEntidadeAbstracta {
+public class Turno extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;

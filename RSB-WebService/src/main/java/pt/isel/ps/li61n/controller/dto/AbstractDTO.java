@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
-import pt.isel.ps.li61n.model.entities.RsbEntidadeAbstracta;
+import pt.isel.ps.li61n.model.entities.EntidadeAbstractaComIdentificador;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class AbstractDTO<Entidade extends RsbEntidadeAbstracta> {
+public class AbstractDTO<Entidade extends EntidadeAbstractaComIdentificador> {
 
     /**
      * Logger

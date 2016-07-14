@@ -18,7 +18,7 @@ import java.util.Calendar;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class RegistoFormacao extends RsbEntidadeAbstracta {
+public class RegistoFormacao extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne
     @JoinColumn(name = "pessoal_id")

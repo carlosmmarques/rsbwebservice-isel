@@ -7,13 +7,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
+import pt.isel.ps.li61n.controller.error.ErroNãoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
-import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
-import pt.isel.ps.li61n.model.entities.Periodo;
-import pt.isel.ps.li61n.model.entities.Presenca;
-import pt.isel.ps.li61n.model.entities.TipoPresenca;
-import pt.isel.ps.li61n.model.repository.*;
+import pt.isel.ps.li61n.model.entities.*;
+import pt.isel.ps.li61n.model.repository.IPeriodoRepositorio;
+import pt.isel.ps.li61n.model.repository.IPresencaRepositorio;
+import pt.isel.ps.li61n.model.repository.ITipoPresencaRepositorio;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -46,19 +46,87 @@ public class PresencaService implements IPresencaService {
     @Autowired
     private IPeriodoRepositorio periodoRepo;
     @Autowired
-    private IPessoalRepositorio pessoalRepo;
-    @Autowired
-    private IPostoFuncionalRepositorio postoFuncionalRepo;
-    @Autowired
     private ITipoPresencaRepositorio tipoPresencaRepo;
-    @Autowired
-    private IInstalacaoRepositorio instalacaoRepo;
-    @Autowired
-    private ITurnoRepositorio turnoRepo;
     @Autowired
     private IGeradorPresencasService geradorPresencasService;
     @Autowired
     private IPessoalService pessoalService;
+    @Autowired
+    private ITurnoService turnoService;
+    @Autowired
+    private IUnidadeEstruturalService unidadeEstruturalService;
+
+    /**
+     * Método auxiliar para obtenção de elementos do pessoal
+     *
+     * @param e - Identificador do elemento do Pessoal.
+     * @return Elemento do pessoal
+     */
+    private ElementoDoPessoal getElementoDoPessoal(Long e) {
+        ElementoDoPessoal elementoDoPessoal;
+        try {
+            elementoDoPessoal = pessoalService.obterElementoDoPessoal(e);
+        } catch (RecursoEliminadoException | NaoEncontradoException e1) {
+            throw e1;
+        } catch (Exception e1) {
+            throw new ErroNãoDeterminadoException(e1.getMessage());
+        }
+        return elementoDoPessoal;
+    }
+
+    /**
+     * Método auxiliar para obtenção de postoFuncional
+     *
+     * @param e - Identificador do Posto funcional.
+     * @return Posto Funcional
+     */
+    private PostoFuncional getPostoFuncional(Long e) {
+        PostoFuncional postoFuncional;
+        try {
+            postoFuncional = pessoalService.obterPostoFuncional(e);
+        } catch (RecursoEliminadoException | NaoEncontradoException e1) {
+            throw e1;
+        } catch (Exception e1) {
+            throw new ErroNãoDeterminadoException(e1.getMessage());
+        }
+        return postoFuncional;
+    }
+
+    /**
+     * Método auxiliar para obtenção de Turno
+     *
+     * @param e - Identificador do Turno.
+     * @return turno
+     */
+    private Turno getTurno(Long e) {
+        Turno turno;
+        try {
+            turno = turnoService.obterTurno(e);
+        } catch (RecursoEliminadoException | NaoEncontradoException e1) {
+            throw e1;
+        } catch (Exception e1) {
+            throw new ErroNãoDeterminadoException(e1.getMessage());
+        }
+        return turno;
+    }
+
+    /**
+     * Método auxiliar para obtenção de Instalação
+     *
+     * @param e - Identificador da Instalação.
+     * @return Instalação
+     */
+    private Instalacao getInstalacao(Long e) {
+        Instalacao instalacao;
+        try {
+            instalacao = unidadeEstruturalService.obterInstalacao(e);
+        } catch (RecursoEliminadoException | NaoEncontradoException e1) {
+            throw e1;
+        } catch (Exception e1) {
+            throw new ErroNãoDeterminadoException(e1.getMessage());
+        }
+        return instalacao;
+    }
 
     /**
      * @param datainicio           Data de Inicio
@@ -162,18 +230,18 @@ public class PresencaService implements IPresencaService {
             presenca.setHoraInicio(horainicio);
             presenca.setNumHoras(numhoras);
             presenca.setPeriodo(periodoRepo.findOne(periodo_id));
-            presenca.setTurnoEfectivo(turnoRepo.findOne(turno_id));
-            presenca.setInstalacaoEfectiva(instalacaoRepo.findOne(instalacao_id));
-            presenca.setPostoFuncionalEfectivo(postoFuncionalRepo.findOne(postofuncional_id));
+            presenca.setTurnoEfectivo(turnoService.obterTurno(turno_id));
+            presenca.setInstalacaoEfectiva(unidadeEstruturalService.obterInstalacao(instalacao_id));
+            presenca.setPostoFuncionalEfectivo(pessoalService.obterPostoFuncional(postofuncional_id));
             presenca.setTipoPresencaEfectiva(tipoPresencaRepo.findOne(tipopresenca_id));
-            presenca.setElementoDoPessoal(pessoalRepo.findOne(elementodopessoal_id));
+            presenca.setElementoDoPessoal(getElementoDoPessoal(elementodopessoal_id));
             final Presenca[] presencaImutavel = {presenca};
             elementoreforco_id.ifPresent(e -> {
-                ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(e);
+                ElementoDoPessoal elementoDoPessoal = getElementoDoPessoal(e);
                 presencaImutavel[0].setElementoReforco(elementoDoPessoal);
             });
             elementoreforcado_id.ifPresent(e -> {
-                ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(e);
+                ElementoDoPessoal elementoDoPessoal = getElementoDoPessoal(e);
                 presencaImutavel[0].setElementoReforcado(elementoDoPessoal);
             });
             presenca = presencaRepo.save(presenca);
@@ -219,13 +287,13 @@ public class PresencaService implements IPresencaService {
         data.ifPresent(presenca::setData);
         numhoras.ifPresent(presenca::setNumHoras);
         periodo_id.ifPresent(aLong -> presenca.setPeriodo(periodoRepo.findOne(aLong)));
-        turno_id.ifPresent(aLong -> presenca.setTurnoEfectivo(turnoRepo.findOne(aLong)));
-        instalacao_id.ifPresent(aLong -> presenca.setInstalacaoEfectiva(instalacaoRepo.findOne(aLong)));
-        postofuncional_id.ifPresent(aLong -> presenca.setPostoFuncionalEfectivo(postoFuncionalRepo.findOne(aLong)));
+        turno_id.ifPresent(aLong -> getTurno(aLong));
+        instalacao_id.ifPresent(aLong -> presenca.setInstalacaoEfectiva(getInstalacao(aLong)));
+        postofuncional_id.ifPresent(aLong -> presenca.setPostoFuncionalEfectivo(getPostoFuncional(aLong)));
         tipopresenca_id.ifPresent(aString -> presenca.setTipoPresencaEfectiva(tipoPresencaRepo.findOne(aString)));
-        elementodopessoal_id.ifPresent(aLong -> presenca.setElementoDoPessoal(pessoalRepo.findOne(aLong)));
-        elementoreforco_id.ifPresent(aLong -> presenca.setElementoReforco(pessoalRepo.findOne(aLong)));
-        elementoreforcado_id.ifPresent(aLong -> presenca.setElementoReforcado(pessoalRepo.findOne(aLong)));
+        elementodopessoal_id.ifPresent(aLong -> presenca.setElementoDoPessoal(getElementoDoPessoal(aLong)));
+        elementoreforco_id.ifPresent(aLong -> presenca.setElementoReforco(getElementoDoPessoal(aLong)));
+        elementoreforcado_id.ifPresent(aLong -> presenca.setElementoReforcado(getElementoDoPessoal(aLong)));
         return presenca;
     }
 

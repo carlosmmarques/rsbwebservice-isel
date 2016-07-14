@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * PeriodoCicloTurno - Representa o Ciclo de Turno. Esta classe não extende de RsbEntidadeAbstracta, uma vez que a chave é
+ * PeriodoCicloTurno - Representa o Ciclo de Turno. Esta classe não extende de EntidadeAbstractaComIdentificador, uma vez que a chave é
  * composta de um Id do Ciclo e um Id do periodo do ciclo (Um Ciclo é composto por vários periodos)
 
  * Created on 03/05/2016.
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "ciclo_turno")
 @IdClass(value = PeriodoCicloTurno.CicloTurnoPK.class) //A chave é composta e representada pela classe CicloTurnoPK
-public class PeriodoCicloTurno {
+public class PeriodoCicloTurno extends EntidadeAbstracta{
 
     @Id
     @ManyToOne
@@ -31,9 +31,6 @@ public class PeriodoCicloTurno {
     private Boolean periodoDescanso;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float numHoras;
-    @JsonView({ModeloDeRepresentacao.Verboso.class})
-    @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
-    private Boolean eliminado;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -131,20 +128,6 @@ public class PeriodoCicloTurno {
         result = 31 * result + (periodoDescanso != null ? periodoDescanso.hashCode() : 0);
         result = 31 * result + numHoras.hashCode();
         return result;
-    }
-
-    /**
-     * @return Estado da Entidade (Activo / Inactivo)
-     */
-    public Boolean getEliminado() {
-        return eliminado;
-    }
-
-    /**
-     * @param eliminado Estado da Entidade (Activo / Inactivo)
-     */
-    public void setEliminado(Boolean eliminado) {
-        this.eliminado = eliminado;
     }
 
     /**

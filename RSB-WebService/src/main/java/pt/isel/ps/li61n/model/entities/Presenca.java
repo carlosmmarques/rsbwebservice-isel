@@ -19,7 +19,7 @@ import java.sql.Time;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Presenca extends RsbEntidadeAbstracta {
+public class Presenca extends EntidadeAbstractaComIdentificador {
 
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

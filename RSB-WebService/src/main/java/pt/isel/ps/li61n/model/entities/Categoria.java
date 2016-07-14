@@ -13,7 +13,7 @@ import javax.persistence.*;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Categoria extends RsbEntidadeAbstracta {
+public class Categoria extends EntidadeAbstractaComIdentificador {
 
     @Enumerated(EnumType.STRING)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})

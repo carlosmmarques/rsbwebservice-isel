@@ -15,7 +15,7 @@ import java.util.List;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class Formacao extends RsbEntidadeAbstracta {
+public class Formacao extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float validade;
