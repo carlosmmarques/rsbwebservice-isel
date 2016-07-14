@@ -433,7 +433,7 @@ public class PresencaService implements IPresencaService {
     @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Collection<Presenca> popularPresenças(Long periodo_id, Long elementodopessoal_id) throws Exception {
         Periodo periodo = obterPeriodo(periodo_id);
-        ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(elementodopessoal_id);
+        ElementoDoPessoal elementoDoPessoal = pessoalService.obterElementoDoPessoal(elementodopessoal_id);
         return geradorPresencasService.popularPresenças(periodo, elementoDoPessoal);
     }
 
