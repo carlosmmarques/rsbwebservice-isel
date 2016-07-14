@@ -237,4 +237,12 @@ public interface IPresencaService {
      */
     Periodo eliminarPeriodo(Long id) throws Exception;
 
-}
+    /**
+     * @param periodo_id           O periodo em relação ao qual pretendemos popular as presenças do elemento
+     * @param elementoDoPessoal_id O elemento em relação pretendemos popular as presenças no periodo
+     * @throws Exception
+     */
+    Collection<Presenca> popularPresenças(Long periodo_id, Long elementoDoPessoal_id) throws Exception;
+
+
+    }

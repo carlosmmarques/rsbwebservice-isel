@@ -24,7 +24,7 @@ public interface IPeriodoRepositorio extends JpaRepository<Periodo, Long> {
      * @param datafim Data de fim
      * @return
      */
-    @Query("SELECT p FROM Periodo p WHERE p.dtInicio >= :datainicio and p.dtFim <= :datafim")
+    @Query("SELECT p FROM Periodo p WHERE p.dtInicio >= :datainicio AND p.dtFim <= :datafim")
     Optional<Periodo> findByDataInicioAndDataFim(
             @Param("datainicio") Date datainicio,
             @Param("datafim") Date datafim

@@ -14,9 +14,6 @@ import pt.isel.ps.li61n.model.repository.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,101 +49,8 @@ public class PresencaService implements IPresencaService {
     private IInstalacaoRepositorio instalacaoRepo;
     @Autowired
     private ITurnoRepositorio turnoRepo;
-
-
-    /**
-     * @param periodo O periodo em relação ao qual pretendemos popular as presenças
-     * @throws Exception
-     */
-    private void popularPresencas(Periodo periodo) throws Exception {
-
-        logger.debug("A popular presenças para o periodo [" + periodo.getDtInicio() + " - " + periodo.getDtFim() + "]");
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(periodo.getDtInicio());
-        cal.add(Calendar.DATE, -1);
-
-        final LocalDate
-                dtInicio = periodo.getDtInicio().toLocalDate(),
-                dtFim = periodo.getDtFim().toLocalDate();
-
-
-        turnoRepo.findAll().stream()
-                .filter(turno -> turno.getDtInicioCiclo().compareTo(periodo.getDtInicio()) < 0)
-                .forEach(turno -> {
-                    logger.debug(" - Turno " + turno.getId() + " - " + turno.getDesignacao() + ".");
-                    pessoalRepo.findAll().stream()
-                            .filter(elementoDoPessoal -> elementoDoPessoal.getTurno().equals(turno))
-                            .forEach(elementoDoPessoal -> {
-                                logger.debug(" - - elemento: " + elementoDoPessoal.getId() + " - " +
-                                        elementoDoPessoal.getNome() + ".");
-                                for (LocalDate date = dtInicio; date.isBefore(dtFim); date = date.plusDays(1)) {
-                                    try {
-                                        logger.debug(" - - - A calcular o numero de horas e hora de inicio da " +
-                                                "presença na data " + date.toString() + ".");
-                                        final Date dtInicioTurno = turno.getDtInicioCiclo();
-                                        final Time timeInicioTurno = turno.getHrInicioCiclo();
-                                        // periodos de ciclo ordenados de forma ascendente.
-                                        Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno()
-                                                .getCiclos().stream()
-                                                .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
-                                                .collect(Collectors.toList());
-                                        // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
-                                        final float dimensaoDoCiclo = periodos.stream()
-                                                .map(PeriodoCicloTurno::getNumHoras)
-                                                .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
-                                                .get()
-                                                / 24;
-                                        logger.debug(" - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
-                                        // dias decorridos desde a data de inicio do turno
-                                        final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
-                                        logger.debug(" - - - - Dias decorridos desde o inicio do turno: " +
-                                                diasDecorridos + ".");
-                                        // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
-                                        float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
-                                        logger.debug(" - - - - Atraso do ciclo à data: " + atrasoCiclo +
-                                                " horas decorridas desde o ultimo reinicio de ciclo.");
-                                        LocalDateTime dataHrInicio = LocalDateTime.of(
-                                                dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
-                                        float numHoras = 0;
-
-                                        for (PeriodoCicloTurno p : periodos) {
-                                            numHoras = p.getNumHoras();
-                                            if (atrasoCiclo <= 0) {
-                                                if (p.getPeriodoDescanso()) {
-                                                    logger.debug(" - - - - - O periodo em causa é de descanso, não serão registadas horas");
-                                                    numHoras = 0f;
-                                                }
-                                                break;
-                                            }
-                                            atrasoCiclo = atrasoCiclo - numHoras;
-                                            if (atrasoCiclo < 0)
-                                                if (p.getPeriodoDescanso()) numHoras = 0f;
-                                        }
-                                        dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
-                                        //float numHoras = obterNumeroDehoras(turno, date);
-                                        if (numHoras == 0f) continue;
-                                        logger.debug(" - - - a tentar inserir presença para a data: " + date.toString() + ".");
-                                        inserirPresenca(
-                                                Date.valueOf(date),
-                                                java.sql.Time.valueOf(dataHrInicio.toLocalTime()),
-                                                numHoras,
-                                                periodo.getId(),
-                                                turno.getId(),
-                                                elementoDoPessoal.getInstalacao().getId(),
-                                                elementoDoPessoal.getPostoFuncional().getId(),
-                                                elementoDoPessoal.getTipoPresenca().getId(),
-                                                elementoDoPessoal.getId(),
-                                                Optional.empty(),
-                                                Optional.empty()
-                                        );
-                                    } catch (Exception e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            });
-                });
-    }
+    @Autowired
+    private IGeradorPresencasService geradorPresencasService;
 
     /**
      * @param datainicio           Data de Inicio
@@ -243,7 +147,7 @@ public class PresencaService implements IPresencaService {
                 throw new RecursoEliminadoException(String.format("O registo de presença solicitado foi eliminado: %s", presenca.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
             // Presença não existe na BD, vamos criar:
-            logger.debug("Não existe presença ou foi eliminada. Vamos criar uma presença nova.", ex.getCause());
+            logger.debug(String.format("Não existe presença ou foi eliminada (Exception: %s). Vamos criar uma presença nova.", ex.getLocalizedMessage()), ex.getCause());
             presenca = new Presenca();
             presenca.setData(data);
             presenca.setHoraInicio(horainicio);
@@ -263,7 +167,9 @@ public class PresencaService implements IPresencaService {
                 ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(e);
                 presencaImutavel[0].setElementoReforcado(elementoDoPessoal);
             });
-            return presencaRepo.save(presenca);
+            presenca = presencaRepo.save(presenca);
+            logger.debug(String.format("Presença inserida com código: %s", presenca.getId()));
+            return presenca;
         }
         //presença existe na BD, vamos lançar a respectiva excepção:
         throw new ConflictoException(String.format("Já existe uma presença para o elemento %s na data %s", elementodopessoal_id, data));
@@ -426,8 +332,9 @@ public class PresencaService implements IPresencaService {
     public Collection<Periodo> obterPeriodos(Optional<Date> datainicio, Optional<Date> datafim) throws Exception {
         return periodoRepo.findAll().stream()
                 .filter(periodo -> periodo.getEliminado() != null && !periodo.getEliminado())
+                .filter(periodo -> datainicio.map(date -> date.compareTo(periodo.getDtInicio()) == 0).orElse(true))
+                .filter(periodo -> datafim.map(date -> date.compareTo(periodo.getDtFim()) == 0).orElse(true))
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -459,7 +366,9 @@ public class PresencaService implements IPresencaService {
         Periodo periodo;
 
         try {
-            periodo = periodoRepo.findByDataInicioAndDataFim(datafim, datafim).get();
+            periodo = periodoRepo.findAll().stream().filter(p -> (datainicio.compareTo(p.getDtInicio()) >= 0) &&
+                    (datafim.compareTo(p.getDtFim()) <= 0))
+            .findFirst().get();
             if (periodo.getEliminado())
                 throw new RecursoEliminadoException(String.format("O registo de periodo solicitado foi eliminado: %s", periodo.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
@@ -469,12 +378,11 @@ public class PresencaService implements IPresencaService {
             periodo.setDtInicio(datainicio);
             periodo.setDtFim(datafim);
             periodo = periodoRepo.save(periodo);
-            popularPresencas(periodo);
+            geradorPresencasService.popularPresencas(periodo);
             return periodo;
         }
         //presença existe na BD, vamos lançar a respectiva excepção:
         throw new ConflictoException(String.format("Já existe um periodo compreendido entre as datas %s e %s", datainicio, datafim));
-
     }
 
     /**
@@ -505,4 +413,18 @@ public class PresencaService implements IPresencaService {
         periodo.setEliminado(true);
         return periodoRepo.save(periodo);
     }
-}
+
+    /**
+     * @param periodo_id           O periodo em relação ao qual pretendemos popular as presenças do elemento
+     * @param elementodopessoal_id O elemento em relação pretendemos popular as presenças no periodo
+     * @throws Exception
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public Collection<Presenca> popularPresenças(Long periodo_id, Long elementodopessoal_id) throws Exception {
+        Periodo periodo = obterPeriodo(periodo_id);
+        ElementoDoPessoal elementoDoPessoal = pessoalRepo.findOne(elementodopessoal_id);
+        return geradorPresencasService.popularPresenças(periodo, elementoDoPessoal);
+    }
+
+    }

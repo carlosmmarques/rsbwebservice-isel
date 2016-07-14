@@ -526,10 +526,34 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Periodo periodo = presencasService.eliminarPeriodo(
-                    id
-            );
+            Periodo periodo = presencasService.eliminarPeriodo(id);
             return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * @param elementodopessoal_id      Identificador do Elemento do Pessoal
+     * @param periodo_id      Identificador do Periodo
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/popular", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP PUT
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> popularPresencas(
+            @RequestParam(value = "elementodopessoal_id", required = true) Long elementodopessoal_id,
+            @RequestParam(value = "periodo_id", required = true) Long periodo_id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            List<PresencaDTO> presencaDTOs = new LinkedList<>();
+            presencasService.popularPresenças(periodo_id, elementodopessoal_id).stream().forEach(
+                    presenca -> presencaDTOs.add(new PresencaDTO(presenca, request, ModeloDeRepresentacao.Sumario.class))
+            );
+            return new ResponseEntity<>(presencaDTOs, HttpStatus.CREATED);
         };
     }
 }

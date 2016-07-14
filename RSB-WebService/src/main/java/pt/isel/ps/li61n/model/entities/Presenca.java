@@ -37,7 +37,6 @@ public class Presenca extends RsbEntidadeAbstracta {
     private Periodo periodo;
     @ManyToOne
     @JoinColumn(name = "pessoal_id")
-    @JsonView(ModeloDeRepresentacao.Sumario.class)
     private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "postoFuncionalEfectivo_id")
