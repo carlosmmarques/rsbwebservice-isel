@@ -8,8 +8,6 @@ import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.model.entities.RsbEntidadeAbstracta;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,20 +46,7 @@ public class AbstractDTO<Entidade extends RsbEntidadeAbstracta> {
         this.id = entidade.getId();
         this.modeloDeRepresentacao = modeloDeRepresentacao;
 
-        for (Field field : entidade.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(JsonView.class))
-                if (Arrays.asList(field.getAnnotation(JsonView.class).value()).contains(this.modeloDeRepresentacao)) {
-                    try {
-                        String value;
-                        field.setAccessible(true);
-                        value = field.get(entidade) == null ? "" : field.get(entidade).toString();
-                        mapaDeAtributos.put(field.getName(), value);
-                    } catch (IllegalAccessException e) {
-                        logger.error(e.getLocalizedMessage(), e.getCause());
-                        e.printStackTrace();
-                    }
-                }
-        }
+        UtilidadesParaDTO.verificarPropriedadesParaDTO(logger, mapaDeAtributos, entidade, this.modeloDeRepresentacao);
     }
 
     @JsonAnyGetter

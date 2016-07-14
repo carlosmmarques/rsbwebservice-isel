@@ -101,50 +101,18 @@ public class GeradorPresencasService implements IGeradorPresencasService {
         logger.debug(" - - Turno " + turno.getId() + " - " + turno.getDesignacao() + ".");
 
         for (LocalDate date = dtInicio; !date.isEqual(dtFim); date = date.plusDays(1)) {
-            logger.debug(" - - - A calcular o numero de horas e hora de inicio da " +
-                    "presença na data " + date.toString() + ".");
-            final Date dtInicioTurno = turno.getDtInicioCiclo();
-            final Time timeInicioTurno = turno.getHrInicioCiclo();
-            // periodos de ciclo ordenados de forma ascendente.
-            Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno()
-                    .getCiclos().stream()
-                    .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
-                    .collect(Collectors.toList());
-            // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
-            final float dimensaoDoCiclo = periodos.stream()
-                    .map(PeriodoCicloTurno::getNumHoras)
-                    .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
-                    .get()
-                    / 24;
-            logger.debug(" - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
-            // dias decorridos desde a data de inicio do turno
-            final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
-            logger.debug(" - - - - Dias decorridos desde o inicio do turno: " +
-                    diasDecorridos + ".");
-            // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
-            float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
-            logger.debug(" - - - - Atraso do ciclo à data: " + atrasoCiclo +
-                    " horas decorridas desde o ultimo reinicio de ciclo.");
-            LocalDateTime dataHrInicio = LocalDateTime.of(
-                    dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
-            float numHoras = 0;
 
-            for (PeriodoCicloTurno p : periodos) {
-                numHoras = p.getNumHoras();
-                if (atrasoCiclo <= 0) {
-                    if (p.getPeriodoDescanso()) {
-                        logger.debug(" - - - - - O periodo em causa é de descanso, não serão registadas horas");
-                        numHoras = 0f;
-                    }
-                    break;
-                }
-                atrasoCiclo = atrasoCiclo - numHoras;
-                if (atrasoCiclo < 0)
-                    if (p.getPeriodoDescanso()) numHoras = 0f;
-            }
-            dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
+            CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca calculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca =
+                    new CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca(turno, date)
+                            .invoke();
+
+            float numHoras = calculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca.getNumHoras();
+            LocalDateTime dataHrInicio = calculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca.getDataHrInicio();
+
             if (numHoras == 0f) continue;
+
             logger.debug(" - - - a tentar inserir presença para a data: " + date.toString() + ".");
+
             try {
                 final Date d = Date.valueOf(date);
                 presenças.add(presencaService.inserirPresenca(
@@ -167,5 +135,82 @@ public class GeradorPresencasService implements IGeradorPresencasService {
             }
         }
         return presenças;
+    }
+
+    /**
+     * Calculador de Numero de Horas e Datas de Inicio das presenças
+     * Esta classe realiza os calculos necessários para determinar:
+     *  - O atraso existente à data em relação às datas de renovaçõo dos ciclos de turno, e realizar o necessário ajuste
+     *  - apurar a data e hora de inicio da presença
+     *  - apurar o numero de horas das presenças (periodos de descanso são ignorados)
+     */
+    private class CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca {
+        private Turno turno;
+        private LocalDate date;
+        private LocalDateTime dataHrInicio;
+        private float numHoras;
+
+        public CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca(Turno turno, LocalDate date) {
+            this.turno = turno;
+            this.date = date;
+        }
+
+        public LocalDateTime getDataHrInicio() {
+            return dataHrInicio;
+        }
+
+        public float getNumHoras() {
+            return numHoras;
+        }
+
+        public CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca invoke() {
+            logger.debug(" - - - A calcular o numero de horas e hora de inicio da presença na data " +
+                    date.toString() + ".");
+
+            final Date dtInicioTurno = turno.getDtInicioCiclo();
+            final Time timeInicioTurno = turno.getHrInicioCiclo();
+
+            // periodos de ciclo ordenados de forma ascendente.
+            Collection<PeriodoCicloTurno> periodos = turno.getAlgoritmoCalculoTurno()
+                    .getCiclos().stream()
+                    .sorted((o1, o2) -> o1.getOrdemPeriodoCiclo().compareTo(o2.getOrdemPeriodoCiclo()))
+                    .collect(Collectors.toList());
+
+            // dimensão do ciclo: numero de dias totais de um ciclo de turno (sempre múltiplos de 24 Horas)
+            final float dimensaoDoCiclo = periodos.stream()
+                    .map(PeriodoCicloTurno::getNumHoras)
+                    .reduce((aFloat, aFloat2) -> aFloat + aFloat2)
+                    .get()
+                    / 24;
+            logger.debug(" - - - - Dimensão do ciclo do turno: " + dimensaoDoCiclo + ".");
+            // dias decorridos desde a data de inicio do turno
+            final long diasDecorridos = ChronoUnit.DAYS.between(turno.getDtInicioCiclo().toLocalDate(), date);
+            logger.debug(" - - - - Dias decorridos desde o inicio do turno: " +
+                    diasDecorridos + ".");
+            // atraso do ciclo - Representa o numero de horas decorridas desde o ultimo reinicio do ciclo
+            float atrasoCiclo = (diasDecorridos % dimensaoDoCiclo) * 24;
+            logger.debug(" - - - - Atraso do ciclo à data: " + atrasoCiclo +
+                    " horas decorridas desde o ultimo reinicio de ciclo.");
+            dataHrInicio = LocalDateTime.of(
+                    dtInicioTurno.toLocalDate(), timeInicioTurno.toLocalTime());
+            numHoras = 0;
+
+            for (PeriodoCicloTurno p : periodos) {
+                numHoras = p.getNumHoras();
+                if (atrasoCiclo <= 0) {
+                    if (p.getPeriodoDescanso()) {
+                        logger.debug(" - - - - - O periodo em causa é de descanso, não serão registadas horas");
+                        numHoras = 0f;
+                    }
+                    break;
+                }
+                atrasoCiclo = atrasoCiclo - numHoras;
+                if (atrasoCiclo < 0)
+                    if (p.getPeriodoDescanso()) numHoras = 0f;
+            }
+
+            dataHrInicio = dataHrInicio.plusMinutes((diasDecorridos * 24 * 60) + ((int) atrasoCiclo * 60));
+            return this;
+        }
     }
 }

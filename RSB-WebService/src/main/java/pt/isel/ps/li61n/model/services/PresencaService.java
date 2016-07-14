@@ -9,12 +9,18 @@ import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.ConflictoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
-import pt.isel.ps.li61n.model.entities.*;
+import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
+import pt.isel.ps.li61n.model.entities.Periodo;
+import pt.isel.ps.li61n.model.entities.Presenca;
+import pt.isel.ps.li61n.model.entities.TipoPresenca;
 import pt.isel.ps.li61n.model.repository.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +57,8 @@ public class PresencaService implements IPresencaService {
     private ITurnoRepositorio turnoRepo;
     @Autowired
     private IGeradorPresencasService geradorPresencasService;
+    @Autowired
+    private IPessoalService pessoalService;
 
     /**
      * @param datainicio           Data de Inicio
@@ -71,7 +79,7 @@ public class PresencaService implements IPresencaService {
     public Collection<Presenca> obterPresencas(
             Optional<Date> datainicio,
             Optional<Date> datafim,
-            Optional<Date> periodo_id,
+            Optional<Long> periodo_id,
             Optional<Long> turno_id,
             Optional<Long> instalacao_id,
             Optional<Long> postofuncional_id,
@@ -142,10 +150,11 @@ public class PresencaService implements IPresencaService {
     ) throws Exception {
         Presenca presenca;
         try {
-            presenca = presencaRepo.findByDataAndElementoDoPessoal(data, pessoalRepo.findOne(elementodopessoal_id)).get();
-            if (presenca.getEliminado())
-                throw new RecursoEliminadoException(String.format("O registo de presença solicitado foi eliminado: %s", presenca.getId()));
-        } catch (NoSuchElementException | RecursoEliminadoException ex) {
+            presenca = presencaRepo.findByDataAndElementoDoPessoal(data, pessoalService.obterElementoDoPessoal(elementodopessoal_id)).get();
+//            if (presenca.getEliminado())
+//                throw new RecursoEliminadoException(String.format("O registo de presença solicitado foi eliminado: %s", presenca.getId()));
+//        } catch (NoSuchElementException | RecursoEliminadoException ex) { // O teste a recurso eliminado está ser feito no próprio repositório
+        } catch (NoSuchElementException ex) {
             // Presença não existe na BD, vamos criar:
             logger.debug(String.format("Não existe presença ou foi eliminada (Exception: %s). Vamos criar uma presença nova.", ex.getLocalizedMessage()), ex.getCause());
             presenca = new Presenca();
@@ -172,7 +181,8 @@ public class PresencaService implements IPresencaService {
             return presenca;
         }
         //presença existe na BD, vamos lançar a respectiva excepção:
-        throw new ConflictoException(String.format("Já existe uma presença para o elemento %s na data %s", elementodopessoal_id, data));
+        throw new ConflictoException(String.format("Já existe uma presença com id: %s, para o elemento %s na data %s",
+                presenca.getId(), elementodopessoal_id, data));
     }
 
     /**
@@ -368,7 +378,7 @@ public class PresencaService implements IPresencaService {
         try {
             periodo = periodoRepo.findAll().stream().filter(p -> (datainicio.compareTo(p.getDtInicio()) >= 0) &&
                     (datafim.compareTo(p.getDtFim()) <= 0))
-            .findFirst().get();
+                    .findFirst().get();
             if (periodo.getEliminado())
                 throw new RecursoEliminadoException(String.format("O registo de periodo solicitado foi eliminado: %s", periodo.getId()));
         } catch (NoSuchElementException | RecursoEliminadoException ex) {
@@ -427,4 +437,4 @@ public class PresencaService implements IPresencaService {
         return geradorPresencasService.popularPresenças(periodo, elementoDoPessoal);
     }
 
-    }
+}

@@ -27,7 +27,7 @@ public interface IPresencaRepositorio extends JpaRepository<Presenca, Long> {
      * @param elementoDoPessoal Identificador do elemento do pessoal que executa a presença
      * @return
      */
-    @Query(value = "SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal")
+    @Query(value = "SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal AND p.eliminado = false")
     public Optional<Presenca> findByDataAndElementoDoPessoal(
             @Param("data") Date data,
             @Param("elementodopessoal") ElementoDoPessoal elementoDoPessoal

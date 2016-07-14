@@ -13,6 +13,7 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
+import pt.isel.ps.li61n.controller.error.ErroNãoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
@@ -22,6 +23,7 @@ import pt.isel.ps.li61n.model.services.IPresencaService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * Instância do Serviço
      */
     @Autowired
-    IPresencaService presencasService;
+    IPresencaService presencaService;
 
     /**
      * Logger
@@ -68,7 +70,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
     public Callable<?> obterPresencas(
             @RequestParam(value = "datainicio", required = false) Optional<Date> datainicio,
             @RequestParam(value = "datafim", required = false) Optional<Date> datafim,
-            @RequestParam(value = "periodo_id", required = false) Optional<Date> periodo_id,
+            @RequestParam(value = "periodo_id", required = false) Optional<Long> periodo_id,
             @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
             @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
             @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
@@ -82,7 +84,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             final List<PresencaDTO> presencasDTO = new LinkedList<>();
-            presencasService.obterPresencas(
+            presencaService.obterPresencas(
                     datainicio,
                     datafim,
                     periodo_id,
@@ -120,7 +122,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             PresencaDTO presencaDTO = new PresencaDTO(
-                    presencasService.obterPresenca(id),
+                    presencaService.obterPresenca(id),
                     request,
                     ModeloDeRepresentacao.Normal.class);
             return new ResponseEntity<>(presencaDTO, HttpStatus.OK);
@@ -163,7 +165,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Presenca presenca = presencasService
+            Presenca presenca = presencaService
                     .inserirPresenca(
                             data,
                             horainicio,
@@ -219,7 +221,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Presenca presenca = presencasService.actualizarPresenca(
+            Presenca presenca = presencaService.actualizarPresenca(
                     id,
                     data,
                     numhoras,
@@ -254,7 +256,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Presenca presenca = presencasService.eliminarPresenca(
+            Presenca presenca = presencaService.eliminarPresenca(
                     id
             );
             return new ResponseEntity<>(new PresencaDTO(presenca, request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
@@ -278,7 +280,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             List<TipoPresencaDTO> tiposPresencaDTO = new LinkedList<>();
-            presencasService.obterTiposPresenca().stream()
+            presencaService.obterTiposPresenca().stream()
                     .forEach(tipoPresenca -> tiposPresencaDTO.add(new TipoPresencaDTO(tipoPresenca, request, ModeloDeRepresentacao.Sumario.class)));
             return new ResponseEntity<>(tiposPresencaDTO, HttpStatus.OK);
         };
@@ -302,7 +304,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            return new ResponseEntity<>(new TipoPresencaDTO(presencasService.obterTipoPresenca(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+            return new ResponseEntity<>(new TipoPresencaDTO(presencaService.obterTipoPresenca(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
         };
     }
 
@@ -330,7 +332,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            TipoPresenca tipoPresenca = presencasService
+            TipoPresenca tipoPresenca = presencaService
                     .inserirTipoPresenca(
                             ausencia,
                             reforco,
@@ -367,7 +369,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            TipoPresenca tipoPresenca = presencasService.actualizarTipoPresenca(
+            TipoPresenca tipoPresenca = presencaService.actualizarTipoPresenca(
                     id,
                     ausencia,
                     reforco,
@@ -394,7 +396,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            TipoPresenca tipoPresenca = presencasService.eliminarTipoPresenca(
+            TipoPresenca tipoPresenca = presencaService.eliminarTipoPresenca(
                     id
             );
             return new ResponseEntity<>(new TipoPresencaDTO(tipoPresenca, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
@@ -426,7 +428,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             List<PeriodoDTO> periodosDTO = new LinkedList<>();
-            presencasService.obterPeriodos(datainicio, datafim).stream()
+            presencaService.obterPeriodos(datainicio, datafim).stream()
                     .forEach(periodo -> periodosDTO.add(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Sumario.class)));
             return new ResponseEntity<>(periodosDTO, HttpStatus.OK);
         };
@@ -450,7 +452,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            return new ResponseEntity<>(new PeriodoDTO(presencasService.obterPeriodo(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+            return new ResponseEntity<>(new PeriodoDTO(presencaService.obterPeriodo(id), request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
         };
     }
 
@@ -472,7 +474,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Periodo periodo = presencasService
+            Periodo periodo = presencaService
                     .inserirPeriodo(
                             datainicio,
                             datafim
@@ -501,7 +503,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Periodo periodo = presencasService.actualizarPeriodo(
+            Periodo periodo = presencaService.actualizarPeriodo(
                     id,
                     datainicio,
                     datafim
@@ -526,7 +528,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
-            Periodo periodo = presencasService.eliminarPeriodo(id);
+            Periodo periodo = presencaService.eliminarPeriodo(id);
             return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
         };
     }
@@ -539,9 +541,9 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
-    @RequestMapping(value = "/popular", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP PUT
+    @RequestMapping(value = "/popularperiodo", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP PUT
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> popularPresencas(
+    public Callable<?> actualizarPresencasDeElemento(
             @RequestParam(value = "elementodopessoal_id", required = true) Long elementodopessoal_id,
             @RequestParam(value = "periodo_id", required = true) Long periodo_id,
             HttpServletRequest request
@@ -549,8 +551,22 @@ public class PresencaController extends RsbBaseController<Presenca> {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Collection<Presenca> presencas = presencaService.obterPresencas(
+                    Optional.empty(),Optional.empty(),
+                    Optional.of(periodo_id),
+                    Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty(),
+                    Optional.of(elementodopessoal_id),
+                    Optional.empty(),Optional.empty());
+            presencas.stream().forEach(presenca -> {
+                try {
+                    presencaService.eliminarPresenca(presenca.getId());
+                } catch (Exception e){
+                    logger.debug("Erro não determinado: " + e);
+                    throw new ErroNãoDeterminadoException(e.getMessage());
+                }
+            });
             List<PresencaDTO> presencaDTOs = new LinkedList<>();
-            presencasService.popularPresenças(periodo_id, elementodopessoal_id).stream().forEach(
+            presencaService.popularPresenças(periodo_id, elementodopessoal_id).stream().forEach(
                     presenca -> presencaDTOs.add(new PresencaDTO(presenca, request, ModeloDeRepresentacao.Sumario.class))
             );
             return new ResponseEntity<>(presencaDTOs, HttpStatus.CREATED);

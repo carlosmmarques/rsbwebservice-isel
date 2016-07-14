@@ -38,7 +38,7 @@ public interface IPresencaService {
     Collection<Presenca> obterPresencas(
             Optional<Date> datainicio,
             Optional<Date> datafim,
-            Optional<Date> periodo_id,
+            Optional<Long> periodo_id,
             Optional<Long> turno_id,
             Optional<Long> instalacao_id,
             Optional<Long> postofuncional_id,
