@@ -13,7 +13,6 @@ import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.viewModel.InsertElementoUI;
 import pt.isel.ps.li61n.viewModel.PessoalUI;
-import pt.isel.ps.li61n.util.web.UrlGenerator;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -189,7 +188,7 @@ public class PessoalController {
             errors.rejectValue( e.fieldName, "", e.getMessage() );
 
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return VIEW_NAME_INSERT; //TODO: Redefinir status para 4XX?
+            return VIEW_NAME_INSERT;
         }
 
         return UrlGenerator.redirectDetalhesPessoal( id );

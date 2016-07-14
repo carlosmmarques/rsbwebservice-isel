@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model;
 
 import pt.isel.ps.li61n.model.dal.IRepository;
+import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
@@ -24,5 +25,9 @@ public interface IUnidadesEstruturaisLogic extends ILogic< Long, UnidadeEstrutur
     Collection< UnidadeEstrutural > getSubunidadesEstruturais( Long ueId );
 
     Collection< Instalacao > getAllInstalacoes(  );
+
+    Long createInstalacao( Instalacao instalacao );
+
+    Instalacao getOneInstalacao( Long unidadeEstruturalId, Long instalacaoId ) throws PropertyEntityException;
 
 }

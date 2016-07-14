@@ -3,7 +3,7 @@ package pt.isel.ps.li61n.viewModel;
 import pt.isel.ps.li61n.model.IPessoalLogic;
 import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
-import pt.isel.ps.li61n.util.web.UrlGenerator;
+import pt.isel.ps.li61n.controller.UrlGenerator;
 
 import java.time.LocalDate;
 import java.util.Collection;

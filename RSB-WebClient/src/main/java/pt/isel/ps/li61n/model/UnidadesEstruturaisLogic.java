@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.ITiposUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
+import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
@@ -36,15 +37,6 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
     @Override
     public Collection< UnidadeEstrutural > getAll() {
 
-        /*
-        Collection< UnidadeEstrutural > ues = _ueRepo.selectAll();
-        if( ues != null ){
-            for (UnidadeEstrutural ue : ues ) {
-                //ue.setTipo( _tipoUeRep.selectOne(  ));
-
-            }
-        }
-        */
         try {
             return _ueRepo.selectAll();
         }
@@ -192,5 +184,51 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
         catch( RepositoryException e ){
             throw new RuntimeException( e );
         }
+    }
+
+    @Override
+    public Long createInstalacao( Instalacao novaInstalacao ) {
+        Long id = null;
+        try {
+            id = _ueRepo.insertInstalacao( novaInstalacao );
+        }
+        catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    @Override
+    public Instalacao getOneInstalacao(
+                        Long unidadeEstruturalId
+                        ,Long instalacaoId
+    ) throws PropertyEntityException {
+
+        // validar unidadeEstruturalId
+        if( unidadeEstruturalId == null ){
+            throw new PropertyEntityException(
+                            "unidadeEstruturalId"
+                            ,"O identificador da unidade estrutural é obrigatório."
+            );
+        }
+
+        // validar instalacaoId
+        if( instalacaoId == null ) {
+            throw new PropertyEntityException(
+                    "id"
+                    , "O identificador da instalação é obrigatório."
+            );
+        }
+
+        Instalacao result = null;
+        try {
+            result = _ueRepo.selectOneInstalcao( unidadeEstruturalId, instalacaoId );
+        }
+        catch( RepositoryException e ) {
+            throw new RuntimeException( e );
+        }
+
+        return result;
     }
 }

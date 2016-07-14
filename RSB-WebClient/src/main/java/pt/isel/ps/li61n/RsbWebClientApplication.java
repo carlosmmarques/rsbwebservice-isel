@@ -19,6 +19,9 @@ public class RsbWebClientApplication{
 		UNIDADES_ESTRUTURAIS_URL = "/unidadesEstruturais"
 		,MAPA_FORCA_URL = "/mapaForca"
     	,PESSOAL_URL = "/pessoal"
+		,INSTALACOES_BASE_URL = "/instalacoes"
+		,INSTALACOES_URL = UNIDADES_ESTRUTURAIS_URL + "/{id}" + INSTALACOES_BASE_URL;
+
 	;
 
 	/**

@@ -12,13 +12,8 @@
         <h1>Registar elemento:</h1>
         <div>
             <form th:action="${action}" method="POST" th:object="${insertElementoUI}">
-                <div class="errors" th:if="${#fields.hasAnyErrors()}">
-                    <!-- Lista de erros -->
-                    <ul>
-                        <li th:each="err : ${#fields.allErrors()}"
-                            th:text="${err}">Input is incorrect</li>
-                    </ul>
-                </div>
+                <!-- Lista de erros -->
+                <div th:replace="templates :: errorsDiv"></div>
                 <!-- Nome -->
                 <label th:class="${#fields.hasErrors('nome')} ? 'error'">Nome completo:</label>
                 <input type="text" th:field="*{nome}" th:class="${#fields.hasErrors('nome')} ? 'error'"></input><br></br>
@@ -110,6 +105,7 @@
             </form>
         </div>
         <!-- footer -->
+
         <div th:replace="templates :: footer"></div>
     </body>
 </html>

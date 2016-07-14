@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Detalhes de uma instalação</title>
+</head>
+<body>
+    <!-- Detalhes de uma instalação -->
+    <div th:object="${instalacao}">
+        <!-- Designação -->
+        <h1>Detalhes da instalação '<span th:text="*{designacao}">DESIGNAÇÃO DO QUARTEL</span>'</h1>
+        <br></br>
+
+        <!-- Descrição -->
+        <h2>Descrição:</h2>
+        <h3 th:text="*{descricao}">Uma descrição desta instalação</h3>
+        <br></br>
+
+        <!-- Localização -->
+        <h2>Localização:</h2>
+        <h3 th:text="*{localizacao}">Uma descrição desta instalação</h3>
+        <br></br>
+    </div>
+
+    <!-- Lista de pessoal desta instalação -->
+    <!--
+    <div>
+        <h3>Elementos instalados nesta instalação:</h3>
+        <ul>
+            <li>
+                <a href="#">
+                        510
+                </a>
+            </li>
+        </ul>
+    </div>
+    -->
+    <!-- Lista de unidades operacionais desta instalação -->
+    <!--
+    <div>
+        <h3>Unidades operacionais atribuídas a esta instalação:</h3>
+        <ul>
+            <li>
+                <a href="#">
+                    VUCI
+                </a>
+            </li>
+        </ul>
+    </div>
+    -->
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+
+</body>
+</html>

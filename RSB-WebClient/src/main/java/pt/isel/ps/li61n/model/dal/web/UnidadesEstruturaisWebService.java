@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model.dal.web;
 
 
+import org.aspectj.weaver.ast.Not;
 import org.asynchttpclient.Param;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
@@ -18,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.INSTALACAO_URL;
 import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.INSTALACOES_URL;
 import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.UNIDADES_ESTRUTURAIS_URL;
 
@@ -196,10 +198,7 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
             Collection< Instalacao > instalacoes = new ArrayList<>( dtos.length );
             for( InstalacaoDto dto : dtos ) {
 
-                Instalacao instalacao = new Instalacao();
-
-                instalacao.setId( dto.id );
-                instalacao.setDesignacao( dto.designacao );
+                Instalacao instalacao = convertInstalacaoFromDto( dto, ue.getId() );
 
                 instalacoes.add( instalacao );
             }
@@ -208,6 +207,98 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
         return result;
     }
 
+    @Override
+    public Long insertInstalacao( Instalacao newInstalacao ) throws RepositoryException {
+        Long result = null;
+
+        if( newInstalacao != null ){
+            List<Param> parameters = new LinkedList<>();
+
+            // Identificador da unidade estrutural a que pertence
+            // (Server: unidadeestrutural_id)
+            Long unidadaEstruturalIdValue = newInstalacao.getUnidadeEstruturalId();
+
+            if( unidadaEstruturalIdValue == null ){
+                throw new NullPointerException( "Identificador da unidadade estrutural é obrigatório!" );
+            }
+
+            Param unidadeEstruralId = new Param( "unidadeestrutural_id", unidadaEstruturalIdValue.toString() );
+            parameters.add( unidadeEstruralId );
+
+            //designacao - obrigatorio (server)
+            String designacaoValue = newInstalacao.getDesignacao();
+            if( designacaoValue == null ){
+                designacaoValue = "";
+            }
+            Param designacao = new Param( "designacao", designacaoValue );
+            parameters.add( designacao );
+
+            // descricao
+            String descricaoValue = newInstalacao.getDescricao();
+            if( descricaoValue == null ){
+                descricaoValue = "";
+            }
+            Param descricao = new Param( "descricao", descricaoValue );
+            parameters.add( descricao );
+
+            // localizacao
+            String localizacaoValue = newInstalacao.getLocalizacao();
+            if( localizacaoValue == null ){
+                localizacaoValue = "";
+            }
+            Param localizacao = new Param( "localizacao", localizacaoValue );
+            parameters.add( localizacao );
+
+            try {
+                UnidadeEstruturalDto dto = RsbWebServiceAsync
+                                                .callPostActionAndConvert(
+                                                    UnidadeEstruturalDto.class
+                                                    ,parameters
+                                                    ,INSTALACOES_URL
+                                                    ,unidadaEstruturalIdValue
+                                                )
+                                                .get();  //TODO retorna o objecto?
+
+                result = dto.id;
+            }
+            catch( InterruptedException | ExecutionException e ) {
+                Throwable exception = e.getCause();
+                if( exception.getClass().equals( WebServiceException.class ) ){
+                    WebServiceException webServiceException = (WebServiceException) exception;
+                    throw new RepositoryException( webServiceException.getMessage() );
+                }
+                else {
+                    throw new RuntimeException( e );
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Instalacao selectOneInstalcao(Long unidadeEstruturalId, Long instalacaoId ) throws RepositoryException {
+
+        CompletableFuture< InstalacaoDto > getInstalacao =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                InstalacaoDto.class
+                                ,INSTALACAO_URL
+                                ,unidadeEstruturalId.toString()
+                                ,instalacaoId.toString()
+                        )
+                ;
+        InstalacaoDto dto = null;
+
+        try{
+            dto = getInstalacao.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            throw new RepositoryException( e.getMessage() );
+        }
+
+        Instalacao result = convertInstalacaoFromDto( dto, unidadeEstruturalId );
+        return result;
+    }
 
     private UnidadeEstrutural convertFromDto( UnidadeEstruturalDto dto ) throws RepositoryException {
 
@@ -285,5 +376,18 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
 
 
         return ue;
+    }
+
+    private Instalacao convertInstalacaoFromDto( InstalacaoDto dto, Long ueId ){
+
+        Instalacao instalacao = new Instalacao();
+
+        instalacao.setId( dto.id );
+        instalacao.setDesignacao( dto.designacao );
+        instalacao.setDescricao( dto.descricao );
+        instalacao.setLocalizacao( dto.localizacao );
+        instalacao.setUnidadeEstruturalId( ueId );
+
+        return instalacao;
     }
 }

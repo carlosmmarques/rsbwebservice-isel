@@ -47,7 +47,7 @@ public class UnidadeEstruturalControllerTest {
 
         // para dar mais expressividade ao código e para tentar criar 'template' de teste
         String request_url = UNIDADES_ESTRUTURAIS_URL;
-        String view_name = UnidadeEstruturalController.VIEW_NAME_ALL;
+        String view_name = UnidadeEstruturalController.VIEW_NAME_UE_ALL;
         String model_element_name = UnidadeEstruturalController.MODEL_UE_LIST;
 
         ///
@@ -82,7 +82,7 @@ public class UnidadeEstruturalControllerTest {
 
          // para dar mais expressividade ao código e para tentar criar 'template' de teste
          String request_url = UNIDADES_ESTRUTURAIS_URL + "/" + idTest;
-         String view_name = UnidadeEstruturalController.VIEW_NAME_DETAILS;
+         String view_name = UnidadeEstruturalController.VIEW_NAME_UE_DETAILS;
          String model_element_name = UnidadeEstruturalController.MODEL_UE_ELEMENT;
 
          //TODO: Tentar converter estes testes para usar assertEquals.

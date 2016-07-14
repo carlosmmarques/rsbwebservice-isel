@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.model.dal.mem;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
+import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -61,6 +62,16 @@ public class UnidadesEstruturaisMemRepo implements IUnidadesEstruturaisRepositor
 
     @Override
     public Collection< Instalacao > selectAllInstalacoes() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Long insertInstalacao(Instalacao newInstalacao) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Instalacao selectOneInstalcao(Long unidadeEstruturalId, Long instalacaoId) throws RepositoryException {
         throw new NotImplementedException();
     }
 

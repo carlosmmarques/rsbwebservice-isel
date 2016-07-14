@@ -8,11 +8,15 @@ import org.springframework.stereotype.Component;
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
+
+*
  */
-public class ErrorsMsg {
+public final class ErrorsMsg {
+
+
 
     //
-    // Mensagens para a entidade 'ELEMENTO'
+    // Mensagens para formulários com a entidade 'Elemento'
     //
     public static final class Elemento{
 
@@ -52,6 +56,36 @@ public class ErrorsMsg {
                 //NOT_NULL = "Preencha o campo \"Data de ingresso\"."
                 PATTERN = "Preencha o campo \"Data de ingresso\" com uma data válida (dd/mm/aaaa)."
             ;
+        }
+    }
+
+    //
+    // Mensagens para formulários com a entidade 'Instalacao'
+    //
+    public static final class Instalacao{
+
+        public static final class Localizacao{
+            public static final String
+                NOT_NULL = "Preencha o campo \"Localização\"."
+                ,SIZE = "A dimensão da localização não pode exceder os 100 caracteres."
+            ;
+        }
+
+        public static final class Descricao{
+            public static final String
+                    NOT_NULL = "Preencha o campo \"Descrição\"."
+                    ,SIZE = "A dimensão da descricao não pode exceder os 200 caracteres."
+                    ;
+        }
+    }
+
+    public static final class Geral{
+
+        public static final class Designacao{
+            public static final String
+                    NOT_NULL = "Preencha o campo \"Designação\"."
+                    ,SIZE = "A dimensão da designação não pode exceder os 50 caracteres."
+                    ;
         }
     }
 }

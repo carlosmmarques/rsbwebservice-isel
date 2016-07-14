@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class CreateUnidadeEstruturalViewModel {
+public class CreateUnidadeEstruturalViewModel  extends BasicInsertViewModel{
 
     public final Collection<TipoUnidadeEstrutural> tiposUnidadesEstruturais;
 

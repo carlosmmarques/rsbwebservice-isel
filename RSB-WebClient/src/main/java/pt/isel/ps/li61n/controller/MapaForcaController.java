@@ -31,9 +31,9 @@ public class MapaForcaController {
      */
     public static final String
         VIEW_NAME_INDEX = MAPA_FORCA_URL + "/index"
-        //VIEW_NAME_ALL = MAPA_FORCA_URL + "/all",
-        //VIEW_NAME_DETAILS = MAPA_FORCA_URL + "/details",
-        //VIEW_NAME_INSERT = MAPA_FORCA_URL + "/insert"
+        //VIEW_NAME_UE_ALL = MAPA_FORCA_URL + "/all",
+        //VIEW_NAME_UE_DETAILS = MAPA_FORCA_URL + "/details",
+        //VIEW_NAME_UE_INSERT = MAPA_FORCA_URL + "/insert"
     ;
 
     private IMapaForcaLogic _presencasLogic;

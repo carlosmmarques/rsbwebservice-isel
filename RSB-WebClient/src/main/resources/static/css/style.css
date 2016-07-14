@@ -5,7 +5,7 @@ table#mapaforca {
 }
 
 td, th{
-    border: 1 px solid black;
+    border: 0.5px solid black;
     text-align: center;
     width: auto;
 }

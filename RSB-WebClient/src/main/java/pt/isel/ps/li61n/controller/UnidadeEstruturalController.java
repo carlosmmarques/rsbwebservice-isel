@@ -1,19 +1,25 @@
 package pt.isel.ps.li61n.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
+import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import pt.isel.ps.li61n.viewModel.CreateUnidadeEstruturalViewModel;
+import pt.isel.ps.li61n.viewModel.InsertInstalacaoViewModel;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Collection;
 
+import static pt.isel.ps.li61n.RsbWebClientApplication.INSTALACOES_BASE_URL;
+import static pt.isel.ps.li61n.RsbWebClientApplication.INSTALACOES_URL;
 import static pt.isel.ps.li61n.RsbWebClientApplication.UNIDADES_ESTRUTURAIS_URL;
 
 /**
@@ -31,10 +37,11 @@ public class UnidadeEstruturalController {
      * Definição globais para facilitar a utilização nos testes.
      */
     public static final String
-        VIEW_NAME_ALL = UNIDADES_ESTRUTURAIS_URL + "/all",
-        VIEW_NAME_DETAILS = UNIDADES_ESTRUTURAIS_URL + "/details",
-        VIEW_NAME_INSERT = UNIDADES_ESTRUTURAIS_URL + "/insert"
-
+        VIEW_NAME_UE_ALL = UNIDADES_ESTRUTURAIS_URL + "/all"
+        ,VIEW_NAME_UE_DETAILS = UNIDADES_ESTRUTURAIS_URL + "/details"
+        ,VIEW_NAME_UE_INSERT =  UNIDADES_ESTRUTURAIS_URL + "/insert"
+        ,VIEW_NAME_INSTALACAO_INSERT = UNIDADES_ESTRUTURAIS_URL + INSTALACOES_BASE_URL + "/insert"
+        ,VIEW_NAME_INSTALACAO_DETAILS = UNIDADES_ESTRUTURAIS_URL + INSTALACOES_BASE_URL + "/details"
         ,MODEL_UE_LIST = "ues"
         ,MODEL_UE_ELEMENT = "ue"
     ;
@@ -57,15 +64,9 @@ public class UnidadeEstruturalController {
         Collection< UnidadeEstrutural > ues = _logic.getAll();
 
         model.addAttribute( MODEL_UE_LIST, ues );
-        return VIEW_NAME_ALL;
+        return VIEW_NAME_UE_ALL;
     }
 
-    /**
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @RequestMapping(
             value = "/{id}"
             ,method = RequestMethod.GET
@@ -96,7 +97,7 @@ public class UnidadeEstruturalController {
             //, HttpStatus.NO_CONTENT ) ;
         }*/
         model.addAttribute( MODEL_UE_ELEMENT, ue );
-        return VIEW_NAME_DETAILS;
+        return VIEW_NAME_UE_DETAILS;
     }
 
     /**
@@ -115,7 +116,7 @@ public class UnidadeEstruturalController {
         );
 
         model.addAttribute( "viewModel", viewModel );
-        return VIEW_NAME_INSERT;
+        return VIEW_NAME_UE_INSERT;
     }
 
     /**
@@ -139,7 +140,61 @@ public class UnidadeEstruturalController {
             value = "/{id}/instalacoes/criar"
             ,method = RequestMethod.GET
     )
-    public String insertInstalacaoView(){
-        return "/unidadesEstruturais/instalacoes/insert";
+    public String insertInstalacaoView(
+            @PathVariable( "id" ) Long id
+            ,Model model
+    ){
+        model.addAttribute( "action", UrlGenerator.operacoesUnidadadeEstrutural( id, "instalacoes" ) );
+        model.addAttribute( new InsertInstalacaoViewModel() );
+
+        return VIEW_NAME_INSTALACAO_INSERT;
     }
+
+    @RequestMapping(
+            value = "/{id}/instalacoes"
+            ,method = RequestMethod.POST
+    )
+    public String insertInstalacao(
+                    @Valid InsertInstalacaoViewModel newInstalacao
+                    ,Errors errors
+                    ,Model model
+                    ,@PathVariable( "id" ) Long id
+                    ,HttpServletResponse response
+    ){
+        if( errors.hasErrors() ){
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return VIEW_NAME_INSTALACAO_INSERT;
+        }
+        Instalacao instalacao = new Instalacao();
+        instalacao.setLocalizacao( newInstalacao.getLocalizacao() );
+        instalacao.setDescricao( newInstalacao.getDescricao() );
+        instalacao.setDesignacao( newInstalacao.getDesignacao() );
+        instalacao.setUnidadeEstruturalId( id );
+
+        Long idInstalacao = _logic.createInstalacao( instalacao );
+        return UrlGenerator.redirectDetalhesInstalacao( id, idInstalacao );
+    }
+
+    @RequestMapping(
+            value = "/{ue_id}/instalacoes/{id}"
+            ,method = RequestMethod.GET
+    )
+    public  String details(
+            @PathVariable( "ue_id" ) Long ueId
+            ,@PathVariable( "id" ) Long id
+            ,Model model
+    ) {
+        //obter o elemento com 'id'
+        Instalacao instalacao = null;
+        try {
+            instalacao = _logic.getOneInstalacao( ueId, id );
+        }
+        catch( PropertyEntityException e ) {
+            throw new RuntimeException( e );
+        }
+
+        model.addAttribute( instalacao );
+        return VIEW_NAME_INSTALACAO_DETAILS;
+    }
+
 }
