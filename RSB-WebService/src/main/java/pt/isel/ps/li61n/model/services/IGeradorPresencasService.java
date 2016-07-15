@@ -28,6 +28,6 @@ public interface IGeradorPresencasService {
      * @param elementoDoPessoal O elemento em relação pretendemos popular as presenças no periodo
      * @throws Exception
      */
-    Collection<Presenca> popularPresenças(Periodo periodo, ElementoDoPessoal elementoDoPessoal) throws Exception;
+    Collection<Presenca> popularPresencas(Periodo periodo, ElementoDoPessoal elementoDoPessoal) throws Exception;
 
 }

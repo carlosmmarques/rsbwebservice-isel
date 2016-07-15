@@ -19,6 +19,18 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class LogicErrorHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Método auxiliar para obtenção da informação do erro - ErrorInfo
+     * @param exc Excepção a caracterizar
+     * @param request HttpServletRequest
+     * @return Objecto ErrorInfo
+     */
+    private ErrorInfo getErrorInfo(RuntimeException exc, HttpServletRequest request) {
+        String completeURL = request.getRequestURL().toString();
+        if (request.getQueryString() != null)
+            completeURL += "?" + request.getQueryString();
+        return new ErrorInfo(completeURL, exc.getMessage());
+    }
 
     /**
      * Tratamento de Excepções do Tipo Conflito
@@ -29,10 +41,7 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {ConflictoException.class})
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request){
-        String completeURL = request.getRequestURL().toString();
-        if (request.getQueryString() != null)
-            completeURL += "?" + request.getQueryString();
-        ErrorInfo errorInfo = new ErrorInfo(completeURL, exc.getMessage());
+        ErrorInfo errorInfo = getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
     }
 
@@ -47,10 +56,7 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {NaoEncontradoException.class})
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleResourceNotFoundException(RuntimeException exc, HttpServletRequest request){
-        String completeURL = request.getRequestURL().toString();
-        if (request.getQueryString() != null)
-            completeURL += "?" + request.getQueryString();
-        ErrorInfo errorInfo = new ErrorInfo(completeURL, exc.getMessage());
+        ErrorInfo errorInfo = getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
 
@@ -64,11 +70,22 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {RecursoEliminadoException.class})
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleDeletedResourceException(RuntimeException exc, HttpServletRequest request){
-        String completeURL = request.getRequestURL().toString();
-        if (request.getQueryString() != null)
-            completeURL += "?" + request.getQueryString();
-        ErrorInfo errorInfo = new ErrorInfo(completeURL, exc.getMessage());
+        ErrorInfo errorInfo = getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.GONE);
+    }
+
+    /**
+     * Tratamento de Excepções de Tipos desconhecidos
+
+     * @param exc Excepção a tratar
+     * @param request HttpServletRequest
+     * @return ResponseEntity para JSON
+     */
+    @ExceptionHandler(value = {DataInvalidaException.class})
+    @ResponseBody
+    protected ResponseEntity<ErrorInfo> handleDataInvalidaException(RuntimeException exc, HttpServletRequest request){
+        ErrorInfo errorInfo = getErrorInfo(exc, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.NOT_ACCEPTABLE);
     }
 
     /**
@@ -81,10 +98,7 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler()
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleUnknownException(RuntimeException exc, HttpServletRequest request){
-        String completeURL = request.getRequestURL().toString();
-        if (request.getQueryString() != null)
-            completeURL += "?" + request.getQueryString();
-        ErrorInfo errorInfo = new ErrorInfo(completeURL, exc.getMessage());
+        ErrorInfo errorInfo = getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

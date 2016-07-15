@@ -23,7 +23,7 @@ public class TipoContacto {
     @Id
     @Column(unique = true)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
-    private String designação;
+    private String designacao;
 
 
     public List<Contacto> getContactos() {
@@ -34,11 +34,11 @@ public class TipoContacto {
         this.contactos = contactos;
     }
 
-    public String getDesignação() {
-        return designação;
+    public String getDesignacao() {
+        return designacao;
     }
 
-    public void setDesignação(String designação) {
-        this.designação = designação;
+    public void setDesignacao(String designacao) {
+        this.designacao = designacao;
     }
 }

@@ -547,7 +547,7 @@ public class PessoalService implements IPessoalService {
 
         categoria.setQuadro(Enum.valueOf(Categoria.Quadro.class, quadro));
         categoria.setAbreviatura(abreviatura);
-        categoria.setDescrição(descricao);
+        categoria.setDescricao(descricao);
         categoria.setNivelHierarquico(nivelHierarquico);
 
         return categoriaRepo.save(categoria);
@@ -574,7 +574,7 @@ public class PessoalService implements IPessoalService {
         Categoria categoria = categoriaRepo.findOne(id);
         quadro.ifPresent(q -> categoria.setQuadro(Enum.valueOf(Categoria.Quadro.class, q)));
         abreviatura.ifPresent(categoria::setAbreviatura);
-        descricao.ifPresent(categoria::setDescrição);
+        descricao.ifPresent(categoria::setDescricao);
         nivelHierarquico.ifPresent(categoria::setNivelHierarquico);
         return categoria;
     }

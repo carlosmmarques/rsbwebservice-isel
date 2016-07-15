@@ -21,7 +21,7 @@ public class Categoria extends EntidadeAbstractaComIdentificador {
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String abreviatura;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
-    private String descrição;
+    private String descricao;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Integer nivelHierarquico;
 
@@ -60,17 +60,17 @@ public class Categoria extends EntidadeAbstractaComIdentificador {
     }
 
     /**
-     * @return descrição, texto mais completo, a dar a esta categoria.
+     * @return descricao, texto mais completo, a dar a esta categoria.
      */
-    public String getDescrição() {
-        return descrição;
+    public String getDescricao() {
+        return descricao;
     }
 
     /**
-     * @param descrição descrição, texto mais completo, a dar a esta categoria.
+     * @param descricao descricao, texto mais completo, a dar a esta categoria.
      */
-    public void setDescrição(String descrição) {
-        this.descrição = descrição;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     /**

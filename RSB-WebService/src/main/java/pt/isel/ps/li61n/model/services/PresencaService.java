@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
-import pt.isel.ps.li61n.controller.error.ConflictoException;
-import pt.isel.ps.li61n.controller.error.ErroNãoDeterminadoException;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
-import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
+import pt.isel.ps.li61n.controller.error.*;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.IPeriodoRepositorio;
 import pt.isel.ps.li61n.model.repository.IPresencaRepositorio;
@@ -441,6 +438,8 @@ public class PresencaService implements IPresencaService {
     @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Periodo inserirPeriodo(Date datainicio, Date datafim) throws Exception {
 
+        if (datainicio.compareTo(datafim) >= 0)
+            throw new DataInvalidaException("A data de fim do periodo não pode ser posterior à data de inicio.");
         Periodo periodo;
 
         try {
@@ -499,10 +498,10 @@ public class PresencaService implements IPresencaService {
      */
     @Override
     @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
-    public Collection<Presenca> popularPresenças(Long periodo_id, Long elementodopessoal_id) throws Exception {
+    public Collection<Presenca> popularPresencas(Long periodo_id, Long elementodopessoal_id) throws Exception {
         Periodo periodo = obterPeriodo(periodo_id);
         ElementoDoPessoal elementoDoPessoal = pessoalService.obterElementoDoPessoal(elementodopessoal_id);
-        return geradorPresencasService.popularPresenças(periodo, elementoDoPessoal);
+        return geradorPresencasService.popularPresencas(periodo, elementoDoPessoal);
     }
 
 }

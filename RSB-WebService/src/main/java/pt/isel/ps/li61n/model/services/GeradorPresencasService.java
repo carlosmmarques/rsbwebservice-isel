@@ -61,7 +61,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
         pessoalRepo.findAll().stream()
                 .forEach(elementoDoPessoal -> {
                     try {
-                        popularPresenças(periodo, elementoDoPessoal);
+                        popularPresencas(periodo, elementoDoPessoal);
                     } catch (TurnoPosteriorAoPeriodoException e) {
                         logger.info(e.getMessage());
                     } catch (ConflictoException
@@ -81,9 +81,9 @@ public class GeradorPresencasService implements IGeradorPresencasService {
      * @throws Exception
      */
     @Override
-    public Collection<Presenca> popularPresenças(Periodo periodo, ElementoDoPessoal elementoDoPessoal) throws Exception {
+    public Collection<Presenca> popularPresencas(Periodo periodo, ElementoDoPessoal elementoDoPessoal) throws Exception {
 
-        List<Presenca> presenças = new LinkedList<>();
+        List<Presenca> presencas = new LinkedList<>();
 
         final LocalDate
                 dtInicio = periodo.getDtInicio().toLocalDate(),
@@ -115,7 +115,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
 
             try {
                 final Date d = Date.valueOf(date);
-                presenças.add(presencaService.inserirPresenca(
+                presencas.add(presencaService.inserirPresenca(
                         Date.valueOf(date),
                         Time.valueOf(dataHrInicio.toLocalTime()),
                         numHoras,
@@ -134,7 +134,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
                 throw new ErroNãoDeterminadoException(e.getMessage());
             }
         }
-        return presenças;
+        return presencas;
     }
 
     /**

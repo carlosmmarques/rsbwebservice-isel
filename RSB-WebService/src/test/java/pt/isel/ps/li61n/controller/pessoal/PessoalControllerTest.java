@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.controller.pessoal;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,9 +19,16 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  */
 public class PessoalControllerTest {
 
+    private PessoalController pessoalController;
+
+
+    @Before
+    public void setup() {
+        pessoalController = new PessoalController();
+    }
+
     @Test
-    public void testObterElementosDoPessoal() throws Exception {
-        PessoalController pessoalController = new PessoalController();
+    public void DevePassar_ObterElementosDoPessoal() throws Exception {
         MockMvc mockMvc = standaloneSetup(pessoalController).build();
         mockMvc
                 .perform(get("/pessoal"))
@@ -39,46 +47,59 @@ public class PessoalControllerTest {
                         "nome",
                         "dataIngresso",
                         "numMecanografico"
-        )));
-   }
-
-    @Test
-    public void testObterUmElementoDoPessoal() throws Exception {
-
+                        )
+                        )
+                );
     }
 
     @Test
-    public void testObterRegistosDeFormacaoDeUmElemento() throws Exception {
-
+    public void DevePassar_ObterElementosDoPessoal_ComParametros() throws Exception {
+        MockMvc mockMvc = standaloneSetup(pessoalController).build();
+        mockMvc
+                .perform(get("/pessoal"))
+                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.[*].path", containsInAnyOrder(
+                        "id",
+                        "uri_pessoa",
+                        "uri_instalacaoPorOmissao",
+                        "uri_postoFuncionalPorOmissao",
+                        "uri_tipoPresencaPorOmissao",
+                        "uri_turnoPorOmissao",
+                        "uri_categoria",
+                        "idInterno",
+                        "Matricula",
+                        "nome",
+                        "dataIngresso",
+                        "numMecanografico"
+                        )
+                        )
+                );
     }
 
     @Test
-    public void testObterUmRegistoDeFormacaoDeUmElemento() throws Exception {
-
+    public void DeveFalhar_ObterElementosDoPessoal() throws Exception {
+        MockMvc mockMvc = standaloneSetup(pessoalController).build();
+        mockMvc
+                .perform(get("/pessoal"))
+                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.[*].path", containsInAnyOrder(
+                        "id",
+                        "uri_pessoa",
+                        "uri_instalacaoPorOmissao",
+                        "uri_postoFuncionalPorOmissao",
+                        "uri_tipoPresencaPorOmissao",
+                        "uri_turnoPorOmissao",
+                        "uri_categoria",
+                        "idInterno",
+                        "Matricula",
+                        "nome",
+                        "dataIngresso",
+                        "numMecanografico"
+                        )
+                        )
+                );
     }
 
-    @Test
-    public void testObterResponsabilidadesOperacionaisDeUmElemento() throws Exception {
-
-    }
-
-    @Test
-    public void testInserirUmElementoDoPessoal() throws Exception {
-
-    }
-
-    @Test
-    public void testActualizarUmElementoDoPessoal() throws Exception {
-
-    }
-
-    @Test
-    public void testActualizarFormacaoDeElementoDoPessoal() throws Exception {
-
-    }
-
-    @Test
-    public void testEliminarElementoDoPessoal() throws Exception {
-
-    }
 }

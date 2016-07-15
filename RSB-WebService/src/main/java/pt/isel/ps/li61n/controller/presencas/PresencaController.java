@@ -535,10 +535,10 @@ public class PresencaController extends RsbBaseController<Presenca> {
     }
 
     /**
-     * @param elementodopessoal_id      Identificador do Elemento do Pessoal
-     * @param periodo_id      Identificador do Periodo
-     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                nomeadamente do URI.
+     * @param elementodopessoal_id Identificador do Elemento do Pessoal
+     * @param periodo_id           Identificador do Periodo
+     * @param request              HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                             nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
@@ -553,21 +553,21 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Collection<Presenca> presencas = presencaService.obterPresencas(
-                    Optional.empty(),Optional.empty(),
+                    Optional.empty(), Optional.empty(),
                     Optional.of(periodo_id),
-                    Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty(),
+                    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.of(elementodopessoal_id),
-                    Optional.empty(),Optional.empty());
+                    Optional.empty(), Optional.empty());
             presencas.stream().forEach(presenca -> {
                 try {
                     presencaService.eliminarPresenca(presenca.getId());
-                } catch (Exception e){
+                } catch (Exception e) {
                     logger.debug("Erro não determinado: " + e);
                     throw new ErroNãoDeterminadoException(e.getMessage());
                 }
             });
             List<PresencaDTO> presencaDTOs = new LinkedList<>();
-            presencaService.popularPresenças(periodo_id, elementodopessoal_id).stream().forEach(
+            presencaService.popularPresencas(periodo_id, elementodopessoal_id).stream().forEach(
                     presenca -> presencaDTOs.add(new PresencaDTO(presenca, request, ModeloDeRepresentacao.Sumario.class))
             );
             return new ResponseEntity<>(presencaDTOs, HttpStatus.CREATED);

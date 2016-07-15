@@ -17,6 +17,8 @@ public class InstalacaoDTO extends AbstractDTO {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String uri_instalacao;
+    @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    private String uri_unidadeEstrutural;
 
     /**
      * Construtor
@@ -30,5 +32,8 @@ public class InstalacaoDTO extends AbstractDTO {
                 this.baseUrl,
                 instalacao.getUnidadeEstrutural().getId(),
                 this.id);
+        this.uri_unidadeEstrutural= String.format("%s/unidadeestrutural/%s",
+                this.baseUrl,
+                instalacao.getUnidadeEstrutural().getId());
     }
 }

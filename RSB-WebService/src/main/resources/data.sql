@@ -322,7 +322,7 @@ ON CONFLICT DO NOTHING
 ;
 
 -- CATEGORIAS
-INSERT INTO categoria (id, abreviatura, descrição, nivel_hierarquico, quadro) VALUES
+INSERT INTO categoria (id, abreviatura, descricao, nivel_hierarquico, quadro) VALUES
   ('1', 'Cmdt', 'Comandante', '0', 'COMANDO'),
   ('2', '2oCmdt', '2.º Comandante', '0', 'COMANDO'),
   ('3', 'Cmdt.Comp', 'Comandante de Companhia', '0', 'COMANDO'),
