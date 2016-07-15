@@ -21,31 +21,33 @@ public class PresencaDto {
                     ,uri_tipopresencaefectiva
                     ,uri_turnoefectivo
                     ,tipopresencaefectiva
-                    ,elementoDoPessoal
+                    ,idinterno_elemento
+                    ,idinterno_elementoreforco
+                    ,getIdinterno_elementoreforcado
     ;
     public final float numHoras;
-
 
     public final String data;
     public final String horaInicio;
 
     public PresencaDto(
-            Long id
-            ,String uri_presenca
-            ,String uri_elementodopessoal
-            ,String uri_elementoreforco
-            ,String uri_elementoreforcado
-            ,String uri_instalacao
-            ,String uri_periodo
-            ,String uri_postofuncionalefectivo
-            ,String uri_tipopresencaefectiva
-            ,String uri_turnoefectivo
-            ,String tipopresencaefectiva
-            ,String elementoDoPessoal
-            ,float numHoras
-
-            ,String data
-            ,String horaInicio
+                Long id
+                ,String uri_presenca
+                ,String uri_elementodopessoal
+                ,String uri_elementoreforco
+                ,String uri_elementoreforcado
+                ,String uri_instalacao
+                ,String uri_periodo
+                ,String uri_postofuncionalefectivo
+                ,String uri_tipopresencaefectiva
+                ,String uri_turnoefectivo
+                ,String tipopresencaefectiva
+                ,String idinterno_elemento
+                ,String idinterno_elementoreforco
+                ,String getIdinterno_elementoreforcado
+                ,float numHoras
+                ,String data
+                ,String horaInicio
     ) {
         this.id = id;
         this.uri_presenca = uri_presenca;
@@ -58,9 +60,10 @@ public class PresencaDto {
         this.uri_tipopresencaefectiva = uri_tipopresencaefectiva;
         this.uri_turnoefectivo = uri_turnoefectivo;
         this.tipopresencaefectiva = tipopresencaefectiva;
-        this.elementoDoPessoal = elementoDoPessoal;
+        this.idinterno_elemento = idinterno_elemento;
+        this.idinterno_elementoreforco = idinterno_elementoreforco;
+        this.getIdinterno_elementoreforcado = getIdinterno_elementoreforcado;
         this.numHoras = numHoras;
-
         this.data = data;
         this.horaInicio = horaInicio;
     }

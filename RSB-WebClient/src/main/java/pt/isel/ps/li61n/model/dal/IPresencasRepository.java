@@ -2,6 +2,8 @@ package pt.isel.ps.li61n.model.dal;
 
 import pt.isel.ps.li61n.model.entities.Presenca;
 
+import java.util.Collection;
+
 /**
  * Created on 21/06/2016.
  *
@@ -9,4 +11,6 @@ import pt.isel.ps.li61n.model.entities.Presenca;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 public interface IPresencasRepository extends IRepository< Long, Presenca > {
+
+    Collection< Presenca > selectPresencasByPeriodo( Long periodoId );
 }

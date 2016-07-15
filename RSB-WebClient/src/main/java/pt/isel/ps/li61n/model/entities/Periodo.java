@@ -12,22 +12,22 @@ import java.time.LocalDate;
  */
 public class Periodo extends Identity< Long > {
 
-    private LocalDate DataInicio;
-    private LocalDate DataFim;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
 
     public LocalDate getDataInicio() {
-        return DataInicio;
+        return dataInicio;
     }
 
     public void setDataInicio(LocalDate dataInicio) {
-        DataInicio = dataInicio;
+        this.dataInicio = dataInicio;
     }
 
     public LocalDate getDataFim() {
-        return DataFim;
+        return dataFim;
     }
 
     public void setDataFim(LocalDate dataFim) {
-        DataFim = dataFim;
+        this.dataFim = dataFim;
     }
 }

@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.dal.mem;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPeriodosRepository;
 import pt.isel.ps.li61n.model.entities.Periodo;
@@ -15,6 +16,7 @@ import java.util.HashMap;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+@ConditionalOnMissingBean( IPeriodosRepository.class )
 @Component
 public class PeriodosRepository implements IPeriodosRepository {
 
@@ -23,7 +25,7 @@ public class PeriodosRepository implements IPeriodosRepository {
 
     public PeriodosRepository() {
         _repo = new HashMap<>();
-        _repoSize = 0;
+        _repoSize = 1;
 
         populate();
     }
@@ -58,11 +60,17 @@ public class PeriodosRepository implements IPeriodosRepository {
 
     private void populate(){
 
-        Periodo janeiro2015 = new Periodo();
-        janeiro2015.setDataInicio( LocalDate.of( 2015, Month.JANUARY, 1 ) );
-        janeiro2015.setDataFim( LocalDate.of( 2015, Month.JANUARY, 31 ) );
-        this.insert( janeiro2015 );
+        Periodo dezembro2015 = new Periodo();
+        dezembro2015.setDataInicio( LocalDate.of( 2015, Month.DECEMBER, 1 ) );
+        dezembro2015.setDataFim( LocalDate.of( 2015, Month.DECEMBER, 31 ) );
+        this.insert( dezembro2015 );
 
+        Periodo janeiro2016 = new Periodo();
+        janeiro2016.setDataInicio( LocalDate.of( 2016, Month.JANUARY, 1 ) );
+        janeiro2016.setDataFim( LocalDate.of( 2016, Month.JANUARY, 31 ) );
+        this.insert( janeiro2016 );
+
+        /*
         Periodo fevereiro2015 = new Periodo();
         fevereiro2015.setDataInicio( LocalDate.of( 2015, Month.FEBRUARY, 1 ) );
         fevereiro2015.setDataFim( LocalDate.of( 2015, Month.FEBRUARY, 28 ) );
@@ -112,10 +120,7 @@ public class PeriodosRepository implements IPeriodosRepository {
         novembro2015.setDataInicio( LocalDate.of( 2015, Month.NOVEMBER, 1 ) );
         novembro2015.setDataFim( LocalDate.of( 2015, Month.NOVEMBER, 30 ) );
         this.insert( novembro2015 );
+        */
 
-        Periodo dezembro2015 = new Periodo();
-        dezembro2015.setDataInicio( LocalDate.of( 2015, Month.DECEMBER, 1 ) );
-        dezembro2015.setDataFim( LocalDate.of( 2015, Month.DECEMBER, 31 ) );
-        this.insert( dezembro2015 );
     }
 }

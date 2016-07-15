@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
 import pt.isel.ps.li61n.model.entities.Presenca;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -579,5 +580,10 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia30Dez2015_troca.setTurnoId( 4L );
         insert( dia30Dez2015_troca );
         */
+    }
+
+    @Override
+    public Collection<Presenca> selectPresencasByPeriodo(Long periodoId) {
+        throw new NotImplementedException();
     }
 }

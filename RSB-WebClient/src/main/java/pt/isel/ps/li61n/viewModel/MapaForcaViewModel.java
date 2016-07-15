@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.viewModel;
 
+import pt.isel.ps.li61n.model.IMapaForcaLogic;
 import pt.isel.ps.li61n.model.IPessoalLogic;
 import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
@@ -29,17 +30,15 @@ public class MapaForcaViewModel {
     //public final String[][] presencas;
     // public final String postoFuncional, idInterno;
 
-    private IPessoalLogic _pessoalLogic;
 
     // Cache
     //private HashMap< Integer, Elemento > _pessoal;
 
     public MapaForcaViewModel(
             String designacaoUnidadeEstrutural,
-            Collection<Presenca> presencas,
-            IPessoalLogic pessoalLogic
+            Collection<Presenca> presencas
     ){
-        _pessoalLogic = pessoalLogic;
+
 
         this.unidadeEstrutural = designacaoUnidadeEstrutural;
 
@@ -155,6 +154,7 @@ public class MapaForcaViewModel {
         //   e procurar o a data inicio menor e maior (e/ou periodo ??).
         return "Mês de Dezembro de 2015";
     }
+
 
     ////////////////////////////////////
     //
