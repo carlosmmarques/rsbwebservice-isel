@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
-import pt.isel.ps.li61n.controller.error.*;
+import pt.isel.ps.li61n.controller.error.exception.*;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.IPeriodoRepositorio;
 import pt.isel.ps.li61n.model.repository.IPresencaRepositorio;

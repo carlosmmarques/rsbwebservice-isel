@@ -13,8 +13,8 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
-import pt.isel.ps.li61n.controller.error.ErroNãoDeterminadoException;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.ErroNãoDeterminadoException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
@@ -468,8 +468,8 @@ public class PresencaController extends RsbBaseController<Presenca> {
     @RequestMapping(value = "/periodo", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirPeriodo(
-            @RequestParam(value = "datainicio", required = true) Date datainicio,
-            @RequestParam(value = "datafim", required = true) Date datafim,
+            @Valid @RequestParam(value = "datainicio", required = true) Date datainicio,
+            @Valid @RequestParam(value = "datafim", required = true) Date datafim,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));

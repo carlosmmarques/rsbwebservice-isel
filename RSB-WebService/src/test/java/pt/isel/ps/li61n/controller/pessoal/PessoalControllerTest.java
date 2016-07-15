@@ -1,6 +1,5 @@
 package pt.isel.ps.li61n.controller.pessoal;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,10 +21,10 @@ public class PessoalControllerTest {
     private PessoalController pessoalController;
 
 
-    @Before
-    public void setup() {
-        pessoalController = new PessoalController();
-    }
+//    @Before
+//    public void setup() {
+//        pessoalController = new PessoalController();
+//    }
 
     @Test
     public void DevePassar_ObterElementosDoPessoal() throws Exception {

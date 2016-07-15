@@ -1,4 +1,4 @@
-package pt.isel.ps.li61n.controller.error;
+package pt.isel.ps.li61n.controller.error.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import pt.isel.ps.li61n.controller.error.*;
+import pt.isel.ps.li61n.controller.error.exception.ConflictoException;
+import pt.isel.ps.li61n.controller.error.exception.DataInvalidaException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException;
 
 import javax.servlet.http.HttpServletRequest;
 

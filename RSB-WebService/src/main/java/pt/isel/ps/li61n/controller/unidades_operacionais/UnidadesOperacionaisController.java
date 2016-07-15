@@ -13,7 +13,7 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.GuarnicaoDTO;
 import pt.isel.ps.li61n.controller.dto.TipoUnidadeOperacionalDTO;
 import pt.isel.ps.li61n.controller.dto.UnidadeOperacionalDTO;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.Guarnicao;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
 import pt.isel.ps.li61n.model.entities.UnidadeOperacional;

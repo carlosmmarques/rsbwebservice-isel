@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
-import pt.isel.ps.li61n.controller.error.*;
+import pt.isel.ps.li61n.controller.error.exception.*;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.IPeriodoRepositorio;
 import pt.isel.ps.li61n.model.repository.IPessoalRepositorio;
@@ -100,7 +100,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
 
         logger.debug(" - - Turno " + turno.getId() + " - " + turno.getDesignacao() + ".");
 
-        for (LocalDate date = dtInicio; !date.isEqual(dtFim); date = date.plusDays(1)) {
+        for (LocalDate date = dtInicio; !date.isEqual(dtFim.plusDays(1)); date = date.plusDays(1)) {
 
             CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca calculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca =
                     new CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca(turno, date)

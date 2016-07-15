@@ -1,7 +1,5 @@
-package pt.isel.ps.li61n.controller.error;
+package pt.isel.ps.li61n.controller.error.handler;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import pt.isel.ps.li61n.controller.error.ErrorInfo;
 
 /**
  * RequestErrorHandler - Description
@@ -20,13 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ControllerAdvice
 public class RequestErrorHandler {
-
-    private MessageSource messageSource;
-
-    @Autowired
-    public RequestErrorHandler(MessageSource messageSource){
-        this.messageSource = messageSource;
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

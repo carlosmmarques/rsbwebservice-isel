@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.controller.pessoal;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.*;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.services.IPessoalService;
 
@@ -32,6 +33,13 @@ import java.util.concurrent.Callable;
 @Controller
 @RequestMapping(value = "/pessoal")
 public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
+
+    private MessageSource messageSource;
+
+    @Autowired
+    public PessoalController(MessageSource messageSource){
+        this.messageSource = messageSource;
+    }
 
     /**
      * Instância do Serviço
@@ -98,7 +106,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterElementoDoPessoal(
-            @PathVariable Long id,
+            @Valid @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));

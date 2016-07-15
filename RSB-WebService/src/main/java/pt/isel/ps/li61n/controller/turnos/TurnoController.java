@@ -13,7 +13,7 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.AlgoritmoCalculoTurnoDTO;
 import pt.isel.ps.li61n.controller.dto.PeriodoCicloTurnoDTO;
 import pt.isel.ps.li61n.controller.dto.TurnoDTO;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.AlgoritmoCalculoTurno;
 import pt.isel.ps.li61n.model.entities.PeriodoCicloTurno;
 import pt.isel.ps.li61n.model.entities.Turno;

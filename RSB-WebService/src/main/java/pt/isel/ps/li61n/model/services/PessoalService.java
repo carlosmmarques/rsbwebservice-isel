@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
-import pt.isel.ps.li61n.controller.error.ConflictoException;
-import pt.isel.ps.li61n.controller.error.NaoEncontradoException;
-import pt.isel.ps.li61n.controller.error.RecursoEliminadoException;
+import pt.isel.ps.li61n.controller.error.exception.ConflictoException;
+import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
+import pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.repository.*;
 

@@ -1,4 +1,4 @@
-package pt.isel.ps.li61n.controller.error;
+package pt.isel.ps.li61n.controller.error.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
