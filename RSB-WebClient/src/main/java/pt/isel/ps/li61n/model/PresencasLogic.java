@@ -45,7 +45,12 @@ public class PresencasLogic implements IPresencasLogic {
 
     @Override
     public Collection<Presenca> getAll() {
-        throw new NotImplementedException();
+        try {
+            return _presencasRepo.selectAll();
+        }
+        catch( RepositoryException e ){
+            throw new RuntimeException( e );
+        }
     }
 
     @Override

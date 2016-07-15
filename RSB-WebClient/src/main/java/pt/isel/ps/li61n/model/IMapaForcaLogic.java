@@ -1,5 +1,7 @@
 package pt.isel.ps.li61n.model;
 
+import com.sun.prism.PresentableState;
+import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
 import java.util.Collection;
@@ -12,5 +14,7 @@ import java.util.Collection;
  */
 public interface IMapaForcaLogic {
 
-    Collection<Presenca> getAllPresencas();
+    Collection< Presenca > getPresencasByPeriodo( Long periodoId );
+
+    Collection< Periodo > getAllPeriodos();
 }

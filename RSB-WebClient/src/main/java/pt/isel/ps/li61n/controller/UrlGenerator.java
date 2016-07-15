@@ -57,4 +57,8 @@ public class UrlGenerator {
                 ,detalhesInstalacao( unidadeEstruturalId, instalacaoId )
         );
     }
+
+    public static String detalhesMapaForcaPeriodo( Long idPeriodo ){
+        return baseOperation( MAPA_FORCA_URL, idPeriodo.toString() );
+    }
 }

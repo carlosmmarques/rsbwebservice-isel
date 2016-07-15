@@ -4,7 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import pt.isel.ps.li61n.model.IMapaForcaLogic;
+import pt.isel.ps.li61n.model.IPeriodosLogic;
 import pt.isel.ps.li61n.model.IPessoalLogic;
+import pt.isel.ps.li61n.model.IPresencasLogic;
 
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,23 +23,17 @@ import static pt.isel.ps.li61n.RsbWebClientApplication.MAPA_FORCA_URL;
 public class MapaForcaControllerTest {
 
     //private MockMvc _mockMvc;
-    private IMapaForcaLogic _mapaForcaMmockLogic;
-    private IPessoalLogic _pessoalMockLogic;
+    private IMapaForcaLogic _logic;
 
     @Before
     public void prepare(){
-
-        _mapaForcaMmockLogic = mock( IMapaForcaLogic.class );
-        _pessoalMockLogic = mock( IPessoalLogic.class );
+        _logic = mock( IMapaForcaLogic.class );
     }
 
     @Test
     public void testIndexPage() throws Exception {
 
-        MapaForcaController controller = new MapaForcaController(
-                _mapaForcaMmockLogic
-                ,_pessoalMockLogic
-        );
+        MapaForcaController controller = new MapaForcaController( _logic );
         MockMvc mockMvc = standaloneSetup( controller ).build(); // Set up MockMvc
         mockMvc
                 .perform( get( MAPA_FORCA_URL ) ) // Perform GET

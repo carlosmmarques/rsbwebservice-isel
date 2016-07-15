@@ -6,6 +6,7 @@ import pt.isel.ps.li61n.model.dal.IPeriodosRepository;
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
 import pt.isel.ps.li61n.model.dal.ITiposPresencaRepository;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
+import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
 import java.util.Collection;
@@ -48,13 +49,29 @@ public class MapaForcaLogic implements IMapaForcaLogic {
         );
     }
 
-    @Override
+    /*
     public Collection<Presenca> getAllPresencas() {
         try {
             return _presencasRepo.selectAll();
         }
         catch( RepositoryException e ){
             throw new RuntimeException( e );
+        }
+    }
+    */
+
+    @Override
+    public Collection< Presenca > getPresencasByPeriodo( Long periodoId ) {
+        return _presencasRepo.selectPresencasByPeriodo( periodoId );
+    }
+
+    @Override
+    public Collection<Periodo> getAllPeriodos() {
+        try {
+            return _periodoRepo.selectAll();
+        }
+        catch (RepositoryException e) {
+           throw new RuntimeException( e );
         }
     }
 }

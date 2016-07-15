@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.dal.web;
 
+import org.asynchttpclient.Param;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
 import pt.isel.ps.li61n.model.dal.web.dtos.ElementoDto;
@@ -11,11 +12,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.PRESENCAS_URL;
 
 /**
  * Created on 27/06/2016.
@@ -31,12 +32,12 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     }
 
     @Override
-    public Long insert(Presenca element) {
+    public Long insert( Presenca element ) {
         throw new NotImplementedException();
     }
 
     @Override
-    public Presenca selectOne(Long aLong) {
+    public Presenca selectOne( Long aLong ) {
         throw new NotImplementedException();
     }
 
@@ -51,35 +52,92 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
                             ,"/presenca"
                         );
 
-        PresencaDto[] presencas = null;
+        Collection< Presenca > result = convertFromDto( getPresencas );
+        return result;
+    }
+
+    private static Elemento getElementoPessoal(String uri, HashMap<String, Elemento> cachePessoal ) {
+        Elemento result = cachePessoal.get( uri );
+        if( result == null  ){
+            // Obter o elemento
+            ElementoDto dto = getResource( uri, ElementoDto.class );
+            if( dto != null ){
+                result = PessoalWebService.convertDtoToModel( dto, false );
+
+                // colocar em cache
+                cachePessoal.put( uri, result );
+            }
+        }
+        return result;
+    }
+
+
+    @Override
+    public void delete(Long aLong) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void update(Long aLong) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Collection<Presenca> selectPresencasByPeriodo( Long periodoId ) {
+
+        List< Param > parameters = new LinkedList<>();
+
+        parameters.add( new Param( "periodo_id", periodoId.toString() ) );
+
+        CompletableFuture< PresencaDto[] > getPresencas =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                PresencaDto[].class
+                                ,parameters
+                                ,PRESENCAS_URL
+                        );
+
+        Collection< Presenca > result = convertFromDto( getPresencas );
+        return result;
+    }
+
+    private static Presenca convertFromDto( PresencaDto dto ){
+        Presenca p = new Presenca();
+        p.setId( dto.id );
+        p.setData( LocalDate.parse( dto.data ) );
+        p.setHoraInicio( LocalTime.parse( dto.horaInicio ) );
+        p.setNumHoras( dto.numHoras );
+        return p;
+    }
+
+    private static Collection<Presenca> convertFromDto( CompletableFuture< PresencaDto[] > getPresencas ){
+
+        PresencaDto[] dtos = null;
 
         try{
-            presencas = getPresencas.get();
+            dtos = getPresencas.get();
         }
         catch (InterruptedException | ExecutionException e ) {
             throw new RuntimeException( e ); // TODO: Tratar o erro!
         }
 
-        Collection< Presenca > result = new LinkedList<>();
+        Collection< Presenca > result = new ArrayList<>( dtos.length );
 
         // V2 -> Cache
         HashMap< String, Elemento> cachePessoal = new HashMap<>();
         HashMap< String, PostoFuncional> cachePosto = new HashMap<>();
 
         // Converter para Presencas
-        for( PresencaDto dto : presencas ){
-            Presenca p = new Presenca();
-            p.setId( dto.id );
-            p.setData( LocalDate.parse( dto.data ) );
-            p.setHoraInicio( LocalTime.parse( dto.horaInicio ) );
-            p.setNumHoras( dto.numHoras );
+        for( PresencaDto dto : dtos ){
+
+            Presenca p = convertFromDto( dto );
 
             //p.setPeriodoId(  );
 
             // obter o elemento do registo de presença
             Elemento elemento = getElementoPessoal(
-                                    dto.uri_elementodopessoal
-                                    ,cachePessoal
+                    dto.uri_elementodopessoal
+                    ,cachePessoal
             );
 
             p.setElemento( elemento );
@@ -92,8 +150,8 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             // (assumido que não pode existir um registo com os dois "tipos" de elementos)
             //
             Elemento reforçoReforcado =  getElementoPessoal(
-                                dto.uri_elementoreforco
-                                ,cachePessoal
+                    dto.uri_elementoreforco
+                    ,cachePessoal
             );
             Boolean reforcoNaoReforcado = null;
             // V2
@@ -126,9 +184,9 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             // Posto Funcional
             //
             PostoFuncional posto = getResourceWithCache(
-                                    dto.uri_postofuncionalefectivo
-                                    ,cachePosto
-                                    ,PostoFuncional.class
+                    dto.uri_postofuncionalefectivo
+                    ,cachePosto
+                    ,PostoFuncional.class
             );
             p.setPostoFuncional( posto );
 
@@ -140,31 +198,5 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             result.add( p );
         }
         return result;
-    }
-
-    private Elemento getElementoPessoal(String uri, HashMap<String, Elemento> cachePessoal ) {
-        Elemento result = cachePessoal.get( uri );
-        if( result == null  ){
-            // Obter o elemento
-            ElementoDto dto = getResource( uri, ElementoDto.class );
-            if( dto != null ){
-                result = PessoalWebService.convertDtoToModel( dto, false );
-
-                // colocar em cache
-                cachePessoal.put( uri, result );
-            }
-        }
-        return result;
-    }
-
-
-    @Override
-    public void delete(Long aLong) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void update(Long aLong) {
-        throw new NotImplementedException();
     }
 }

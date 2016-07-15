@@ -42,7 +42,9 @@ public class RsbWebServiceAsync {
         API_BASE_URL = "http://localhost:1234"
         ,CATEGORIAS_URL = "/pessoal/categoria"
         ,POSTOS_FUNCIONAIS_URL = "/pessoal/postofuncional"
+        ,PRESENCAS_URL = "/presenca"
         ,TIPOS_PRESENCA_URL = "/presenca/tipo"
+        ,PERIODOS_URL = "/presenca/periodo"
         ,UNIDADES_ESTRUTURAIS_URL = "/unidadeestrutural"
         ,TIPOS_UNIDADE_ESTRUTURAL_URL = "/unidadeestrutural/tipo"
         ,INSTALACOES_URL = "/unidadeestrutural/%s/instalacao"
@@ -71,7 +73,11 @@ public class RsbWebServiceAsync {
 
     // TODO: Reflectir sobre a possibilidade de trabalhar com Type em vez de 'Class'
 
-    public static < T > CompletableFuture< T >  callActionAndConvert( Class< T >  destKlass, String action, Object...args ) {
+    public static < T > CompletableFuture< T >  callActionAndConvert(
+        Class< T >  destKlass
+        ,String action
+        ,Object...args
+    ) {
         final String uri = String.format( action, args );
         return _httpAsync
                 .getDataAsyncWithBasicAuth(
@@ -113,7 +119,7 @@ public class RsbWebServiceAsync {
             resp = aux.get();
         }
         catch(InterruptedException | ExecutionException e ) {
-
+            throw new RuntimeException( e );
         }
         CompletableFuture result = new CompletableFuture();
 
