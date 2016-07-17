@@ -11,6 +11,7 @@ import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.*;
+import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.services.IUnidadeEstruturalService;
@@ -44,7 +45,15 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     Logger logger = RsbWebserviceApplication.logger;
 
     /**
-     * @return Lista de Unidades Estruturais global.
+     *
+     * @param request Instancia de HttpServletRequest que expõe informação para os servlets HTTP.
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET)
@@ -70,7 +79,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param id      Identificador da Unidade Estrutura
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -98,7 +113,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param nivelhierarquico         Nível hierarquico
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST)
@@ -132,8 +153,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param nivelhierarquico         Nível hierarquico
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -165,8 +191,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param id      Identificador da Unidade Estrutural
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -189,8 +220,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.GET)
@@ -214,8 +250,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param id      Identificador do Tipo de Unidade Estrutural
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.GET)
@@ -244,7 +285,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param nivelHierarquicoMaximoMae Indica o nível hierarquico máximo para o Tipo de Unidade Estrutural Mãe
      * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                  nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.POST)
@@ -282,7 +329,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param nivelHierarquicoMaximoMae Indica o nível hierarquico máximo para o Tipo de Unidade Estrutural Mãe
      * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                  nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.PUT)
@@ -318,7 +371,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param id      Identificador do Tipo de Unidade Estrutural
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.DELETE)
@@ -351,8 +410,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param unidadeEstrutural_id Identificador da Unidade Estrutural a que pertencem as instalações
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao", method = RequestMethod.GET)
@@ -381,8 +445,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param instalacao_id        Identificador da Instalação
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao/{instalacao_id}", method = RequestMethod.GET)
@@ -414,7 +483,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param localizacao          Descrição da Localização da Instalação
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao", method = RequestMethod.POST)
@@ -456,7 +531,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param unidadeestruturalreafectacao_id Identificador da Unidade Estrutural para reafectação desta instalacao
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao/{instalacao_id}", method = RequestMethod.PUT)
@@ -497,7 +578,13 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
      * @param unidadeestrutural_id Identificador da Unidade Estrutural
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeestrutural_id}/instalacao/{instalacao_id}", method = RequestMethod.DELETE)

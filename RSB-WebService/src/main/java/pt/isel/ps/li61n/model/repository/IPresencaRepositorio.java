@@ -23,9 +23,11 @@ public interface IPresencaRepositorio extends JpaRepository<Presenca, Long> {
 
 
     /**
+     * Método de pesquisa específica. Obtem objecto do tipo Presença para uma data e elemento.
+     *
      * @param data              Data da presença
      * @param elementoDoPessoal Identificador do elemento do pessoal que executa a presença
-     * @return
+     * @return Optional<Presenca)
      */
     @Query(value = "SELECT p FROM Presenca p WHERE p.data = :data AND p.elementoDoPessoal = :elementodopessoal AND p.eliminado = false")
     public Optional<Presenca> findByDataAndElementoDoPessoal(

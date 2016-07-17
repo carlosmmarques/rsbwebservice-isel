@@ -20,9 +20,11 @@ import java.util.Optional;
 public interface IPeriodoRepositorio extends JpaRepository<Periodo, Long> {
 
     /**
-     * @param datainicio                 Data de Inicio
-     * @param datafim Data de fim
-     * @return
+     * Método de pesquisa especifica. Obtem objecto do tipo Periodo enquadrado num determinado periodo.
+     *
+     * @param datainicio Data de Inicio
+     * @param datafim    Data de fim
+     * @return Optional<Periodo>
      */
     @Query("SELECT p FROM Periodo p WHERE p.dtInicio >= :datainicio AND p.dtFim <= :datafim")
     Optional<Periodo> findByDataInicioAndDataFim(
@@ -31,8 +33,10 @@ public interface IPeriodoRepositorio extends JpaRepository<Periodo, Long> {
     );
 
     /**
-     * @param datainicio                 Data de Inicio
-     * @return
+     * Método de pesquisa específica. Obtem objecto do tipo Periodo com data de inicio igual ou superior à data indicada.
+     *
+     * @param datainicio Data de Inicio
+     * @return Optional<Periodo>
      */
     @Query("SELECT p FROM Periodo p WHERE p.dtInicio >= :datainicio")
     Optional<Periodo> findByDataInicio(

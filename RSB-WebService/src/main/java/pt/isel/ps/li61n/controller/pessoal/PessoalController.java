@@ -3,7 +3,6 @@ package pt.isel.ps.li61n.controller.pessoal;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,12 +12,12 @@ import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.*;
+import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.model.services.IPessoalService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -34,12 +33,6 @@ import java.util.concurrent.Callable;
 @RequestMapping(value = "/pessoal")
 public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
 
-    private MessageSource messageSource;
-
-    @Autowired
-    public PessoalController(MessageSource messageSource){
-        this.messageSource = messageSource;
-    }
 
     /**
      * Instância do Serviço
@@ -60,20 +53,29 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param formacao_id                    Opcional - O identificador (Id) de uma formação que o elemento tenha adquirido
      * @param responsabilidadeoperacional_id Opcional - O identificador (Id) de uma responsabilidade operacional
      *                                       que o elemento possa desempenhar
-     * @return Lista de ElementoDoPessoal global ou filtrada através dos parametros acima designados.
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve uma
+     * coleção de {@link PessoalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * dos objectos do tipo {@link ElementoDoPessoal} pretendido, se existirem ou não tiverem sido eliminados, caso
+     * contrário, lança excepção.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET) /* Este Método atende ao verbo HTTP GET para "/pessoal" */
     @ResponseBody //Retorno do método no corpo da resposta
     @Validated
     public Callable<?> obterElementosDoPessoal(
-            @Valid @RequestParam(value = "nummecanografico", required = false) Optional<String> nummecanografico,
-            @Valid @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
-            @Valid @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
-            @Valid @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
-            @Valid @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
-            @Valid @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
-            @Valid @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
+            @RequestParam(value = "nummecanografico", required = false) Optional<String> nummecanografico,
+            @RequestParam(value = "postofuncional_id", required = false) Optional<Long> postofuncional_id,
+            @RequestParam(value = "turno_id", required = false) Optional<Long> turno_id,
+            @RequestParam(value = "instalacao_id", required = false) Optional<Long> instalacao_id,
+            @RequestParam(value = "categoria_id", required = false) Optional<Long> categoria_id,
+            @RequestParam(value = "formacao_id", required = false) Optional<Long> formacao_id,
+            @RequestParam(value = "responsabilidadeoperacional_id", required = true) Optional<Long> responsabilidadeoperacional_id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -100,13 +102,22 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do elemento do pessoal
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Representação do elemento na forma de um DTO facilmente serializavel em Json.
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve um
+     * {@link PessoalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Normal}
+     * do objecto do tipo {@link ElementoDoPessoal} pretendido, se existir ou não tiver sido eliminado, caso contrário,
+     * lança excepção.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterElementoDoPessoal(
-            @Valid @PathVariable Long id,
+            @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -124,7 +135,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do elemento do pessoal
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Lista das formações de um determinado elemento na forma de um DTO facilmente serializável em JSon
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve uma
+     * coleção de {@link RegistoFormacaoDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * dos dos objectos do tipo {@link RegistoFormacao} de um Elemento do Pessoal, se existirem ou não tiverem sido
+     * eliminados, caso contrário, lança excepção.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{id}/formacao", method = RequestMethod.GET) // Este Método atende ao verbo HTTP GET
@@ -155,7 +175,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param registoFormacao_id Identificador do registo da formação
      * @param request            HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                           nomeadamente do URI.
-     * @return O registo da formação do elemento na forma de um DTO facilmente serializável em JSon
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve um
+     * {@link RegistoFormacaoDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Normal}
+     * do {@link RegistoFormacao} pretendido, se existir ou não tiver sido eliminado, caso contrário, lança excepção.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{elemento_id}/formacao/{registoFormacao_id}", method = RequestMethod.GET)
@@ -180,7 +208,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do elemento do pessoal
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Conjunto de Responsabilidades Operacionais a que o elemento está habilitado
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve uma
+     * coleção de {@link ResponsabilidadeOperacionalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * das Resposnabilidades Operacionais {@link ResponsabilidadeOperacional} de um Elemento do Pessoa, se existirem ou
+     * não tiverem sido eliminados, caso contrário, lança excepção.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{id}/responsabilidadeoperacional", method = RequestMethod.GET)
@@ -227,7 +264,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param factorelegibilidade     Factor de elegibilidade
      * @param request                 HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve um
+     * {@link PessoalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Verboso}
+     * do {@link ElementoDoPessoal} inserido, ou lança excepção se não for possível.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
@@ -312,8 +357,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param factorelegibilidade     Factor de elegibilidade
      * @param request                 HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) -
+     * Devolve um {@link PessoalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Verboso}
+     * do {@link ElementoDoPessoal} actualizado, ou lança excepção se não for possível.
+     * @throws Exception As Excepções com relevancia em termos de lógica da aplicação são as seguintes:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException};
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException};
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException};
+     * {@link ErroNaoDeterminadoException};
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -380,9 +432,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param dataCaducidade data de caducidade da Formação
      * @param request        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                       nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
-     */
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve um
+     * objecto {@link RegistoFormacaoDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Verboso} com a representação do {@link RegistoFormacao}
+     *  actualizado, ou lança excepção se não for possível
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
+      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{elemento_id}/formacao/{formacao_id}", method = RequestMethod.PUT)
     @ResponseBody //Retorno do método no corpo da resposta
@@ -417,8 +476,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do elemento.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring) - Devolve um
+     * objecto {@link PessoalDTO} com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Verboso} do {@link ElementoDoPessoal} eliminado,
+     * ou lança excepção se não for possível eliminar.
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Verboso} com a representação do {@link RegistoFormacao}
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -441,8 +508,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega uma coleção de objectos DTO com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * das Categorias do Pessoal, se existirem ou não tiverem sido eliminados.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/categoria", method = RequestMethod.GET)
@@ -465,8 +539,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Categoria.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.GET)
@@ -489,7 +568,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param nivelHierarquico Nível Hierarquico
      * @param request          HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                         nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
@@ -523,7 +608,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param nivelHierarquico Nível Hierarquico
      * @param request          HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                         nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -554,7 +645,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Categoria
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/categoria/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
@@ -577,8 +674,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega uma coleção de objectos DTO com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * das Postos Funcionais do Pessoal, se existirem ou não tiverem sido eliminados.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/postofuncional", method = RequestMethod.GET)
@@ -601,8 +705,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do Posto Funcional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.GET)
@@ -630,7 +739,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param descricao  Descrição do Posto Funcional
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
@@ -663,7 +778,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param descricao  Descrição do Posto Funcional
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -695,7 +816,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador do Posto Funcional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/postofuncional/{id}", method = RequestMethod.DELETE)
@@ -724,8 +851,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega uma coleção de objectos DTO com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * das Formações que os Elementos do Pessoal possam ter frequentado (cuja frequencia se define na forma do Registo de Formação)
+     * , se existirem ou não tiverem sido eliminados.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/formacao", method = RequestMethod.GET)
@@ -748,8 +883,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Formação.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.GET)
@@ -778,7 +918,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param descricao  Descrição da Formação
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
@@ -814,7 +960,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param descricao  Descrição da Formação
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -848,7 +1000,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Formação
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/formacao/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
@@ -876,8 +1034,17 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     /**
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega uma coleção de objectos DTO com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Sumario}
+     * das Responsabilidades Operacionais que os elementos do Pessoal possam possuir capacidade de ocupar
+     * (definida na forma da associação das Formações e tipos de Presença do Elemento)
+     * , se existirem ou não tiverem sido eliminados.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/responsabilidadeoperacional", method = RequestMethod.GET)
@@ -900,8 +1067,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Responsabilidade Operacional.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.GET)
@@ -932,7 +1104,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param tiposervico                Texto descritivo do Tipo de Serviço (EXTERNO / INTERNO)
      * @param request                    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/responsabilidadeoperacional", method = RequestMethod.POST)
@@ -975,7 +1153,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param tiposervico                Texto descritivo do Tipo de Serviço (EXTERNO / INTERNO)
      * @param request                    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                   nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.PUT)
@@ -1014,7 +1198,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Responsabilidade Operacional
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{id}", method = RequestMethod.DELETE)
@@ -1043,8 +1233,16 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param id      Identificador da Responsabilidade Operacional.
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega uma coleção de objectos DTO com representação do tipo
+     * {@link pt.isel.ps.li61n.controller.ModeloDeRepresentacao.Normal}
+     * das Formações Associadas ao nível de Responsabilidade Operacional solicitado
+     * , se existirem ou não tiverem sido eliminados.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{id}/formacao", method = RequestMethod.GET)
@@ -1071,7 +1269,13 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
      * @param formacao_id                    Identificador da Formação
      * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                       nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{responsabilidadeoperacional_id}/formacao/{formacao_id}", method = RequestMethod.POST)
@@ -1098,9 +1302,15 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     /**
      * @param responsabilidadeoperacional_id Identificador da Responsabilidade Operacional
      * @param formacao_id                    Identificador da Formação
-     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
-     *                nomeadamente do URI.
-     * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                                       nomeadamente do URI.
+     * @return Callable que se destina a ser executado pelo SimpleAsyncTaskExecutor (omissão Spring)
+     * que entrega um objecto ou colecção de objectos DTO para retornar no Corpo da Resposta
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/responsabilidadeoperacional/{responsabilidadeoperacional_id}/formacao/{formacao_id}", method = RequestMethod.DELETE)

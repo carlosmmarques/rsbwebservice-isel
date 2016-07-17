@@ -13,6 +13,7 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.GuarnicaoDTO;
 import pt.isel.ps.li61n.controller.dto.TipoUnidadeOperacionalDTO;
 import pt.isel.ps.li61n.controller.dto.UnidadeOperacionalDTO;
+import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.Guarnicao;
 import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
@@ -47,7 +48,14 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
     Logger logger = RsbWebserviceApplication.logger;
 
     /**
-     * @return Lista de Unidades Operacionais global.
+     * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                nomeadamente do URI.
+     * @return Lista de Unidades Operacionais global
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET)
@@ -74,6 +82,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -102,6 +115,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                  nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST)
@@ -136,7 +154,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request                   HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                  nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -169,7 +191,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -193,7 +219,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.GET)
@@ -218,7 +248,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.GET)
@@ -247,6 +281,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.POST)
@@ -282,6 +321,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.PUT)
@@ -316,6 +360,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.DELETE)
@@ -345,7 +394,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/{unidadeoperacional_id}/guarnicao", method = RequestMethod.GET)
@@ -375,7 +428,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{unidadeoperacional_id}/guarnicao/{guarnicao_id}", method = RequestMethod.GET)
@@ -408,6 +465,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                       nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeoperacional_id}/guarnicao", method = RequestMethod.POST)
@@ -449,6 +511,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request                        HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                       nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeoperacional_id}/guarnicao/{guarnicao_id}", method = RequestMethod.PUT)
@@ -488,6 +555,11 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
      * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{unidadeoperacional_id}/guarnicao/{guarnicao_id}", method = RequestMethod.DELETE)

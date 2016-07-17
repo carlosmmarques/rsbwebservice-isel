@@ -1,14 +1,15 @@
 package pt.isel.ps.li61n.controller.error.handler;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pt.isel.ps.li61n.controller.error.ErrorInfo;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * RequestErrorHandler - Description
@@ -18,19 +19,15 @@ import pt.isel.ps.li61n.controller.error.ErrorInfo;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @ControllerAdvice
-public class RequestErrorHandler {
+public class RequestErrorHandler{
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public ErrorInfo processValidationError(MethodArgumentNotValidException exc
-//            , HttpServletRequest request
-    ) {
-        BindingResult result = exc.getBindingResult();
-        FieldError fieldError = result.getFieldError();
-
-        ErrorInfo dto = new ErrorInfo("", fieldError.getDefaultMessage());
-        return dto;
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<Object> handleValidationException(RuntimeException ex, HttpServletRequest request) {
+        ErrorInfo errorInfo = ErrorInfo.getErrorInfo(ex, request);
+        return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
     }
+
 
 }

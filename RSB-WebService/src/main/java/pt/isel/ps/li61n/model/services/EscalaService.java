@@ -3,12 +3,11 @@ package pt.isel.ps.li61n.model.services;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.error.exception.*;
 import pt.isel.ps.li61n.model.entities.*;
-import pt.isel.ps.li61n.model.repository.IPeriodoRepositorio;
-import pt.isel.ps.li61n.model.repository.IPessoalRepositorio;
-import pt.isel.ps.li61n.model.repository.ITurnoRepositorio;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 @Service
-public class GeradorPresencasService implements IGeradorPresencasService {
+public class EscalaService implements IEscalaService {
 
     /**
      * Logger
@@ -37,19 +36,16 @@ public class GeradorPresencasService implements IGeradorPresencasService {
      * Instâncias dos repositórios
      */
     @Autowired
-    private IPessoalRepositorio pessoalRepo;
-    @Autowired
-    private ITurnoRepositorio turnoRepo;
-    @Autowired
-    private IPeriodoRepositorio periodoRepo;
-    @Autowired
     private IPresencaService presencaService;
+    @Autowired
+    IPessoalService pessoalService;
 
     /**
      * @param periodo O periodo em relação ao qual pretendemos popular as presenças
      * @throws Exception
      */
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public void popularPresencas(Periodo periodo) throws Exception {
 
         logger.debug("A popular presenças para o periodo [" + periodo.getDtInicio() + " - " + periodo.getDtFim() + "]");
@@ -58,7 +54,15 @@ public class GeradorPresencasService implements IGeradorPresencasService {
         cal.setTime(periodo.getDtInicio());
         cal.add(Calendar.DATE, -1);
 
-        pessoalRepo.findAll().stream()
+       pessoalService.obterElementosDoPessoal(
+               Optional.empty(),
+               Optional.empty(),
+               Optional.empty(),
+               Optional.empty(),
+               Optional.empty(),
+               Optional.empty(),
+               Optional.empty()
+       ).stream()
                 .forEach(elementoDoPessoal -> {
                     try {
                         popularPresencas(periodo, elementoDoPessoal);
@@ -70,7 +74,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
                             | NaoEncontradoException e) {
                         throw e;
                     } catch (Exception e) {
-                        throw new ErroNãoDeterminadoException(e.getMessage());
+                        throw new ErroNaoDeterminadoException(e.getMessage());
                     }
                 });
     }
@@ -81,6 +85,7 @@ public class GeradorPresencasService implements IGeradorPresencasService {
      * @throws Exception
      */
     @Override
+    @Transactional(propagation = Propagation.MANDATORY) // forçar a execução no contexto de uma transação
     public Collection<Presenca> popularPresencas(Periodo periodo, ElementoDoPessoal elementoDoPessoal) throws Exception {
 
         List<Presenca> presencas = new LinkedList<>();
@@ -131,10 +136,38 @@ public class GeradorPresencasService implements IGeradorPresencasService {
             } catch (ConflictoException | NoSuchElementException | RecursoEliminadoException | NaoEncontradoException e) {
                 throw e;
             } catch (Exception e) {
-                throw new ErroNãoDeterminadoException(e.getMessage());
+                throw new ErroNaoDeterminadoException(e.getMessage());
             }
         }
         return presencas;
+    }
+
+    /**
+     * Obter elementos para cedencia de troca, ordenados por ordem de favorabilidade de solução
+     *
+     * @param presenca_id Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @return Lista de elementos disponíveis para troca
+     * @throws Exception
+     */
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Collection<ElementoDoPessoal> obterElementosDoPessoalParaReforco(Long presenca_id) throws Exception {
+        throw new FuncionalidadeNaoImplementada("Esta funcionalidade não se encontra ainda implementada");
+    }
+
+    /**
+     * Realizar reforço de uma presenca de um elemento
+     *
+     * @param data               Data de relização da troca
+     * @param elementoAusente_id Identificador do elemento ausente
+     * @param elementoReforco_id Identificador do elemento de reforço
+     * @return a Presença com o elemento de reforço
+     * @throws Exception
+     */
+    @Override
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Presenca realizarReforco(Date data, Long elementoAusente_id, Long elementoReforco_id) throws Exception {
+        throw new FuncionalidadeNaoImplementada("Esta funcionalidade não se encontra ainda implementada");
     }
 
     /**

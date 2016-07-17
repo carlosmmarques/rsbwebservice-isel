@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
+import pt.isel.ps.li61n.controller.dto.PessoalDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
-import pt.isel.ps.li61n.controller.error.exception.ErroNãoDeterminadoException;
+import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
@@ -39,6 +41,7 @@ import java.util.concurrent.Callable;
  */
 @Controller
 @RequestMapping(value = "/presenca")
+@Validated
 public class PresencaController extends RsbBaseController<Presenca> {
 
     /**
@@ -111,6 +114,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Representação do elemento na forma de um DTO facilmente serializavel em Json.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -145,6 +153,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request              HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                             nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST)
@@ -200,7 +213,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request              HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                             nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -245,7 +262,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -269,7 +290,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.GET)
@@ -293,7 +318,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.GET)
@@ -318,6 +347,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
@@ -354,6 +388,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request               HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                              nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -386,6 +425,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/tipo/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
@@ -415,7 +459,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/periodo", method = RequestMethod.GET)
@@ -441,7 +489,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/periodo/{id}", method = RequestMethod.GET)
@@ -463,13 +515,18 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/periodo", method = RequestMethod.POST) // Este Método atende ao verbo HTTP GET
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> inserirPeriodo(
-            @Valid @RequestParam(value = "datainicio", required = true) Date datainicio,
-            @Valid @RequestParam(value = "datafim", required = true) Date datafim,
+            @RequestParam(value = "datainicio", required = true) Date datainicio,
+            @RequestParam(value = "datafim", required = true) Date datafim,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -491,6 +548,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request    HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                   nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/periodo/{id}", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP GET
@@ -518,6 +580,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/periodo/{id}", method = RequestMethod.DELETE) // Este Método atende ao verbo HTTP GET
@@ -535,11 +602,18 @@ public class PresencaController extends RsbBaseController<Presenca> {
     }
 
     /**
+     * Actualiza as presenças de um elemento para um determinado periodo.
+     *
      * @param elementodopessoal_id Identificador do Elemento do Pessoal
      * @param periodo_id           Identificador do Periodo
      * @param request              HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                             nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/popularperiodo", method = RequestMethod.PUT) // Este Método atende ao verbo HTTP PUT
@@ -563,7 +637,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
                     presencaService.eliminarPresenca(presenca.getId());
                 } catch (Exception e) {
                     logger.debug("Erro não determinado: " + e);
-                    throw new ErroNãoDeterminadoException(e.getMessage());
+                    throw new ErroNaoDeterminadoException(e.getMessage());
                 }
             });
             List<PresencaDTO> presencaDTOs = new LinkedList<>();
@@ -573,4 +647,67 @@ public class PresencaController extends RsbBaseController<Presenca> {
             return new ResponseEntity<>(presencaDTOs, HttpStatus.CREATED);
         };
     }
+
+    /**
+     * Obter elementos para cedencia de troca, ordenados por ordem de favorabilidade de solução
+     *
+     * @param id Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @return Lista de elementos disponíveis para troca, ordenados por favorabilidade de solução
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException},
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/{id}/pessoalreforco", method = RequestMethod.GET) // Este Método atende ao verbo HTTP PUT
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> obterElementosDoPessoalParaReforco(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            Presenca presenca = presencaService.obterPresenca(id);
+            Collection<PessoalDTO> pessoalDTOs = new LinkedList<>();
+            presencaService.obterElementosDoPessoalParaReforco(presenca.getId()).stream().forEach(
+                    elemento -> pessoalDTOs.add(new PessoalDTO(elemento, request, ModeloDeRepresentacao.Sumario.class))
+            );
+            return new ResponseEntity<>(pessoalDTOs, HttpStatus.CREATED);
+        };
+    }
+
+    /**
+     * Obter elementos para cedencia de troca, ordenados por ordem de favorabilidade de solução
+     *
+     * @param id          Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @param elementodereforco_id Identificador do elemento de reforço
+     * @return Lista de elementos disponíveis para troca, ordenados por favorabilidade de solução
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     *                   {@link pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException},
+     */
+    @JsonView(ModeloDeRepresentacao.Verboso.class)
+    @RequestMapping(value = "/{id}/realizarreforco", method = RequestMethod.POST)
+    // Este Método atende ao verbo HTTP PUT
+    @ResponseBody //Retorno do método no corpo da resposta
+    public Callable<?> realizarReforco(
+            @PathVariable Long id,
+            @Valid @RequestParam(value = "elementodereforco_id", required = true) Long elementodereforco_id,
+            HttpServletRequest request
+    ) throws Exception {
+        logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+        return () -> {
+            logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
+            PresencaDTO presencaDTO = new PresencaDTO(
+                    presencaService.realizarReforco(id, elementodereforco_id),
+                    request,
+                    ModeloDeRepresentacao.Verboso.class);
+            return new ResponseEntity<>(presencaDTO, HttpStatus.CREATED);
+        };
+    }
+
 }

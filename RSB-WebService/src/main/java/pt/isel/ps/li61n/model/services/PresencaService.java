@@ -45,7 +45,7 @@ public class PresencaService implements IPresencaService {
     @Autowired
     private ITipoPresencaRepositorio tipoPresencaRepo;
     @Autowired
-    private IGeradorPresencasService geradorPresencasService;
+    private IEscalaService escalaService;
     @Autowired
     private IPessoalService pessoalService;
     @Autowired
@@ -66,7 +66,7 @@ public class PresencaService implements IPresencaService {
         } catch (RecursoEliminadoException | NaoEncontradoException e1) {
             throw e1;
         } catch (Exception e1) {
-            throw new ErroNãoDeterminadoException(e1.getMessage());
+            throw new ErroNaoDeterminadoException(e1.getMessage());
         }
         return elementoDoPessoal;
     }
@@ -84,7 +84,7 @@ public class PresencaService implements IPresencaService {
         } catch (RecursoEliminadoException | NaoEncontradoException e1) {
             throw e1;
         } catch (Exception e1) {
-            throw new ErroNãoDeterminadoException(e1.getMessage());
+            throw new ErroNaoDeterminadoException(e1.getMessage());
         }
         return postoFuncional;
     }
@@ -102,7 +102,7 @@ public class PresencaService implements IPresencaService {
         } catch (RecursoEliminadoException | NaoEncontradoException e1) {
             throw e1;
         } catch (Exception e1) {
-            throw new ErroNãoDeterminadoException(e1.getMessage());
+            throw new ErroNaoDeterminadoException(e1.getMessage());
         }
         return turno;
     }
@@ -120,7 +120,7 @@ public class PresencaService implements IPresencaService {
         } catch (RecursoEliminadoException | NaoEncontradoException e1) {
             throw e1;
         } catch (Exception e1) {
-            throw new ErroNãoDeterminadoException(e1.getMessage());
+            throw new ErroNaoDeterminadoException(e1.getMessage());
         }
         return instalacao;
     }
@@ -455,7 +455,7 @@ public class PresencaService implements IPresencaService {
             periodo.setDtInicio(datainicio);
             periodo.setDtFim(datafim);
             periodo = periodoRepo.save(periodo);
-            geradorPresencasService.popularPresencas(periodo);
+            escalaService.popularPresencas(periodo);
             return periodo;
         }
         //presença existe na BD, vamos lançar a respectiva excepção:
@@ -501,7 +501,34 @@ public class PresencaService implements IPresencaService {
     public Collection<Presenca> popularPresencas(Long periodo_id, Long elementodopessoal_id) throws Exception {
         Periodo periodo = obterPeriodo(periodo_id);
         ElementoDoPessoal elementoDoPessoal = pessoalService.obterElementoDoPessoal(elementodopessoal_id);
-        return geradorPresencasService.popularPresencas(periodo, elementoDoPessoal);
+        return escalaService.popularPresencas(periodo, elementoDoPessoal);
     }
 
+    /**
+     * Obter elementos para cedencia de troca, ordenados por ordem de favorabilidade de solução
+     *
+     * @param presenca_id Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @return Lista de elementos disponíveis para troca
+     * @throws Exception
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<ElementoDoPessoal> obterElementosDoPessoalParaReforco(Long presenca_id) throws Exception {
+        return escalaService.obterElementosDoPessoalParaReforco(presenca_id);
+    }
+
+    /**
+     * Realizar reforço de uma presenca de um elemento
+     *
+     * @param presenca_id          Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @param elementodereforco_id Identificador do elemento de reforço
+     * @return a Presença com o elemento de reforço
+     * @throws Exception
+     */
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+    public Presenca realizarReforco(Long presenca_id, Long elementodereforco_id) throws Exception {
+        Presenca presenca = presencaRepo.findOne(presenca_id);
+        return escalaService.realizarReforco(presenca.getData(), presenca.getElementoDoPessoal().getId(), elementodereforco_id);
+    }
 }

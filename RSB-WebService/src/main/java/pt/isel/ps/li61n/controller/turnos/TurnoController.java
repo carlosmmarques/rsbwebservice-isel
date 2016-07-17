@@ -13,6 +13,7 @@ import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.AlgoritmoCalculoTurnoDTO;
 import pt.isel.ps.li61n.controller.dto.PeriodoCicloTurnoDTO;
 import pt.isel.ps.li61n.controller.dto.TurnoDTO;
+import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.model.entities.AlgoritmoCalculoTurno;
 import pt.isel.ps.li61n.model.entities.PeriodoCicloTurno;
@@ -50,7 +51,14 @@ public class TurnoController extends RsbBaseController<Turno> {
     Logger logger = RsbWebserviceApplication.logger;
 
     /**
+     * @param request              HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
+     *                             nomeadamente do URI.
      * @return Lista de Turnos global.
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(method = RequestMethod.GET)
@@ -77,6 +85,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -105,6 +118,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(method = RequestMethod.POST)
@@ -140,7 +158,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -173,7 +195,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -197,7 +223,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/algoritmocalculoturno", method = RequestMethod.GET)
@@ -222,7 +252,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/algoritmocalculoturno/{id}", method = RequestMethod.GET)
@@ -252,6 +286,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request           HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                          nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno", method = RequestMethod.POST)
@@ -290,6 +329,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request           HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                          nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno/{id}", method = RequestMethod.PUT)
@@ -326,6 +370,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno/{id}", method = RequestMethod.DELETE)
@@ -359,7 +408,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Sumario.class)
     @RequestMapping(value = "/algoritmocalculoturno/{algoritmocalculoturno_id}/ciclo", method = RequestMethod.GET)
@@ -389,7 +442,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
-     * @throws Exception
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Normal.class)
     @RequestMapping(value = "/algoritmocalculoturno/{algoritmocalculoturno_id}/ciclo/{ciclo_id}", method = RequestMethod.GET)
@@ -422,6 +479,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno/{algoritmocalculoturno_id}/ciclo/{periodocicloturno_id}", method = RequestMethod.POST)
@@ -462,6 +524,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno/{algoritmocalculoturno_id}/ciclo/{periodocicloturno_id}", method = RequestMethod.PUT)
@@ -499,6 +566,11 @@ public class TurnoController extends RsbBaseController<Turno> {
      * @param request                  HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      *                                 nomeadamente do URI.
      * @return Wrapper Spring para a resposta, código HTTP e cabeçalhos HTTP
+     * @throws Exception Excepções com relevancia em termos de lógica da aplicação:
+     * {@link pt.isel.ps.li61n.controller.error.exception.ConflictoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException},
+     * {@link pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException},
+     * {@link ErroNaoDeterminadoException},
      */
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/algoritmocalculoturno/{algoritmocalculoturno_id}/ciclo/{periodocicloturno_id}", method = RequestMethod.DELETE)

@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model.services;
 
 import org.springframework.stereotype.Service;
+import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
@@ -244,5 +245,20 @@ public interface IPresencaService {
      */
     Collection<Presenca> popularPresencas(Long periodo_id, Long elementoDoPessoal_id) throws Exception;
 
+    /**
+     * Obter elementos para cedencia de troca, ordenados por ordem de favorabilidade de solução
+     * @param presenca_id Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @return Lista de elementos disponíveis para troca
+     * @throws Exception
+     */
+    Collection<ElementoDoPessoal> obterElementosDoPessoalParaReforco(Long presenca_id) throws Exception;
 
-    }
+    /**
+     * Realizar reforço de uma presenca de um elemento
+     * @param presenca_id Identificador da Presença, em relação à qual queremos obter elementos para troca
+     * @param elementodereforco_id Identificador do elemento de reforço
+     * @return a Presença com o elemento de reforço
+     * @throws Exception
+     */
+    Presenca realizarReforco(Long presenca_id, Long elementodereforco_id) throws Exception;
+}
