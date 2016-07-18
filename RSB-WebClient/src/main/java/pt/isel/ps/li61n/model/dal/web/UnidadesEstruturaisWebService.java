@@ -175,36 +175,44 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
 
         for( UnidadeEstrutural ue : ues ){
 
-            // obter as instalacoes
-            CompletableFuture< InstalacaoDto[] > getInstalacoes =
-                    RsbWebServiceAsync
-                            .callActionAndConvert(
-                                    InstalacaoDto[].class
-                                    ,INSTALACOES_URL
-                                    , ue.getId()
-                            )
-                    ;
+            Collection< Instalacao > instalacoes = selectAllInstalacoes( ue.getId() );
 
-            InstalacaoDto[] dtos = null;
-
-            try{
-                dtos = getInstalacoes.get();
-            }
-            catch( InterruptedException | ExecutionException e ) {
-                throw new RepositoryException( e.getMessage() );
-            }
-
-            // Converter dto -> model
-            Collection< Instalacao > instalacoes = new ArrayList<>( dtos.length );
-            for( InstalacaoDto dto : dtos ) {
-
-                Instalacao instalacao = convertInstalacaoFromDto( dto, ue.getId() );
-
-                instalacoes.add( instalacao );
-            }
             result.addAll( instalacoes );
         }
         return result;
+    }
+
+    @Override
+    public Collection<Instalacao> selectAllInstalacoes( Long unidadeEstruturalId ) throws RepositoryException {
+
+        // obter as instalacoes
+        CompletableFuture< InstalacaoDto[] > getInstalacoes =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                InstalacaoDto[].class
+                                ,INSTALACOES_URL
+                                , unidadeEstruturalId
+                        )
+                ;
+
+        InstalacaoDto[] dtos = null;
+
+        try{
+            dtos = getInstalacoes.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            throw new RepositoryException( e.getMessage() );
+        }
+
+        // Converter dto -> model
+        Collection< Instalacao > instalacoes = new ArrayList<>( dtos.length );
+        for( InstalacaoDto dto : dtos ) {
+
+            Instalacao instalacao = convertInstalacaoFromDto( dto, unidadeEstruturalId );
+
+            instalacoes.add( instalacao );
+        }
+        return instalacoes;
     }
 
     @Override
@@ -378,7 +386,7 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
         return ue;
     }
 
-    private Instalacao convertInstalacaoFromDto( InstalacaoDto dto, Long ueId ){
+    public static Instalacao convertInstalacaoFromDto( InstalacaoDto dto, Long ueId ){
 
         Instalacao instalacao = new Instalacao();
 

@@ -29,7 +29,7 @@ public abstract class AbstractWebService {
         if (uri != null && !uri.isEmpty()) {
             try {
                 result = RsbWebServiceAsync
-                            .callAndConvert(klass, uri)
+                            .callAndConvert( klass, uri )
                             .get();
             }
             catch (InterruptedException | ExecutionException e) {

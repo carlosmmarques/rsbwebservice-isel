@@ -45,6 +45,7 @@ public class RsbWebServiceAsync {
         ,PRESENCAS_URL = "/presenca"
         ,TIPOS_PRESENCA_URL = "/presenca/tipo"
         ,PERIODOS_URL = "/presenca/periodo"
+        ,PERIODO_URL = "/presenca/periodo/%s"
         ,UNIDADES_ESTRUTURAIS_URL = "/unidadeestrutural"
         ,TIPOS_UNIDADE_ESTRUTURAL_URL = "/unidadeestrutural/tipo"
         ,INSTALACOES_URL = "/unidadeestrutural/%s/instalacao"
@@ -225,4 +226,18 @@ public class RsbWebServiceAsync {
                 );
     }
     */
+
+    public static <E> E getResource( String uri, Class< E > klass ) {
+
+        E result = null;
+        if (uri != null && !uri.isEmpty()) {
+            try {
+                result = callAndConvert( klass, uri ).get();
+            }
+            catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
 }

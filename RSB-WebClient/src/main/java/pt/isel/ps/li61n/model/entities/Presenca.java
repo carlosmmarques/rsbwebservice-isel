@@ -22,6 +22,7 @@ public class Presenca extends Identity< Long > {
 
     // FK periodo
     private Long periodoId;
+    private Periodo periodo;
 
     // Fk Elemento -> Obter IdInterno
     //private long elementoId;
@@ -41,12 +42,14 @@ public class Presenca extends Identity< Long > {
 
     // Fk instalacao onde foi efectuado a presença
     private Long instalacaoId;
+    private Instalacao instalacao;
 
     // Fk PostoFuncional -> obter designacao
     private PostoFuncional postoFuncional;
 
     // FK Turno -> obter designacao
     private Long turnoId;
+    private Turno turno;
 
 
     ////////////////////////////////////////////
@@ -55,8 +58,37 @@ public class Presenca extends Identity< Long > {
     //
     /////////////////////////////////////
 
-    public void setElementoReforcoReforcado( Elemento elementoReforcoReforcado ) {
+
+    public Turno getTurno() {
+        return turno;
+    }
+
+    public void setTurno( Turno turno ) {
+        this.turno = turno;
+    }
+
+    public Instalacao getInstalacao() {
+        return instalacao;
+    }
+
+    public void setInstalacao(Instalacao instalacao) {
+        this.instalacao = instalacao;
+    }
+
+    public void setElementoReforcoReforcado(Elemento elementoReforcoReforcado ) {
         this.elementoReforcoReforcado = elementoReforcoReforcado;
+    }
+
+    public Periodo getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+
+    public Elemento getElementoReforcoReforcado() {
+        return elementoReforcoReforcado;
     }
 
     public Long getPeriodoId() {
@@ -156,6 +188,13 @@ public class Presenca extends Identity< Long > {
         this.elemento = elemento;
     }
     */
+
+    @Override
+    public String toString(){
+        return this.getData().toString() +  " - "
+                + this.horaInicio.toString() + " - "
+                + this.getTurno().toString();
+    }
 
     public Elemento getElementoReforcoReforcadoId() {
         return elementoReforcoReforcado;

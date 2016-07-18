@@ -9,29 +9,47 @@
     <body>
 
         <h1>Gestão do Mapa da força</h1>
-        <h2>Qual é o periodo que pretende consultar?</h2>
+        <div th:unless="${#lists.isEmpty(selectPresencasUI.periodosUI)}">
+            <form th:action="${action}" method="GET" th:object="${selectPresencasUI}">
 
-        <!-- Lista de periodos-->
-        <div th:unless="${#lists.isEmpty(periodosUI)}">
-            <ul>
-                <li th:each="p : ${periodosUI}">
-                    <a href="details.html" th:href="${p.url}">
-                        <span th:text="${p.dataInicio}">2015-11-01</span>
-                        -
-                        <span th:text="${p.dataFim}">2015-11-30</span>
-                    </a>
-                </li>
-            </ul>
+                <!-- Lista de periodos-->
+                <h4>Qual é o periodo que pretende consultar?</h4>
+                <select th:field="*{periodoId}">
+                    <option th:each="p:*{periodosUI}"
+                            th:value="${p.id.toString()}"
+                            th:text="${p.toString()}"
+                    >Lista de periodos</option>
+                </select>
+                <div th:unless="${#lists.isEmpty(selectPresencasUI.unidadeEstruturaisUIs)}">
+                    <h4>E em que unidade estrutural?</h4>
+                    <select th:field="*{unidadeEstruturalId}">
+                        <option th:each="ue:*{unidadeEstruturaisUIs}"
+                                th:value="${ue.id}"
+                                th:text="${ue.designacao}"
+                        >Lista de unidades  estruturais</option>
+                    </select>
+
+                </div>
+                <br></br>
+                <input type="submit" value="Pesquisar"></input>
+            </form>
+
         </div>
         <div th:if="${#lists.isEmpty(periodosUI)}">
             <h2>Não existe periodos!</h2>
         </div>
 
+
+
+
+
+
+
         <!-- OPERAÇÕES -->
         <div>
             <h3>
-                <a href="#">
-                    Deseja gerar novo período?
+                <a href="insert.html" th:href="@{/mapaForca/gerar}">
+                    Deseja inserir novo periodo?
                 </a>
             </h3>
         </div>

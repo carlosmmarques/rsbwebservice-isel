@@ -17,4 +17,10 @@ public interface IMapaForcaLogic {
     Collection< Presenca > getPresencasByPeriodo( Long periodoId );
 
     Collection< Periodo > getAllPeriodos();
+
+    Long insertPeriodo( Periodo novoPeriodo );
+
+    Periodo getOnePeriodo( Long periodoId );
+
+    Collection< Presenca > getPresencasByPeriodoAndInstalacao( Long periodoId , Long InstalacaoId );
 }

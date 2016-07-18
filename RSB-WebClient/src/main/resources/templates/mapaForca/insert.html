@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
+    <title>Inserir periodo</title>
+</head>
+<body>
+    <h1>
+        Insira as datas inicial e final do periodo para o qual pretende gerar o Mapa da Força.
+    </h1>
+    <form th:action="${action}" method="POST" th:object="${insertPeriodoUI}">
+
+        <!-- Lista de erros -->
+        <div th:replace="templates :: errorsDiv"></div>
+
+        <!-- Data Inicio -->
+        <label th:class="${#fields.hasErrors('dataInicio')} ? 'error'">Data de inicío:</label>
+        <input type="text" th:field="*{dataInicio}" th:class="${#fields.hasErrors('dataInicio')} ? 'error'"></input><br></br>
+
+        <!-- Data de Fim -->
+        <label th:class="${#fields.hasErrors('dataFim')} ? 'error'">Data de fim:</label>
+        <input type="text" th:field="*{dataFim}" th:class="${#fields.hasErrors('dataFim')} ? 'error'">
+        </input><br></br>
+        <input type="submit" value="Gerar"></input>
+    </form>
+
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+</body>
+</html>

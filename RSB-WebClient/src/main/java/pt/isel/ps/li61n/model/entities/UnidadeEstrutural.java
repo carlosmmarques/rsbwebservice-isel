@@ -28,6 +28,8 @@ public class UnidadeEstrutural extends Identity< Long > {
 
     private Collection< UnidadeEstrutural > subunidades;
 
+    private Collection< Instalacao > instalacoes;
+
     public UnidadeEstrutural() {
     }
 
@@ -39,6 +41,12 @@ public class UnidadeEstrutural extends Identity< Long > {
         this.setId( id );
         this.designacao = designacao;
     }
+
+    /////////////////////////////////////////////////////////////
+    //
+    //      Getters & Setters
+    //
+    /////////////////////////////////////////////////////////////
 
     public String getDesignacao(){
         return this.designacao;
@@ -78,12 +86,20 @@ public class UnidadeEstrutural extends Identity< Long > {
         this.unidadeEstruturalMae = unidadeEstruturalMae;
     }
 
-    public Collection<UnidadeEstrutural> getSubunidades() {
+    public Collection< UnidadeEstrutural > getSubunidades() {
         return subunidades;
     }
 
     public void setSubunidades(Collection<UnidadeEstrutural> subunidades) {
         this.subunidades = subunidades;
+    }
+
+    public Collection<Instalacao> getInstalacoes() {
+        return instalacoes;
+    }
+
+    public void setInstalacoes( Collection<Instalacao> instalacoes ) {
+        this.instalacoes = instalacoes;
     }
 
     @Override

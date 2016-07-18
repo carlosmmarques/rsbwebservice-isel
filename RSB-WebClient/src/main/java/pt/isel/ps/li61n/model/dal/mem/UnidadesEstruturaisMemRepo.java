@@ -66,6 +66,11 @@ public class UnidadesEstruturaisMemRepo implements IUnidadesEstruturaisRepositor
     }
 
     @Override
+    public Collection<Instalacao> selectAllInstalacoes( Long unidadeEstruturalId ) throws RepositoryException {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public Long insertInstalacao(Instalacao newInstalacao) {
         throw new NotImplementedException();
     }

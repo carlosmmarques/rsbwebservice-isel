@@ -54,11 +54,7 @@ public class TurnosWebService extends AbstractWebService implements ITurnosRepos
         Collection< Turno > result = new ArrayList<>( dtos.length );
         for( TurnoDto dto : dtos ) {
 
-            Turno turno = new Turno();
-
-            turno.setId( dto.id );
-            turno.setDesignacao( dto.designacao );
-
+            Turno turno = convertFromDto( dto );
             result.add( turno );
         }
 
@@ -73,5 +69,13 @@ public class TurnosWebService extends AbstractWebService implements ITurnosRepos
     @Override
     public void update(Long aLong) {
         throw new NotImplementedException();
+    }
+
+    public static Turno convertFromDto( TurnoDto dto ){
+        Turno turno = new Turno();
+
+        turno.setId( dto.id );
+        turno.setDesignacao( dto.designacao );
+        return  turno;
     }
 }

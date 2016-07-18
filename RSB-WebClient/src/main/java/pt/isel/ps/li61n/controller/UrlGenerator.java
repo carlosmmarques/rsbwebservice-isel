@@ -61,4 +61,11 @@ public class UrlGenerator {
     public static String detalhesMapaForcaPeriodo( Long idPeriodo ){
         return baseOperation( MAPA_FORCA_URL, idPeriodo.toString() );
     }
+
+    public static String redirectMapaForcaPeriodo( Long idPeriodo ){
+        return String.format(
+                        REDIRECT,
+                        baseOperation( MAPA_FORCA_URL, idPeriodo.toString() )
+                    );
+    }
 }

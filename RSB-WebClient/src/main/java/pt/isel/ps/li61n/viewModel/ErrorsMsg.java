@@ -88,4 +88,24 @@ public final class ErrorsMsg {
                     ;
         }
     }
+
+    public static final class Periodo{
+
+        public static final class DataInicio{
+
+            public static final String
+                    //NOT_NULL = "Preencha o campo \"Data de ingresso\"."
+                    PATTERN = "Preencha o campo \"Data de inicío\" com uma data válida (dd/mm/aaaa)."
+                    ;
+        }
+
+
+        public static final class DataFim{
+
+            public static final String
+                    //NOT_NULL = "Preencha o campo \"Data de ingresso\"."
+                    PATTERN = "Preencha o campo \"Data de fim\" com uma data válida (dd/mm/aaaa)."
+                    ;
+        }
+    }
 }
