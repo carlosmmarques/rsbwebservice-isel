@@ -70,7 +70,7 @@ public class TipoPresencaDTO {
         this.id = tipoPresenca.getId();
         this.modeloDeRepresentacao = modeloDeRepresentacao;
 
-        UtilidadesParaDTO.verificarPropriedadesParaDTO(logger, mapaDeAtributos, tipoPresenca, modeloDeRepresentacao);
+        UtilidadesParaDTO.gerarMapaDeAtributosParaDTO(logger, mapaDeAtributos, tipoPresenca, modeloDeRepresentacao);
     }
 
     @JsonAnyGetter

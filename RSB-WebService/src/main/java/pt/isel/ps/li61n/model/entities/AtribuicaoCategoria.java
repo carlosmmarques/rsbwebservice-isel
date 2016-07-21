@@ -21,7 +21,7 @@ import java.sql.Date;
 public class AtribuicaoCategoria extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne
-    @JoinColumn(name = "pessoal_id")
+    @JoinColumn(name = "elemento_id")
     private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "categoria_id")

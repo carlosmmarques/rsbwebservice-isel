@@ -26,13 +26,14 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Tratamento de Excepções do Tipo Conflito
-     * @param exc Excepção a tratar
+     *
+     * @param exc     Excepção a tratar
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {ConflictoException.class})
     @ResponseBody
-    protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request){
+    protected ResponseEntity<ErrorInfo> handleConflictException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
     }
@@ -41,13 +42,13 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
      * Tratamento de Excepções do Tipo "Recurso Não existente"
      * TODO Perceber melhor se este comportamento (404) é adequado para queries bem formadas, em que não existam recursos, ou devolver um 204
      *
-     * @param exc Excepção a tratar
+     * @param exc     Excepção a tratar
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {NaoEncontradoException.class})
     @ResponseBody
-    protected ResponseEntity<ErrorInfo> handleResourceNotFoundException(RuntimeException exc, HttpServletRequest request){
+    protected ResponseEntity<ErrorInfo> handleResourceNotFoundException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
@@ -55,26 +56,27 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     /**
      * Tratamento de Excepções do Tipo "Recurso Eliminado"
      *
-     * @param exc Excepção a tratar
+     * @param exc     Excepção a tratar
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {RecursoEliminadoException.class})
     @ResponseBody
-    protected ResponseEntity<ErrorInfo> handleDeletedResourceException(RuntimeException exc, HttpServletRequest request){
+    protected ResponseEntity<ErrorInfo> handleDeletedResourceException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.GONE);
     }
 
     /**
      * Tratamento de Excepções de Tipos desconhecidos
-     * @param exc Excepção a tratar
+     *
+     * @param exc     Excepção a tratar
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler(value = {DataInvalidaException.class})
     @ResponseBody
-    protected ResponseEntity<ErrorInfo> handleDataInvalidaException(RuntimeException exc, HttpServletRequest request){
+    protected ResponseEntity<ErrorInfo> handleDataInvalidaException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_ACCEPTABLE);
     }
@@ -82,13 +84,14 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     /**
      * Tratamento de Excepções de Tipos desconhecidos
      * TODO Melhor solução do que isto. Assumir erro interno por omissão é horrivel!
-     * @param exc Excepção a tratar
+     *
+     * @param exc     Excepção a tratar
      * @param request HttpServletRequest
      * @return ResponseEntity para JSON
      */
     @ExceptionHandler()
     @ResponseBody
-    protected ResponseEntity<ErrorInfo> handleUnknownException(RuntimeException exc, HttpServletRequest request){
+    protected ResponseEntity<ErrorInfo> handleUnknownException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }

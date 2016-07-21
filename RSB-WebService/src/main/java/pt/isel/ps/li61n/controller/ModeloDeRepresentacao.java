@@ -13,13 +13,16 @@ public class ModeloDeRepresentacao {
     /**
      * Propriedades anotadas com @JSonView(ModeloDeRepresentacao.*.class) serão respeitadas pelos controladores cujos metodos se
      * encontrem anotados da mesma forma.
-     *
+     * <p>
      * Isto permite disponibilizar representações com vários níves de detalhe das entidades
      */
-    public interface Sumario {}
+    public interface Sumario {
+    }
 
-    public interface Normal{}
+    public interface Normal {
+    }
 
-    public interface Verboso {}
+    public interface Verboso {
+    }
 
 }

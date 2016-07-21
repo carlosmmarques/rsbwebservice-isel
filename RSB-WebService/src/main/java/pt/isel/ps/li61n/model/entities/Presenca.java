@@ -36,7 +36,7 @@ public class Presenca extends EntidadeAbstractaComIdentificador {
     @JoinColumn(name = "periodo_id")
     private Periodo periodo;
     @ManyToOne
-    @JoinColumn(name = "pessoal_id")
+    @JoinColumn(name = "elemento_id")
     private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "postoFuncionalEfectivo_id")

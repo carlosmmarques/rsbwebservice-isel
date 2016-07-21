@@ -16,7 +16,7 @@ import java.util.List;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-@Table(name = "pessoal")
+@Table(name = "elemento")
 public class ElementoDoPessoal extends EntidadeAbstractaComIdentificador {
 
     @Column(nullable = true)

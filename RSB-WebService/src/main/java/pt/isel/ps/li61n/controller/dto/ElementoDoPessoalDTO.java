@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Classe de representação dos elementos do pessoal.
  */
-public class PessoalDTO extends AbstractDTO {
+public class ElementoDoPessoalDTO extends AbstractDTO {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String uri_pessoa;
@@ -30,7 +30,7 @@ public class PessoalDTO extends AbstractDTO {
      * @param request HttpServletRequest - Util para obtenção dos elementos do contexto da execução do serviço,
      * @param modeloDeRepresentacao Modelo de representação da entidade
      */
-    public PessoalDTO(ElementoDoPessoal elemento, HttpServletRequest request, Class modeloDeRepresentacao) {
+    public ElementoDoPessoalDTO(ElementoDoPessoal elemento, HttpServletRequest request, Class modeloDeRepresentacao) {
         this.popularAtributosGerais(elemento, request, modeloDeRepresentacao);
         this.uri_pessoa = String.format("%s/pessoal/%s",
                 this.baseUrl,

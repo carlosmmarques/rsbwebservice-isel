@@ -12,7 +12,7 @@ import pt.isel.ps.li61n.RsbWebserviceApplication;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.controller.RsbBaseController;
 import pt.isel.ps.li61n.controller.dto.PeriodoDTO;
-import pt.isel.ps.li61n.controller.dto.PessoalDTO;
+import pt.isel.ps.li61n.controller.dto.ElementoDoPessoalDTO;
 import pt.isel.ps.li61n.controller.dto.PresencaDTO;
 import pt.isel.ps.li61n.controller.dto.TipoPresencaDTO;
 import pt.isel.ps.li61n.controller.error.exception.ErroNaoDeterminadoException;
@@ -670,11 +670,11 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Presenca presenca = presencaService.obterPresenca(id);
-            Collection<PessoalDTO> pessoalDTOs = new LinkedList<>();
+            Collection<ElementoDoPessoalDTO> elementoDoPessoalDTOs = new LinkedList<>();
             presencaService.obterElementosDoPessoalParaReforco(presenca.getId()).stream().forEach(
-                    elemento -> pessoalDTOs.add(new PessoalDTO(elemento, request, ModeloDeRepresentacao.Sumario.class))
+                    elemento -> elementoDoPessoalDTOs.add(new ElementoDoPessoalDTO(elemento, request, ModeloDeRepresentacao.Sumario.class))
             );
-            return new ResponseEntity<>(pessoalDTOs, HttpStatus.CREATED);
+            return new ResponseEntity<>(elementoDoPessoalDTOs, HttpStatus.CREATED);
         };
     }
 

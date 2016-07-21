@@ -46,7 +46,7 @@ public class AbstractDTO<Entidade extends EntidadeAbstractaComIdentificador> {
         this.id = entidade.getId();
         this.modeloDeRepresentacao = modeloDeRepresentacao;
 
-        UtilidadesParaDTO.verificarPropriedadesParaDTO(logger, mapaDeAtributos, entidade, this.modeloDeRepresentacao);
+        UtilidadesParaDTO.gerarMapaDeAtributosParaDTO(logger, mapaDeAtributos, entidade, this.modeloDeRepresentacao);
     }
 
     @JsonAnyGetter

@@ -8,8 +8,6 @@ import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 import pt.isel.ps.li61n.model.entities.PeriodoCicloTurno;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,20 +67,21 @@ public class PeriodoCicloTurnoDTO {
                 request.getServerPort());
         this.modeloDeRepresentacao = modeloDeRepresentacao;
 
-        for (Field field : periodoCicloTurno.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(JsonView.class))
-                if (Arrays.asList(field.getAnnotation(JsonView.class).value()).contains(this.modeloDeRepresentacao)) {
-                    try {
-                        String value;
-                        field.setAccessible(true);
-                        value = field.get(periodoCicloTurno) == null ? "" : field.get(periodoCicloTurno).toString();
-                        mapaDeAtributos.put(field.getName(), value);
-                    } catch (IllegalAccessException e) {
-                        logger.error(e.getLocalizedMessage(), e.getCause());
-                        e.printStackTrace();
-                    }
-                }
-        }
+//        for (Field field : periodoCicloTurno.getClass().getDeclaredFields()) {
+//            if (field.isAnnotationPresent(JsonView.class))
+//                if (Arrays.asList(field.getAnnotation(JsonView.class).value()).contains(this.modeloDeRepresentacao)) {
+//                    try {
+//                        String value;
+//                        field.setAccessible(true);
+//                        value = field.get(periodoCicloTurno) == null ? "" : field.get(periodoCicloTurno).toString();
+//                        mapaDeAtributos.put(field.getName(), value);
+//                    } catch (IllegalAccessException e) {
+//                        logger.error(e.getLocalizedMessage(), e.getCause());
+//                        e.printStackTrace();
+//                    }
+//                }
+//        }
+        UtilidadesParaDTO.gerarMapaDeAtributosParaDTO(logger, mapaDeAtributos, periodoCicloTurno, modeloDeRepresentacao);
     }
 
     @JsonAnyGetter

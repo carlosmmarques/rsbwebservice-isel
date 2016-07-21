@@ -13,6 +13,25 @@ public class ErrorInfo {
     private String url;
     private String message;
 
+    private ErrorInfo(String url, String message) {
+        this.url = url;
+        this.message = message;
+    }
+
+    /**
+     * Metodo de fabricação de objecto descritor da informação do erro - ErrorInfo
+     *
+     * @param exc     Excepção a caracterizar
+     * @param request HttpServletRequest
+     * @return Objecto ErrorInfo
+     */
+    public static ErrorInfo getErrorInfo(RuntimeException exc, HttpServletRequest request) {
+        String completeURL = request.getRequestURL().toString();
+        if (request.getQueryString() != null)
+            completeURL += "?" + request.getQueryString();
+        return new ErrorInfo(completeURL, exc.getMessage());
+    }
+
     public String getUrl() {
         return url;
     }
@@ -27,24 +46,6 @@ public class ErrorInfo {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    private ErrorInfo(String url, String message) {
-        this.url = url;
-        this.message = message;
-    }
-
-    /**
-     * Metodo de fabricação de objecto descritor da informação do erro - ErrorInfo
-     * @param exc Excepção a caracterizar
-     * @param request HttpServletRequest
-     * @return Objecto ErrorInfo
-     */
-    public static ErrorInfo getErrorInfo(RuntimeException exc, HttpServletRequest request) {
-        String completeURL = request.getRequestURL().toString();
-        if (request.getQueryString() != null)
-            completeURL += "?" + request.getQueryString();
-        return new ErrorInfo(completeURL, exc.getMessage());
     }
 
 }

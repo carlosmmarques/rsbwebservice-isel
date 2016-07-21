@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class RegistoFormacao extends EntidadeAbstractaComIdentificador {
 
     @ManyToOne
-    @JoinColumn(name = "pessoal_id")
+    @JoinColumn(name = "elemento_id")
     private ElementoDoPessoal elementoDoPessoal;
     @ManyToOne
     @JoinColumn(name = "formacao_id")
