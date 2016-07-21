@@ -8,17 +8,22 @@ package pt.isel.ps.li61n.viewModel;
  */
 public class PeriodoUI {
 
-    public final String url;
+    public final Long id;
     public final String dataInicio;
     public final String dataFim;
 
     public PeriodoUI(
-            String url
-            ,String dataInicio
+            Long id,
+            String dataInicio
             ,String dataFim
     ) {
-        this.url = url;
+        this.id = id;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
+    }
+
+    @Override
+    public String toString(){
+        return String.format( "%s - %s", dataInicio, dataFim );
     }
 }

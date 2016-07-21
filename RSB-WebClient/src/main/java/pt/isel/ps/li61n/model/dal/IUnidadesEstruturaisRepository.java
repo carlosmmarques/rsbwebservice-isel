@@ -16,6 +16,8 @@ public interface IUnidadesEstruturaisRepository extends IRepository< Long, Unida
 
     Collection< Instalacao > selectAllInstalacoes() throws RepositoryException;
 
+    Collection< Instalacao > selectAllInstalacoes( Long unidadeEstruturalId ) throws RepositoryException;
+
     Long insertInstalacao( Instalacao newInstalacao ) throws RepositoryException;
 
     Instalacao selectOneInstalcao(Long unidadeEstruturalId, Long instalacaoId ) throws RepositoryException;

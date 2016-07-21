@@ -207,7 +207,10 @@ public class Elemento extends Identity< Long >{
         this.classificacaoFormacao = classificacaoFormacao;
     }
 
-
+    @Override
+    public String toString(){
+        return idInterno;
+    }
 
     @Override
     public boolean equals(Object o) {

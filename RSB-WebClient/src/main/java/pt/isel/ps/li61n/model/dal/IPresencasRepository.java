@@ -13,4 +13,6 @@ import java.util.Collection;
 public interface IPresencasRepository extends IRepository< Long, Presenca > {
 
     Collection< Presenca > selectPresencasByPeriodo( Long periodoId );
+
+    Collection< Presenca > selectPresencasByPeriodoAndInstalacao( Long periodoId, Long InstalacaoId );
 }

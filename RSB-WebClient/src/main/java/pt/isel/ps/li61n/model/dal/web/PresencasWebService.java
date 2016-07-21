@@ -3,11 +3,8 @@ package pt.isel.ps.li61n.model.dal.web;
 import org.asynchttpclient.Param;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
-import pt.isel.ps.li61n.model.dal.web.dtos.ElementoDto;
-import pt.isel.ps.li61n.model.dal.web.dtos.PresencaDto;
-import pt.isel.ps.li61n.model.entities.Elemento;
-import pt.isel.ps.li61n.model.entities.PostoFuncional;
-import pt.isel.ps.li61n.model.entities.Presenca;
+import pt.isel.ps.li61n.model.dal.web.dtos.*;
+import pt.isel.ps.li61n.model.entities.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
@@ -56,7 +53,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         return result;
     }
 
-    private static Elemento getElementoPessoal(String uri, HashMap<String, Elemento> cachePessoal ) {
+    private static Elemento getElementoPessoal( String uri, HashMap<String, Elemento> cachePessoal ) {
         Elemento result = cachePessoal.get( uri );
         if( result == null  ){
             // Obter o elemento
@@ -89,6 +86,22 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
 
         parameters.add( new Param( "periodo_id", periodoId.toString() ) );
 
+        Collection< Presenca > result =  getPresencas( parameters );
+        return result;
+    }
+
+    @Override
+    public Collection<Presenca> selectPresencasByPeriodoAndInstalacao(Long periodoId, Long instalacaoId ) {
+        List< Param > parameters = new LinkedList<>();
+
+        parameters.add( new Param( "periodo_id", periodoId.toString() ) );
+        parameters.add( new Param ( "instalacao_id", instalacaoId.toString() ) );
+
+        Collection< Presenca > result =  getPresencas( parameters );
+        return result;
+    }
+
+    private Collection< Presenca > getPresencas( List< Param > parameters ){
         CompletableFuture< PresencaDto[] > getPresencas =
                 RsbWebServiceAsync
                         .callActionAndConvert(
@@ -98,8 +111,14 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
                         );
 
         Collection< Presenca > result = convertFromDto( getPresencas );
-        return result;
+        return  result;
     }
+
+
+
+
+
+
 
     private static Presenca convertFromDto( PresencaDto dto ){
         Presenca p = new Presenca();
@@ -126,13 +145,31 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         // V2 -> Cache
         HashMap< String, Elemento> cachePessoal = new HashMap<>();
         HashMap< String, PostoFuncional> cachePosto = new HashMap<>();
+        HashMap< String, Instalacao > cacheInstalacao = new HashMap<>();
+        HashMap< String, Turno > cacheTurno = new HashMap<>();
+        HashMap< String, Periodo > cachePeriodo = new HashMap<>();
 
         // Converter para Presencas
         for( PresencaDto dto : dtos ){
 
             Presenca p = convertFromDto( dto );
 
-            //p.setPeriodoId(  );
+            // obter periodo
+            String uriPeriodo = dto.uri_periodo;
+            Periodo periodo = cachePeriodo.get( uriPeriodo );
+            if( periodo == null ){
+
+                PeriodoDto periodoDto = RsbWebServiceAsync
+                                                    .getResource(
+                                                        uriPeriodo
+                                                        ,PeriodoDto.class );
+
+                periodo = PeriodosWebService.convertFromDto( periodoDto );
+
+                cachePeriodo.put( uriPeriodo, periodo );
+            }
+
+            p.setPeriodo( periodo );
 
             // obter o elemento do registo de presença
             Elemento elemento = getElementoPessoal(
@@ -175,10 +212,22 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             }
             p.setReforcoNaoReforcado( reforcoNaoReforcado );
 
-            //
-            // Instalacao
-            //
-            //p.setInstalacaoId();
+            // obter instalacao
+            String uriInstalacao = dto.uri_instalacao;
+            Instalacao instalacao = cacheInstalacao.get( uriInstalacao );
+            if( instalacao == null ){
+
+                InstalacaoDto instalacaoDto = RsbWebServiceAsync
+                                                        .getResource(
+                                                            uriInstalacao
+                                                            ,InstalacaoDto.class );
+
+                instalacao = UnidadesEstruturaisWebService.convertInstalacaoFromDto( instalacaoDto, null );
+
+                cacheInstalacao.put( uriInstalacao, instalacao );
+            }
+
+            p.setInstalacao( instalacao );
 
             //
             // Posto Funcional
@@ -194,6 +243,21 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
             // Turno
             //
             //p.setTurnoId();
+            String uriTurno = dto.uri_turnoefectivo;
+            Turno turno = cacheTurno.get( uriTurno );
+            if( turno == null ){
+
+                TurnoDto turnoDto = RsbWebServiceAsync
+                                                    .getResource(
+                                                            uriTurno
+                                                            ,TurnoDto.class );
+
+                turno = TurnosWebService.convertFromDto( turnoDto );
+
+                cacheTurno.put( uriTurno, turno );
+            }
+
+            p.setTurno( turno );
 
             result.add( p );
         }

@@ -586,4 +586,9 @@ public class PresencasMemRepo implements IPresencasRepository {
     public Collection<Presenca> selectPresencasByPeriodo(Long periodoId) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public Collection<Presenca> selectPresencasByPeriodoAndInstalacao(Long periodoId, Long InstalacaoId) {
+        throw new NotImplementedException();
+    }
 }

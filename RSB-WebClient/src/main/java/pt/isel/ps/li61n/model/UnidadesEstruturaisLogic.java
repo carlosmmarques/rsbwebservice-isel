@@ -187,6 +187,17 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
     }
 
     @Override
+    public Collection<Instalacao> getAllInstalacoes( Long ueId ) {
+
+        try {
+            return  _ueRepo.selectAllInstalacoes( ueId );
+        }
+        catch (RepositoryException e) {
+            throw new RuntimeException( e );
+        }
+    }
+
+    @Override
     public Long createInstalacao( Instalacao novaInstalacao ) {
         Long id = null;
         try {

@@ -26,6 +26,8 @@ public interface IUnidadesEstruturaisLogic extends ILogic< Long, UnidadeEstrutur
 
     Collection< Instalacao > getAllInstalacoes(  );
 
+    Collection< Instalacao > getAllInstalacoes( Long ueId );
+
     Long createInstalacao( Instalacao instalacao );
 
     Instalacao getOneInstalacao( Long unidadeEstruturalId, Long instalacaoId ) throws PropertyEntityException;

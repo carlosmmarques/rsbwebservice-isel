@@ -74,4 +74,44 @@ public class MapaForcaLogic implements IMapaForcaLogic {
            throw new RuntimeException( e );
         }
     }
+
+    @Override
+    public Long insertPeriodo( Periodo novoPeriodo ) {
+        // TODO: Validar dataInicio
+            // > Not null
+            // > inferiro à dataFim
+
+        // TODO: Validar dataFim
+            // > Not null
+            // > superior à dataInicio (se necesário)
+
+        Long id = null;
+         try {
+            id = _periodoRepo.insert( novoPeriodo );
+        }
+        catch( RepositoryException e ) {
+            throw new RuntimeException( e );
+        }
+        return id;
+    }
+
+    @Override
+    public Periodo getOnePeriodo( Long periodoId ) {
+        try {
+            return  _periodoRepo.selectOne( periodoId );
+        }
+        catch (RepositoryException e) {
+          throw new RuntimeException( e );
+        }
+    }
+
+    @Override
+    public Collection<Presenca> getPresencasByPeriodoAndInstalacao( Long periodoId, Long instalacaoId ) {
+        //try {
+            return  _presencasRepo.selectPresencasByPeriodoAndInstalacao( periodoId, instalacaoId );
+        //}
+        //catch (RepositoryException e) {
+        //    throw new RuntimeException( e );
+       // }
+    }
 }
