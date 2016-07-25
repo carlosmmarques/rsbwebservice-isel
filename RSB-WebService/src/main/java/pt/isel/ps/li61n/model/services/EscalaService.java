@@ -33,12 +33,12 @@ public class EscalaService implements IEscalaService {
     Logger logger = RsbWebserviceApplication.logger;
 
     /**
-     * Instâncias dos repositórios
+     * Instâncias dos repositórios / serviços
      */
     @Autowired
-    private IPresencaService presencaService;
-    @Autowired
     IPessoalService pessoalService;
+    @Autowired
+    private IPresencaService presencaService;
 
     /**
      * @param periodo O periodo em relação ao qual pretendemos popular as presenças
@@ -54,15 +54,15 @@ public class EscalaService implements IEscalaService {
         cal.setTime(periodo.getDtInicio());
         cal.add(Calendar.DATE, -1);
 
-       pessoalService.obterElementosDoPessoal(
-               Optional.empty(),
-               Optional.empty(),
-               Optional.empty(),
-               Optional.empty(),
-               Optional.empty(),
-               Optional.empty(),
-               Optional.empty()
-       ).stream()
+        pessoalService.obterElementosDoPessoal(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+        ).stream()
                 .forEach(elementoDoPessoal -> {
                     try {
                         popularPresencas(periodo, elementoDoPessoal);
@@ -152,30 +152,90 @@ public class EscalaService implements IEscalaService {
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
     public Collection<ElementoDoPessoal> obterElementosDoPessoalParaReforco(Long presenca_id) throws Exception {
-        throw new FuncionalidadeNaoImplementada("Esta funcionalidade não se encontra ainda implementada");
+
+        Presenca presenca = presencaService.obterPresenca(presenca_id);
+        ElementoDoPessoal elementoDoPessoal = presenca.getElementoDoPessoal();
+        Set<ElementoDoPessoal> elementosReforco = new LinkedHashSet<>();
+        Collection<ResponsabilidadeOperacional> responsabilidadesOperacionais =
+                pessoalService.obterResponsabilidadesOperacionaisDeUmElemento(elementoDoPessoal.getId());
+        responsabilidadesOperacionais.stream()
+                .forEach(responsabilidadeOperacional -> {
+                    try {
+                        elementosReforco.addAll(
+                                pessoalService.obterElementosDoPessoal(
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.of(responsabilidadeOperacional.getId())
+                                )
+                        );
+                    } catch (ConflictoException | NoSuchElementException | RecursoEliminadoException | NaoEncontradoException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        throw new ErroNaoDeterminadoException(e.getMessage());
+                    }
+                });
+        return elementosReforco;
     }
 
     /**
      * Realizar reforço de uma presenca de um elemento
      *
-     * @param data               Data de relização da troca
-     * @param elementoAusente_id Identificador do elemento ausente
+     * @param presenca_id        Identificador da Presença, em relação à qual queremos obter elementos para troca
      * @param elementoReforco_id Identificador do elemento de reforço
      * @return a Presença com o elemento de reforço
      * @throws Exception
      */
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public Presenca realizarReforco(Date data, Long elementoAusente_id, Long elementoReforco_id) throws Exception {
-        throw new FuncionalidadeNaoImplementada("Esta funcionalidade não se encontra ainda implementada");
+    public Presenca realizarReforco(Long presenca_id, Long elementoReforco_id) throws Exception {
+        Presenca presenca = presencaService.obterPresenca(presenca_id);
+        TipoPresenca tipoPresencaEmReforco = presenca.getTipoPresencaEfectiva().getTipoPresencaEmReforco();
+
+        try {
+            presenca = presencaService.actualizarPresenca(
+                    presenca.getId(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.empty(),
+                    Optional.of(elementoReforco_id),
+                    Optional.empty()
+            );
+
+            return presencaService.inserirPresenca(
+                    presenca.getData(),
+                    presenca.getHoraInicio(),
+                    presenca.getNumHoras(),
+                    presenca.getPeriodo().getId(),
+                    presenca.getTurnoEfectivo().getId(),
+                    presenca.getInstalacaoEfectiva().getId(),
+                    presenca.getPostoFuncionalEfectivo().getId(),
+                    tipoPresencaEmReforco.getId(),
+                    elementoReforco_id,
+                    Optional.empty(),
+                    Optional.of(presenca.getElementoDoPessoal().getId())
+            );
+        } catch (ConflictoException | NoSuchElementException | RecursoEliminadoException | NaoEncontradoException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ErroNaoDeterminadoException(e.getMessage());
+        }
     }
 
     /**
      * Calculador de Numero de Horas e Datas de Inicio das presenças
      * Esta classe realiza os calculos necessários para determinar:
-     *  - O atraso existente à data em relação às datas de renovaçõo dos ciclos de turno, e realizar o necessário ajuste
-     *  - apurar a data e hora de inicio da presença
-     *  - apurar o numero de horas das presenças (periodos de descanso são ignorados)
+     * - O atraso existente à data em relação às datas de renovaçõo dos ciclos de turno, e realizar o necessário ajuste
+     * - apurar a data e hora de inicio da presença
+     * - apurar o numero de horas das presenças (periodos de descanso são ignorados)
      */
     private class CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca {
 
@@ -244,7 +304,7 @@ public class EscalaService implements IEscalaService {
                 }
                 atrasoCiclo = atrasoCiclo - numHoras;
                 logger.debug(" - - - - - Atraso ajustado para " + atrasoCiclo + " dias.");
-                if (atrasoCiclo < 0){
+                if (atrasoCiclo < 0) {
                     logger.debug(" - - - - - - Periodo com ordem " + p.getOrdemPeriodoCiclo() +
                             " ultrapassa o atraso.");
                     if (p.getPeriodoDescanso()) numHoras = 0f;

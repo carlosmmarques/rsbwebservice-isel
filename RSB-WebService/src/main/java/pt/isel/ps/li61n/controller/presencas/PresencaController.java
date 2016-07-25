@@ -444,7 +444,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
             TipoPresenca tipoPresenca = presencaService.eliminarTipoPresenca(
                     id
             );
-            return new ResponseEntity<>(new TipoPresencaDTO(tipoPresenca, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+            return new ResponseEntity<>(new TipoPresencaDTO(tipoPresenca, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
         };
     }
 
@@ -597,7 +597,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             Periodo periodo = presencaService.eliminarPeriodo(id);
-            return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+            return new ResponseEntity<>(new PeriodoDTO(periodo, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
         };
     }
 
@@ -644,7 +644,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
             presencaService.popularPresencas(periodo_id, elementodopessoal_id).stream().forEach(
                     presenca -> presencaDTOs.add(new PresencaDTO(presenca, request, ModeloDeRepresentacao.Sumario.class))
             );
-            return new ResponseEntity<>(presencaDTOs, HttpStatus.CREATED);
+            return new ResponseEntity<>(presencaDTOs, HttpStatus.OK);
         };
     }
 
@@ -674,7 +674,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
             presencaService.obterElementosDoPessoalParaReforco(presenca.getId()).stream().forEach(
                     elemento -> elementoDoPessoalDTOs.add(new ElementoDoPessoalDTO(elemento, request, ModeloDeRepresentacao.Sumario.class))
             );
-            return new ResponseEntity<>(elementoDoPessoalDTOs, HttpStatus.CREATED);
+            return new ResponseEntity<>(elementoDoPessoalDTOs, HttpStatus.OK);
         };
     }
 

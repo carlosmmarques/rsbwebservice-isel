@@ -7,7 +7,6 @@ import pt.isel.ps.li61n.model.entities.ElementoDoPessoal;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
-import java.sql.Date;
 import java.util.Collection;
 
 /**
@@ -46,12 +45,11 @@ public interface IEscalaService {
 
     /**
      * Realizar reforço de uma presenca de um elemento
-     * @param data Data de relização da troca
-     * @param elementoAusente_id Identificador do elemento ausente
+     * @param presenca_id Identificador da presença para relização da troca
      * @param elementoReforco_id Identificador do elemento de reforço
      * @return a Presença com o elemento de reforço
      * @throws Exception
      */
     @Transactional(propagation = Propagation.MANDATORY)
-    Presenca realizarReforco(Date data, Long elementoAusente_id, Long elementoReforco_id) throws Exception;
+    Presenca realizarReforco(Long presenca_id, Long elementoReforco_id) throws Exception;
 }

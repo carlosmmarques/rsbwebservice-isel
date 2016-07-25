@@ -529,6 +529,6 @@ public class PresencaService implements IPresencaService {
     @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
     public Presenca realizarReforco(Long presenca_id, Long elementodereforco_id) throws Exception {
         Presenca presenca = presencaRepo.findOne(presenca_id);
-        return escalaService.realizarReforco(presenca.getData(), presenca.getElementoDoPessoal().getId(), elementodereforco_id);
+        return escalaService.realizarReforco(presenca_id, elementodereforco_id);
     }
 }
