@@ -39,7 +39,7 @@ public class EscalaServiceTests {
 
     @Test(expected = ConflictoException.class)
     @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
-    public void testarPopularPresencasDeUmElemento() throws Exception {
+    public void testarPopularPresencasDeUmElementoElxistentesDeveFalhar() throws Exception {
 
         Collection<Presenca> presencas = escalaService.popularPresencas(
                 presencaService.obterPeriodo(1l),

@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import com.fasterxml.jackson.annotation.JsonView;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -16,8 +17,10 @@ import javax.persistence.Entity;
 public class PostoFuncional extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 16)
     private String designacao;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 128)
     private String descricao;
 
     /**

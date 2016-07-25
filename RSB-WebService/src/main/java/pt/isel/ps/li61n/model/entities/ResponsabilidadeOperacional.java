@@ -26,6 +26,7 @@ public class ResponsabilidadeOperacional extends EntidadeAbstractaComIdentificad
             inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
     private List<Formacao> formacoes;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 32)
     private String sigla;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Enumerated(EnumType.STRING)
@@ -33,6 +34,7 @@ public class ResponsabilidadeOperacional extends EntidadeAbstractaComIdentificad
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Boolean dependeFactorElegibilidade;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 64)
     private String designacao;
 
     /**

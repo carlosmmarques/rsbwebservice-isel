@@ -25,6 +25,7 @@ public class Contacto {
     @JoinColumn(name = "tipoContacto_id")
     private TipoContacto tipoContacto;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 64)
     private String contacto;
 
     /**

@@ -28,8 +28,10 @@ public class TipoPresenca extends EntidadeAbstracta{
     @JoinColumn(name = "tipoPresencaEmReforco_id")
     private TipoPresenca tipoPresencaEmReforco;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 32)
     private String abreviatura;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 128)
     private String descricao;
 
     /**

@@ -19,33 +19,36 @@ import java.util.List;
 @Table(name = "elemento")
 public class ElementoDoPessoal extends EntidadeAbstractaComIdentificador {
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 32)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String idInterno;
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 16)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String Matricula;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 16)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String numMecanografico;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String abreviatura;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 128)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String nome;
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Date dataNascimento;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 16)
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String telefone1;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 16)
     private String telefone2;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 64)
     private String eMail;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 9)
     private String nif;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
@@ -53,6 +56,7 @@ public class ElementoDoPessoal extends EntidadeAbstractaComIdentificador {
     @Enumerated(EnumType.STRING)
     private TipoDocIdentificacao tipoDocIdentificacao;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 16)
     private String numDocIdentificacao;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Float factorElegibilidade;

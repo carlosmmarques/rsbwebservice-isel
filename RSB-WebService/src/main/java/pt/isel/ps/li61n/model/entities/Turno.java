@@ -19,6 +19,7 @@ import java.sql.Time;
 public class Turno extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 16)
     private String designacao;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})

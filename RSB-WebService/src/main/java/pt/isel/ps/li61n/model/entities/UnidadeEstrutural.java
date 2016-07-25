@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.model.entities;
 import com.fasterxml.jackson.annotation.JsonView;
 import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 public class UnidadeEstrutural extends EntidadeAbstractaComIdentificador {
 
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 32)
     private String designacao;
     @ManyToOne(optional = true)
     @JoinColumn(name = "unidadeEstruturalMae_id")

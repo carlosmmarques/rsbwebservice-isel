@@ -19,10 +19,13 @@ public class Instalacao extends EntidadeAbstractaComIdentificador {
     @JoinColumn(name = "unidadeEstrutural_id", nullable = false)
     private UnidadeEstrutural unidadeEstrutural;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 16)
     private String designacao;
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 128)
     private String descricao;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
+    @Column(length = 255)
     private String localizacao;
 
     /**

@@ -21,7 +21,7 @@ public class TipoContacto {
     @OneToMany(mappedBy = "tipoContacto")
     private List<Contacto> contactos;
     @Id
-    @Column(unique = true)
+    @Column(unique = true, length = 32)
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String designacao;
 
