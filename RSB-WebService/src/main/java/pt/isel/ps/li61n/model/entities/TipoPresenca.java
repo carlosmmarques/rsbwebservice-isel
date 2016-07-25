@@ -14,7 +14,7 @@ import javax.persistence.*;
  *          Tiago Venturinha - tventurinha@gmail.com
  */
 @Entity
-public class TipoPresenca{
+public class TipoPresenca extends EntidadeAbstracta{
 
     @Id
     // Esta classe não herda de RSBAbstract pq o seu Id não é Inteiro.
@@ -31,9 +31,6 @@ public class TipoPresenca{
     private String abreviatura;
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private String descricao;
-    @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
-    @JsonView(ModeloDeRepresentacao.Verboso.class)
-    private Boolean eliminado = false;
 
     /**
      * Constutor sem parametros com nível de acessibilidade "public" ou "protected". Requerimento da Framework JPA 2.0+.
@@ -127,18 +124,4 @@ public class TipoPresenca{
         this.descricao = descricao;
     }
 
-
-    /**
-     * @return Estado da Entidade (Activo / Inactivo)
-     */
-    public Boolean getEliminado() {
-        return eliminado;
-    }
-
-    /**
-     * @param eliminado Estado da Entidade (Activo / Inactivo)
-     */
-    public void setEliminado(Boolean eliminado) {
-        this.eliminado = eliminado;
-    }
 }

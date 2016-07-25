@@ -12,6 +12,7 @@ import pt.isel.ps.li61n.controller.error.exception.DataInvalidaException;
 import pt.isel.ps.li61n.controller.error.exception.NaoEncontradoException;
 import pt.isel.ps.li61n.controller.error.exception.RecursoEliminadoException;
 
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -68,7 +69,7 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Tratamento de Excepções de Tipos desconhecidos
+     * Tratamento de Excepções de Data invalida
      *
      * @param exc     Excepção a tratar
      * @param request HttpServletRequest
@@ -83,7 +84,6 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Tratamento de Excepções de Tipos desconhecidos
-     * TODO Melhor solução do que isto. Assumir erro interno por omissão é horrivel!
      *
      * @param exc     Excepção a tratar
      * @param request HttpServletRequest
@@ -93,6 +93,8 @@ public class LogicErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     protected ResponseEntity<ErrorInfo> handleUnknownException(RuntimeException exc, HttpServletRequest request) {
         ErrorInfo errorInfo = ErrorInfo.getErrorInfo(exc, request);
+        if (exc.getCause() instanceof OptimisticLockException)
+            return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
         return new ResponseEntity<>(errorInfo, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

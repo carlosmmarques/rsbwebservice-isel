@@ -178,6 +178,7 @@ public class EscalaService implements IEscalaService {
      *  - apurar o numero de horas das presenças (periodos de descanso são ignorados)
      */
     private class CalculadorDeNumeroDeHorasEDataHoraDeInicioDaPresenca {
+
         private Turno turno;
         private LocalDate date;
         private LocalDateTime dataHrInicio;

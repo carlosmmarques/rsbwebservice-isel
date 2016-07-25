@@ -5,6 +5,7 @@ import pt.isel.ps.li61n.controller.ModeloDeRepresentacao;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 /**
  * EntidadeAbstracta - Description
@@ -15,6 +16,9 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class EntidadeAbstracta {
+
+    @Version
+    private Long version;
 
     @Column(name = "eliminado", nullable = false, columnDefinition="BOOLEAN DEFAULT FALSE")
     @JsonView(ModeloDeRepresentacao.Verboso.class)
