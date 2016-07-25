@@ -39,4 +39,17 @@ public abstract class EntidadeAbstracta {
         this.eliminado = eliminado;
     }
 
+    /**
+     * @return versão da Entidade (para Locking optimista)
+     */
+    public Long getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version versão da Entidade (para Locking optimista)
+     */
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }

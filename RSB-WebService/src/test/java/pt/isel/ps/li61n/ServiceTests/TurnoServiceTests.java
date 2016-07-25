@@ -1,18 +1,21 @@
-package pt.isel.ps.li61n.SanityTests;
+package pt.isel.ps.li61n.ServiceTests;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import pt.isel.ps.li61n.RsbWebserviceApplication;
 
 /**
- * TurnoRepositoryTests - Description
+ * TurnoServiceTests - Description
  * Created on 09/05/2016.
  *
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TurnoRepositoryTests {
+@SpringApplicationConfiguration(classes = RsbWebserviceApplication.class)public class TurnoServiceTests {
     @Test
     public void dummyTest(){}
 

@@ -213,6 +213,9 @@ public class EscalaService implements IEscalaService {
     public Presenca realizarReforco(Long presenca_id, Long elementoReforco_id) throws Exception {
         Presenca presenca = presencaService.obterPresenca(presenca_id);
         TipoPresenca tipoPresencaEmReforco = presenca.getTipoPresencaEfectiva().getTipoPresencaEmReforco();
+        // Se o tipo de presença em escala não tiver tipo de presença em reforço, oferecer a do elemento
+        if (tipoPresencaEmReforco == null)
+            tipoPresencaEmReforco = presenca.getElementoDoPessoal().getTipoPresenca().getTipoPresencaEmReforco();
 
         try {
             presenca = presencaService.actualizarPresenca(
