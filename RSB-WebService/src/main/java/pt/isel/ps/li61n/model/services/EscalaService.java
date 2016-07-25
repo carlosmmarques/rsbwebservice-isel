@@ -154,6 +154,24 @@ public class EscalaService implements IEscalaService {
     public Collection<ElementoDoPessoal> obterElementosDoPessoalParaReforco(Long presenca_id) throws Exception {
 
         Presenca presenca = presencaService.obterPresenca(presenca_id);
+
+        Collection<Presenca> presencasNoMesmoPeriodo = presencaService.obterPresencas(
+                Optional.of(presenca.getData()),
+                Optional.of(presenca.getData()),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()
+        );
+
+        Collection<ElementoDoPessoal> elementosDoPessoalATrabalhar = presencasNoMesmoPeriodo.stream()
+                .map(Presenca::getElementoDoPessoal)
+                .collect(Collectors.toList());
+
         ElementoDoPessoal elementoDoPessoal = presenca.getElementoDoPessoal();
         Set<ElementoDoPessoal> elementosReforco = new LinkedHashSet<>();
         Collection<ResponsabilidadeOperacional> responsabilidadesOperacionais =
@@ -170,7 +188,8 @@ public class EscalaService implements IEscalaService {
                                         Optional.empty(),
                                         Optional.empty(),
                                         Optional.of(responsabilidadeOperacional.getId())
-                                )
+                                ).stream().filter(e -> !elementosDoPessoalATrabalhar.contains(e))
+                                        .collect(Collectors.toList())
                         );
                     } catch (ConflictoException | NoSuchElementException | RecursoEliminadoException | NaoEncontradoException e) {
                         throw e;
