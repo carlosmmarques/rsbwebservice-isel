@@ -50,7 +50,12 @@ dependencies {
 //	testCompile('jsonpath:com.jayway.jsonpath')
 }
 
-
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
 }
+
+compileJava.options.encoding = 'UTF-8'
+
+//tasks.withType(JavaCompile) {
+//	options.encoding = 'UTF-8'
+//}

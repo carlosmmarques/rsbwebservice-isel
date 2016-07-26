@@ -1,6 +1,5 @@
 package pt.isel.ps.li61n.controller;
 
-import org.hibernate.engine.spi.QueryParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import pt.isel.ps.li61n.model.*;
+import pt.isel.ps.li61n.model.IPessoalLogic;
+import pt.isel.ps.li61n.model.IPresencasLogic;
+import pt.isel.ps.li61n.model.ITurnosLogic;
+import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.viewModel.InsertElementoUI;
@@ -45,11 +47,12 @@ public class PessoalController {
      * Definição globais para facilitar a utilização nos testes.
      */
     public static final String
-            VIEW_NAME_ALL = PESSOAL_URL + "/all"
-            ,VIEW_NAME_DETAILS = PESSOAL_URL + "/details"
-            ,VIEW_NAME_INSERT = PESSOAL_URL + "/insert"
-            ,VIEW_NAME_TROCA = PESSOAL_URL + "/troca"
-            ,VIEW_NAME_PRESENCAS = PESSOAL_URL + "/presencas"
+            VIEW_BASE = "pessoal"
+            ,VIEW_NAME_ALL =  VIEW_BASE + "/all"
+            ,VIEW_NAME_DETAILS = VIEW_BASE + "/details"
+            ,VIEW_NAME_INSERT = VIEW_BASE + "/insert"
+            ,VIEW_NAME_TROCA = VIEW_BASE + "/troca"
+            ,VIEW_NAME_PRESENCAS = VIEW_BASE + "/presencas"
             ,PAGE_PATH_INSERT = "/registar"
     ;
 

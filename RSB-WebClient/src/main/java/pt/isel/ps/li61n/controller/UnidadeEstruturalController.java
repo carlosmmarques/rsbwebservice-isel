@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.util.Collection;
 
 import static pt.isel.ps.li61n.RsbWebClientApplication.INSTALACOES_BASE_URL;
-import static pt.isel.ps.li61n.RsbWebClientApplication.INSTALACOES_URL;
 import static pt.isel.ps.li61n.RsbWebClientApplication.UNIDADES_ESTRUTURAIS_URL;
 
 /**
@@ -37,11 +36,12 @@ public class UnidadeEstruturalController {
      * Definição globais para facilitar a utilização nos testes.
      */
     public static final String
-        VIEW_NAME_UE_ALL = UNIDADES_ESTRUTURAIS_URL + "/all"
-        ,VIEW_NAME_UE_DETAILS = UNIDADES_ESTRUTURAIS_URL + "/details"
-        ,VIEW_NAME_UE_INSERT =  UNIDADES_ESTRUTURAIS_URL + "/insert"
-        ,VIEW_NAME_INSTALACAO_INSERT = UNIDADES_ESTRUTURAIS_URL + INSTALACOES_BASE_URL + "/insert"
-        ,VIEW_NAME_INSTALACAO_DETAILS = UNIDADES_ESTRUTURAIS_URL + INSTALACOES_BASE_URL + "/details"
+        VIEW_BASE = "unidadesEstruturais"
+        ,VIEW_NAME_UE_ALL = VIEW_BASE + "/all"
+        ,VIEW_NAME_UE_DETAILS = VIEW_BASE + "/details"
+        ,VIEW_NAME_UE_INSERT =  VIEW_BASE + "/insert"
+        ,VIEW_NAME_INSTALACAO_INSERT = VIEW_BASE + INSTALACOES_BASE_URL + "/insert"
+        ,VIEW_NAME_INSTALACAO_DETAILS = VIEW_BASE + INSTALACOES_BASE_URL + "/details"
         ,MODEL_UE_LIST = "ues"
         ,MODEL_UE_ELEMENT = "ue"
     ;
