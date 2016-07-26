@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.dal;
 
+import pt.isel.ps.li61n.model.dal.exceptions.ElementoNotFoundException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.entities.Instalacao;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
@@ -13,6 +14,8 @@ import java.util.Collection;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 public interface IUnidadesEstruturaisRepository extends IRepository< Long, UnidadeEstrutural>{
+
+    Collection< UnidadeEstrutural > getAllByUnidadeEstruturalMae( Long maeId ) throws RepositoryException, ElementoNotFoundException;
 
     Collection< Instalacao > selectAllInstalacoes() throws RepositoryException;
 

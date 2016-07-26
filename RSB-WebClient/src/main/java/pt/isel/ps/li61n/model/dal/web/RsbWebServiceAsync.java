@@ -128,7 +128,7 @@ public class RsbWebServiceAsync {
         int statusCode = resp.getStatusCode();
         String msg = "Status code = " + statusCode;
         System.out.println( msg );
-        if( statusCode != 200 ) {
+        if( statusCode > 300 ) {
             ErrorDto errorDto = fromJson( resp, ErrorDto.class );
             result.completeExceptionally( new WebServiceException( errorDto.url, errorDto.message, statusCode ) );
         }

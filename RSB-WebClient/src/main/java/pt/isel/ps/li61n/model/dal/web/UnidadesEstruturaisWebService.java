@@ -5,6 +5,7 @@ import org.aspectj.weaver.ast.Not;
 import org.asynchttpclient.Param;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
+import pt.isel.ps.li61n.model.dal.exceptions.ElementoNotFoundException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.dal.web.dtos.InstalacaoDto;
 import pt.isel.ps.li61n.model.dal.web.dtos.TipoUnidadeEstruturalDto;
@@ -15,6 +16,7 @@ import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.net.HttpURLConnection;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -162,6 +164,56 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
     @Override
     public void update( UnidadeEstrutural aLong ) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public Collection<UnidadeEstrutural> getAllByUnidadeEstruturalMae( Long maeId ) throws RepositoryException, ElementoNotFoundException {
+
+        List< Param > parameters = new LinkedList<>();
+
+        parameters.add( new Param( "unidadeestruturalmae_id", maeId.toString() ) );
+
+        CompletableFuture< UnidadeEstruturalDto[] > getUnidadesEstruturais =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                UnidadeEstruturalDto[].class
+                                ,parameters
+                                , UNIDADES_ESTRUTURAIS_URL
+                        )
+                ;
+        UnidadeEstruturalDto[] dtos = null;
+
+        try{
+            dtos = getUnidadesEstruturais.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            Throwable t = e.getCause();
+            if( t.getClass().equals( WebServiceException.class ) ){
+
+                WebServiceException ex = (WebServiceException) e.getCause();
+                switch( ex.statusCode ){
+                    case HttpURLConnection.HTTP_NOT_FOUND:
+                        throw new ElementoNotFoundException( ex.getMessage() );
+
+                }
+            }
+            throw new RuntimeException( e );
+        }
+
+        Collection< UnidadeEstrutural > result = new ArrayList<>( dtos.length );
+
+        // cache
+        HashMap< String, UnidadeEstrutural > cacheUe = new HashMap<>();
+        HashMap< String, TipoUnidadeEstrutural > cacheTipo = new HashMap<>();
+
+        for( UnidadeEstruturalDto dto : dtos ) {
+
+            UnidadeEstrutural ue = convertFromDtoWithCache( dto, cacheUe,cacheTipo );
+
+            result.add( ue );
+        }
+
+        return result;
     }
 
     @Override

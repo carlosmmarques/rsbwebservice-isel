@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.ITiposUnidadeEstruturalRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
+import pt.isel.ps.li61n.model.dal.exceptions.ElementoNotFoundException;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.entities.Instalacao;
@@ -11,6 +12,7 @@ import pt.isel.ps.li61n.model.entities.TipoUnidadeEstrutural;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 /**
@@ -164,6 +166,9 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
         Collection< UnidadeEstrutural > result = null;
 
         try {
+            result = _ueRepo.getAllByUnidadeEstruturalMae( ueId );
+
+            /*
             result = _ueRepo.selectAll()
                                     .stream()
                                     .filter(
@@ -178,9 +183,13 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
                                             return ueId.equals( ueMaeId );
                                     } )
                                     .collect( Collectors.toList() );
+            */
         }
-        catch (RepositoryException e) {
+        catch( RepositoryException e ) {
+
             throw new RuntimeException( e );
+        } catch (ElementoNotFoundException e) {
+            result = new LinkedList<>();
         }
         return result;
     }

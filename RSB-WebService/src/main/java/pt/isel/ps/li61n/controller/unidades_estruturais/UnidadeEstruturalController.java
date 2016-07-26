@@ -59,18 +59,60 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody //Retorno do método no corpo da resposta
     public Callable<?> obterUnidadesEstruturais(
+            @RequestParam(value = "designacao", required = false) String designacao,
+            @RequestParam(value = "tipounidadeestrutural_id", required = false) Long tipounidadeestrutural_id,
+            @RequestParam(value = "unidadeestruturalmae_id", required = false) Long unidadeestruturalmae_id,
+            @RequestParam(value = "nivelhierarquico", required = false) Integer nivelhierarquico,
             HttpServletRequest request
     ) throws Exception {
         logger.debug(String.format("Logging from controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
         return () -> {
             logger.debug(String.format("Logging from Callable deferred execution of controller: %s", Thread.currentThread().getStackTrace()[1].getMethodName()));
             final List<UnidadeEstruturalDTO> unidadeEstruturalDTOs = new LinkedList<>();
-            unidadeEstruturalService.obterUnidadesEstruturais().stream().forEach(ue -> {
-                unidadeEstruturalDTOs.add(
-                        new UnidadeEstruturalDTO(ue, request, ModeloDeRepresentacao.Sumario.class));
-            });
+
+            //TODO: Melhorar
+            unidadeEstruturalService
+                    .obterUnidadesEstruturais()
+                        .stream()
+                            .filter( ue -> {
+                                if( designacao != null && !designacao.isEmpty() ){
+                                    return ue.getDesignacao().equals( designacao );
+                                }
+                                return true;
+                            } )
+                            .filter( ue -> {
+                                if( tipounidadeestrutural_id != null ){
+                                    return ue.getTipoUnidadeEstrutural().getId().equals( tipounidadeestrutural_id );
+                                }
+                                return true;
+                            } )
+                            .filter( ue -> {
+                                if( unidadeestruturalmae_id != null ){
+                                    UnidadeEstrutural mae = ue.getUnidadeEstruturalMae();
+                                    if( mae != null ){
+                                        return mae.getId().equals( unidadeestruturalmae_id );
+                                    }
+                                    return false;
+                                }
+                                return true;
+                            } )
+                            .filter( ue -> {
+                                if( nivelhierarquico != null ){
+                                    return ue.getNivelHierarquico().equals( nivelhierarquico );
+                                }
+                                return true;
+                            } )
+                            .forEach( ue -> unidadeEstruturalDTOs.add(
+                                                    new UnidadeEstruturalDTO(
+                                                            ue
+                                                            ,request
+                                                            ,ModeloDeRepresentacao.Sumario.class
+                                                    )
+                                            )
+                            );
             if (unidadeEstruturalDTOs.size() == 0)
                 throw new NaoEncontradoException("Não existem elementos para os critérios introduzidos!");
+
             return new ResponseEntity<>(unidadeEstruturalDTOs, HttpStatus.OK);
         };
     }

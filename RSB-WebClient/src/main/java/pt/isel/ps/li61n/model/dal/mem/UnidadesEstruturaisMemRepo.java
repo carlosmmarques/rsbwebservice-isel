@@ -61,6 +61,11 @@ public class UnidadesEstruturaisMemRepo implements IUnidadesEstruturaisRepositor
     }
 
     @Override
+    public Collection<UnidadeEstrutural> getAllByUnidadeEstruturalMae(Long maeId) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public Collection< Instalacao > selectAllInstalacoes() {
         throw new NotImplementedException();
     }
