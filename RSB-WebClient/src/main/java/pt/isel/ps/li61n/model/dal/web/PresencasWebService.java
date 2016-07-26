@@ -138,14 +138,14 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         parameters.add( elementoReforco );
         parameters.add( elementoReforcado );
 
-        CompletableFuture< PresencaDto > updatePresenca =  RsbWebServiceAsync.callPutActionAndConvert(
-                                        PresencaDto.class
+        CompletableFuture<PresencaDTO> updatePresenca =  RsbWebServiceAsync.callPutActionAndConvert(
+                                        PresencaDTO.class
                                         ,parameters
                                         ,PRESENCA_URL
                                         ,presenca.getId().toString()
         );
 
-        PresencaDto dto = null;
+        PresencaDTO dto = null;
 
         try {
             dto = updatePresenca.get();
@@ -164,11 +164,11 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     @Override
     public Presenca selectOne( Long presencaId ) {
 
-        PresencaDto dto = null;
+        PresencaDTO dto = null;
         try {
             dto = RsbWebServiceAsync
                     .callActionAndConvert(
-                            PresencaDto.class
+                            PresencaDTO.class
                             ,PRESENCA_URL
                             ,presencaId.toString()
                     )
@@ -183,11 +183,11 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     @Override
     public Collection<Presenca> selectAll() {
 
-        CompletableFuture< PresencaDto[] > getPresencas;
+        CompletableFuture< PresencaDTO[] > getPresencas;
 
         getPresencas = RsbWebServiceAsync
                         .callActionAndConvert(
-                            PresencaDto[].class
+                            PresencaDTO[].class
                             ,"/presenca"
                         );
 
@@ -241,10 +241,10 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
 
 
     private Collection< Presenca > getPresencas( List< Param > parameters ){
-        CompletableFuture< PresencaDto[] > getPresencas =
+        CompletableFuture< PresencaDTO[] > getPresencas =
                 RsbWebServiceAsync
                         .callActionAndConvert(
-                                PresencaDto[].class
+                                PresencaDTO[].class
                                 ,parameters
                                 ,PRESENCAS_URL
                         );
@@ -259,11 +259,11 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         List< Param > parameters = new LinkedList<>();
         parameters.add( new Param( "elementodereforco_id", elementoReforcoId.toString() ) );
 
-        PresencaDto dto = null;
+        PresencaDTO dto = null;
         try {
             dto = RsbWebServiceAsync
                         .callPostActionAndConvert(
-                                    PresencaDto.class
+                                    PresencaDTO.class
                                     ,parameters
                                     ,PRESENCA_URL + "/realizarreforco"
                                     ,presencaId.toString()
@@ -305,7 +305,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     }
 
 
-    private static Presenca convertFromDto( PresencaDto dto ){
+    private static Presenca convertFromDto( PresencaDTO dto ){
         Presenca p = new Presenca();
         p.setId( dto.id );
         p.setData( LocalDate.parse( dto.data ) );
@@ -314,9 +314,9 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         return p;
     }
 
-    private static Collection<Presenca> convertFromDto( CompletableFuture< PresencaDto[] > getPresencas ){
+    private static Collection<Presenca> convertFromDto( CompletableFuture< PresencaDTO[] > getPresencas ){
 
-        PresencaDto[] dtos = null;
+        PresencaDTO[] dtos = null;
 
         try{
             dtos = getPresencas.get();
@@ -335,7 +335,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         HashMap< String, Periodo > cachePeriodo = new HashMap<>();
 
         // Converter para Presencas
-        for( PresencaDto dto : dtos ){
+        for( PresencaDTO dto : dtos ){
 
             Presenca p = convertFromDto( dto );
 

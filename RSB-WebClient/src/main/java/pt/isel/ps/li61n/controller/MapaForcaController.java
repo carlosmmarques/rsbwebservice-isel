@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,14 +15,12 @@ import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 import pt.isel.ps.li61n.viewModel.InsertPeriodoUI;
 import pt.isel.ps.li61n.viewModel.MapaForcaViewModel;
-import pt.isel.ps.li61n.viewModel.PeriodoUI;
 import pt.isel.ps.li61n.viewModel.SelectPresencasUI;
 
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -150,6 +147,6 @@ public class MapaForcaController {
 
         Long id = _logicMf.insertPeriodo( p );
 
-        return UrlGenerator.redirectMapaForcaPeriodo( id );
+        return "redirect:/mapaForca";
     }
 }

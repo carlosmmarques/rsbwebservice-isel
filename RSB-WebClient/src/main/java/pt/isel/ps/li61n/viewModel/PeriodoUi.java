@@ -6,13 +6,13 @@ package pt.isel.ps.li61n.viewModel;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class PeriodoUI {
+public class PeriodoUi {
 
     public final Long id;
     public final String dataInicio;
     public final String dataFim;
 
-    public PeriodoUI(
+    public PeriodoUi(
             Long id,
             String dataInicio
             ,String dataFim

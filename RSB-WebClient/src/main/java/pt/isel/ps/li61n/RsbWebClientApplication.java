@@ -2,10 +2,6 @@ package pt.isel.ps.li61n;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.validation.Validator;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import pt.isel.ps.li61n.viewModel.LocalDateConverter;
 
 import java.time.format.DateTimeFormatter;
 

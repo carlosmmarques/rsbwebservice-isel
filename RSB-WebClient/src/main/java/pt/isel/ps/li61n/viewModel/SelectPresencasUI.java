@@ -1,6 +1,5 @@
 package pt.isel.ps.li61n.viewModel;
 
-import pt.isel.ps.li61n.controller.UrlGenerator;
 import pt.isel.ps.li61n.model.entities.Periodo;
 import pt.isel.ps.li61n.model.entities.UnidadeEstrutural;
 
@@ -15,7 +14,7 @@ import java.util.Collection;
  */
 public class SelectPresencasUI {
 
-    public final Collection< PeriodoUI > periodosUI;
+    public final Collection<PeriodoUi> periodosUI;
 
     public final Collection< UnidadeEstruturalUI > unidadeEstruturaisUIs;
 
