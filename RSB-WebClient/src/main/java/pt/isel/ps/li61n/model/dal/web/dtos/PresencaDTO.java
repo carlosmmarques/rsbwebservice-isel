@@ -6,7 +6,7 @@ package pt.isel.ps.li61n.model.dal.web.dtos;
  * @author Carlos Marques - carlosmmarques@gmail.com
  *         Tiago Venturinha - tventurinha@gmail.com
  */
-public class PresencaDto {
+public class PresencaDTO {
 
     public final Long id;
 
@@ -30,7 +30,7 @@ public class PresencaDto {
     public final String data;
     public final String horaInicio;
 
-    public PresencaDto(
+    public PresencaDTO(
                 Long id
                 ,String uri_presenca
                 ,String uri_elementodopessoal
