@@ -27,21 +27,7 @@ public class SelectPresencasUI {
                 ,Collection<UnidadeEstrutural > unidadeEstruturais
     ){
 
-        periodosUI = new ArrayList<>( periodos.size() );
-
-        for( Periodo p : periodos ){
-
-            String dataInicio =  p.getDataInicio().toString();
-            String dataFim = p.getDataFim().toString();
-
-            PeriodoUI ui = new PeriodoUI(
-                    p.getId()
-                    ,dataInicio
-                    ,dataFim
-            );
-
-            periodosUI.add( ui );
-        }
+        periodosUI = ViewModelConverter.convertPeriodos( periodos );
 
         unidadeEstruturaisUIs = new ArrayList<>( unidadeEstruturais.size() );
         for( UnidadeEstrutural ue : unidadeEstruturais ){

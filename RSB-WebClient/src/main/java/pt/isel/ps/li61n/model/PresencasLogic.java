@@ -6,6 +6,7 @@ import pt.isel.ps.li61n.model.dal.IPresencasRepository;
 import pt.isel.ps.li61n.model.dal.ITiposPresencaRepository;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
+import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.model.entities.TipoPresenca;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -85,4 +86,32 @@ public class PresencasLogic implements IPresencasLogic {
                 .collect( Collectors.toList() );
 
     }
+
+    @Override
+    public boolean registarTroca( Long presencaId, Long elementoReforcoId ) {
+        boolean registoSucesso = _presencasRepo.registarTroca( presencaId, elementoReforcoId );
+        if( registoSucesso ){
+
+            Presenca troca = null;
+
+            try {
+                troca = _presencasRepo.selectOne( presencaId );
+
+            } catch (RepositoryException e) {
+                throw new RuntimeException( e );
+            }
+
+            troca.setTipoPresencaId( "S0" ); // Dispensa por compensação
+
+            _presencasRepo.update( troca );
+        }
+        return registoSucesso;
+    }
+
+    @Override
+    public Collection< Elemento > getElementosReforco( Long presencaId ) {
+        return _presencasRepo.selectElemeReforcos( presencaId );
+    }
+
+
 }

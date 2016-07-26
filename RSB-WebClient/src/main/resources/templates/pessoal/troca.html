@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <head>
+        <meta charset="UTF-8"></meta>
+        <title>Troca de Serviço</title>
+    </head>
+    <body>
+        <h1>Troca de serviço</h1>
+        <div th:object="${trocaViewModel}">
+            <div th:unless="*{#lists.isEmpty(reforcos)}">
+                <form method="POST" th:action="${action}">
+
+                    <div>
+                        <h3>Com quem pretende realizar a troca?</h3>
+                        <select th:field="*{reforcoId}">
+                            <option th:each="r:*{reforcos}"
+                                    th:value="${r.value}"
+                                    th:text="${r.text}"
+                            >Lista de elementos aptos de reforço</option>
+                        </select>
+                    </div>
+                    <br></br>
+                    <input type="hidden" th:field="*{presencaId}" th:value="*{getPresencaId()}"
+                    ></input>
+                    <input type="submit" value="Registar"></input>
+                </form>
+
+            </div>
+            <div th:if="*{#lists.isEmpty(reforcos)}">
+                <h2>Não existe registo reforços!</h2>
+            </div>
+        </div>
+        <!-- footer -->
+        <div th:replace="templates :: footer"></div>
+    </body>
+</html>

@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8"></meta>
         <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
-        <title>Registar Pessoa</title>
+        <title>Registar Elemento</title>
     </head>
     <body>
         <!-- Formulário para inserir uma pessoa -->
@@ -40,7 +40,7 @@
                     <select th:field="*{categoriaId}" >
                         <option th:each="categoria:${categorias}"
                                 th:value="${categoria.getId()}"
-                                th:text="${categoria.getDescricao()}"
+                                th:text="${categoria.getAbreviatura()}"
                         >Lista de Categorias</option>
                     </select>
                     <br></br>

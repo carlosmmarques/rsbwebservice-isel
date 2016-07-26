@@ -68,4 +68,11 @@ public class UrlGenerator {
                         baseOperation( MAPA_FORCA_URL, idPeriodo.toString() )
                     );
     }
+
+    public static String operacaoElementoPessoal( Long id, String operacacao ) {
+        return baseOperation(
+                detalhesPessoal( id )
+                ,operacacao
+        );
+    }
 }

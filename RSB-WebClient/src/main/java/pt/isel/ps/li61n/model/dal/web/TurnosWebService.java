@@ -67,7 +67,7 @@ public class TurnosWebService extends AbstractWebService implements ITurnosRepos
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( Turno aLong) {
         throw new NotImplementedException();
     }
 

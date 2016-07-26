@@ -54,7 +54,7 @@ public class CategoriasRepository implements ICategoriasRepository {
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( Categoria aLong ) {
         throw new NotImplementedException();
     }
 

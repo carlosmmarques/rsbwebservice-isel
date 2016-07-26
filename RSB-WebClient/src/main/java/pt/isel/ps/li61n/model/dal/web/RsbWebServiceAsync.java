@@ -43,6 +43,7 @@ public class RsbWebServiceAsync {
         ,CATEGORIAS_URL = "/pessoal/categoria"
         ,POSTOS_FUNCIONAIS_URL = "/pessoal/postofuncional"
         ,PRESENCAS_URL = "/presenca"
+        ,PRESENCA_URL = "/presenca/%s"
         ,TIPOS_PRESENCA_URL = "/presenca/tipo"
         ,PERIODOS_URL = "/presenca/periodo"
         ,PERIODO_URL = "/presenca/periodo/%s"
@@ -186,6 +187,35 @@ public class RsbWebServiceAsync {
                             String msg = "Status code = " + statusCode;
                             System.out.println( msg );
                             if( statusCode != 200 ) {
+                                ErrorDto errorDto = fromJson( resp, ErrorDto.class );
+                                throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
+                            }
+                            return  fromJson( resp, destKlass );
+                        }
+                );
+    }
+
+
+    public static < T > CompletableFuture< T >  callPutActionAndConvert(
+            Class< T >  destKlass
+            ,List< Param > parameters
+            ,String action
+            ,Object...args
+    ) {
+        final String uri = String.format( action, args );
+        return _httpAsync
+                .putDataAsyncWithBasicAuth(
+                        API_BASE_URL + uri
+                        ,user
+                        ,password
+                        ,parameters
+                )
+                .thenApply(
+                        resp -> {
+                            int statusCode = resp.getStatusCode();
+                            String msg = "Status code = " + statusCode;
+                            System.out.println( msg );
+                            if( statusCode >= 300 ) {
                                 ErrorDto errorDto = fromJson( resp, ErrorDto.class );
                                 throw new WebServiceException( errorDto.url, errorDto.message, statusCode );
                             }

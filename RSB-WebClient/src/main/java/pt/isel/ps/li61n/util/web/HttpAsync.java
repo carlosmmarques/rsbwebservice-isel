@@ -134,6 +134,33 @@ public class HttpAsync implements AutoCloseable {
         return promise;
     }
 
+    public CompletableFuture< Response > putDataAsyncWithBasicAuth(
+            String path
+            ,String user
+            ,String password
+            ,List<Param> parameters
+    ){
+        CompletableFuture< Response > promise = new CompletableFuture<>();
+        _client
+                .preparePut( path )
+                .setFormParams( parameters )
+
+                // Pra ter Basic Authentication
+                .setRealm( basicAuthRealm( user, password ).build() )
+
+                .execute(
+                        new AsyncCompletionHandler< Object >() {
+
+                            @Override
+                            public Object onCompleted( Response response ) throws Exception {
+                                promise.complete( response );
+                                return response;
+                            }
+                        }
+                );
+        return promise;
+    }
+
     public CompletableFuture< Response > postDataAsync(
             String path
             ,List<Param> parameters

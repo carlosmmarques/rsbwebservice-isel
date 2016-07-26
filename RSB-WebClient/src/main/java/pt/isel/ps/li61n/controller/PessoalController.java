@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.controller;
 
+import org.hibernate.engine.spi.QueryParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,11 +9,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pt.isel.ps.li61n.model.*;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.entities.*;
 import pt.isel.ps.li61n.viewModel.InsertElementoUI;
 import pt.isel.ps.li61n.viewModel.PessoalUI;
+import pt.isel.ps.li61n.viewModel.PresencasViewModel;
+import pt.isel.ps.li61n.viewModel.TrocaViewModel;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,6 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import static pt.isel.ps.li61n.RsbWebClientApplication.DATE_FORMATTER;
 import static pt.isel.ps.li61n.RsbWebClientApplication.PESSOAL_URL;
@@ -43,6 +48,8 @@ public class PessoalController {
             VIEW_NAME_ALL = PESSOAL_URL + "/all"
             ,VIEW_NAME_DETAILS = PESSOAL_URL + "/details"
             ,VIEW_NAME_INSERT = PESSOAL_URL + "/insert"
+            ,VIEW_NAME_TROCA = PESSOAL_URL + "/troca"
+            ,VIEW_NAME_PRESENCAS = PESSOAL_URL + "/presencas"
             ,PAGE_PATH_INSERT = "/registar"
     ;
 
@@ -50,6 +57,7 @@ public class PessoalController {
     private IUnidadesEstruturaisLogic _uesLogic;
     private IPresencasLogic _presencasLogic;
     private ITurnosLogic _turnosLogic;
+    //private IPeriodosLogic _periodosLogic;
 
     @Autowired
     public PessoalController(
@@ -57,11 +65,13 @@ public class PessoalController {
             ,IUnidadesEstruturaisLogic unidadesEstruturaisLogic
             ,IPresencasLogic presencasLogic
             ,ITurnosLogic turnosLogic
+            //,IPeriodosLogic periodosLogic
     ){
         this._elementosLogic = pessoalLogic;
         this._uesLogic = unidadesEstruturaisLogic;
         this._presencasLogic = presencasLogic;
         this._turnosLogic = turnosLogic;
+       // this._periodosLogic = periodosLogic;
     }
 
     @RequestMapping( method = RequestMethod.GET )
@@ -72,7 +82,8 @@ public class PessoalController {
 
         for( Elemento elemento : todoPessoal ){
             PessoalUI pessoa = new PessoalUI(
-                    elemento.getIdInterno()
+                    elemento.getId()
+                    ,elemento.getIdInterno()
                     ,elemento.getNome()
                     ,elemento.getCategoria().getAbreviatura()
                     , UrlGenerator.detalhesPessoal( elemento.getId() )
@@ -95,12 +106,13 @@ public class PessoalController {
         }
 
         PessoalUI pessoa = new PessoalUI(
-            elemento.getIdInterno()
-            ,elemento.getNome()
-            ,elemento.getCategoria().getDescricao()
-            , UrlGenerator.detalhesPessoal( elemento.getId() )
-            , elemento.getNumMecanografico()
-        );
+                                elemento.getId()
+                                ,elemento.getIdInterno()
+                                ,elemento.getNome()
+                                ,elemento.getCategoria().getDescricao()
+                                , UrlGenerator.detalhesPessoal( elemento.getId() )
+                                , elemento.getNumMecanografico()
+                            );
 
         model.addAttribute( "pessoa", pessoa );
 
@@ -209,5 +221,60 @@ public class PessoalController {
             }
         }
         return result;
+    }
+
+    @RequestMapping( value = "/{id}/presencas", method = RequestMethod.GET )
+    public String trocaVIew( @PathVariable( "id" ) Long id, Model model ) throws IOException {
+
+       // Todo: realizar filtrada por elemento
+        Collection< Presenca > presencas =  _presencasLogic.getAll();
+        Collection< Presenca > filtradas = presencas
+                                                .stream()
+                                                .filter( p -> p.getElemento().getId().equals( id ) )
+                                                .collect( Collectors.toList() );
+
+        PresencasViewModel viewModel = new PresencasViewModel( filtradas );
+
+        model.addAttribute( viewModel );
+
+        String action = String.format( "%s/%s/troca", PESSOAL_URL, id );
+        model.addAttribute( "action", action );
+
+        return VIEW_NAME_PRESENCAS;
+    }
+
+    @RequestMapping( value = "/{elem_id}/troca", method = RequestMethod.GET )
+    public String troca(
+                    @PathVariable( "elem_id" ) Long elem_id
+                    ,@RequestParam Long presencaId
+                    , Model model )
+                            throws IOException
+    {
+        Collection< Elemento > reforcos = _presencasLogic.getElementosReforco( presencaId );
+        TrocaViewModel viewModel = new TrocaViewModel( reforcos );
+
+        viewModel.setPresencaId( presencaId );
+
+        model.addAttribute( viewModel );
+
+        String action = String.format( "%s/%s/troca", PESSOAL_URL, elem_id );
+
+        model.addAttribute( "action", action );
+
+        return VIEW_NAME_TROCA;
+    }
+
+    @RequestMapping( value = "/{elem_id}/troca", method = RequestMethod.POST )
+    public String troca(
+            @PathVariable( "elem_id" ) Long elem_id
+            ,TrocaViewModel viewModel
+            , Model model )
+            throws IOException
+    {
+        Long presencaId = viewModel.getPresencaId();
+        Long reforcoId = viewModel.getReforcoId();
+        boolean result = _presencasLogic.registarTroca( presencaId, reforcoId  );
+
+        return UrlGenerator.redirectDetalhesPessoal( elem_id );
     }
 }

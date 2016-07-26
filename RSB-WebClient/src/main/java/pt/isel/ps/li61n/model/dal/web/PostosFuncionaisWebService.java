@@ -71,7 +71,7 @@ public class PostosFuncionaisWebService extends AbstractWebService implements IP
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( PostoFuncional aLong ) {
         throw new NotImplementedException();
     }
 }

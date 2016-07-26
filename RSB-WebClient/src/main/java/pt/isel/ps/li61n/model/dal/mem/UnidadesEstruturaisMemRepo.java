@@ -56,7 +56,7 @@ public class UnidadesEstruturaisMemRepo implements IUnidadesEstruturaisRepositor
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update(UnidadeEstrutural id) {
         throw new NotImplementedException();
     }
 

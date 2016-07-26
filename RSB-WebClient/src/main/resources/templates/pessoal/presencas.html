@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Seleccionar presença</title>
+</head>
+<body>
+<h1>Seleccionar presença</h1>
+<div th:object="${presencasViewModel}">
+    <div th:unless="*{#lists.isEmpty(presencas)}">
+        <form method="GET" th:action="${action}">
+
+            <!-- Lista de presencas-->
+            <h3>Em que dia pretende realizar a troca?</h3>
+            <select th:field="*{presencaId}">
+                <option th:each="p:*{presencas}"
+                        th:value="${p.value}"
+                        th:text="${p.text}"
+                >Lista de presencas do elemento</option>
+            </select>
+            <br></br>
+            <input type="submit" value="Registar"></input>
+        </form>
+
+    </div>
+    <div th:if="*{#lists.isEmpty(presencas)}">
+        <h2>Não existe registo de presencas !</h2>
+    </div>
+</div>
+<!-- footer -->
+<div th:replace="templates :: footer"></div>
+</body>
+</html>

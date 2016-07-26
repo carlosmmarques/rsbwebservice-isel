@@ -52,7 +52,8 @@ public class TiposPresencaMemRepo implements ITiposPresencaRepository {
     }
 
     @Override
-    public void update(String s) {
+    public void update( TipoPresenca s ) {
+
         throw new NotImplementedException();
     }
 

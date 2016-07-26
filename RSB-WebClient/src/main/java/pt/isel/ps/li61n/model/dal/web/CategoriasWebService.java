@@ -76,7 +76,7 @@ public class CategoriasWebService  extends AbstractWebService implements ICatego
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( Categoria aLong ) {
         throw new NotImplementedException();
     }
 }

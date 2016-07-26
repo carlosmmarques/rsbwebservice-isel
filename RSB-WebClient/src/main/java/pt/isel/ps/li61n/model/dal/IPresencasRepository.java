@@ -1,5 +1,6 @@
 package pt.isel.ps.li61n.model.dal;
 
+import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
 
 import java.util.Collection;
@@ -15,4 +16,8 @@ public interface IPresencasRepository extends IRepository< Long, Presenca > {
     Collection< Presenca > selectPresencasByPeriodo( Long periodoId );
 
     Collection< Presenca > selectPresencasByPeriodoAndInstalacao( Long periodoId, Long InstalacaoId );
+
+    boolean registarTroca( Long presencaId, Long elementoReforcoId );
+
+    Collection< Elemento > selectElemeReforcos( Long presencaId );
 }

@@ -52,7 +52,7 @@ public class TiposUnidadeEstruturalMemRepo implements ITiposUnidadeEstruturalRep
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( TipoUnidadeEstrutural aLong) {
 
     }
 

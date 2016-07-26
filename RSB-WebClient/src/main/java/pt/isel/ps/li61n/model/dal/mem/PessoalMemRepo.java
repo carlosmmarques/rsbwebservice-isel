@@ -56,7 +56,7 @@ public class PessoalMemRepo implements IPessoalRepository {
     }
 
     @Override
-    public void update( Long integer) {
+    public void update( Elemento integer) {
         throw new NotImplementedException();
     }
 

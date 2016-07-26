@@ -20,5 +20,5 @@ public interface IRepository < Id, Type > {
 
     void delete( Id id );
 
-    void update( Id id );
+    void update( Type id );
 }

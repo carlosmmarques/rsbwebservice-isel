@@ -141,7 +141,7 @@ public class PeriodosWebService extends AbstractWebService implements IPeriodosR
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( Periodo aLong) {
         throw new NotImplementedException();
     }
 }

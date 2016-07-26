@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.stereotype.Component;
 
 import pt.isel.ps.li61n.model.dal.IPresencasRepository;
+import pt.isel.ps.li61n.model.entities.Elemento;
 import pt.isel.ps.li61n.model.entities.Presenca;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -58,8 +59,8 @@ public class PresencasMemRepo implements IPresencasRepository {
     }
 
     @Override
-    public void update(Long aLong) {
-
+    public void update( Presenca aLong) {
+        throw new NotImplementedException();
     }
 
     private void populate(){
@@ -86,7 +87,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia3Dez2015.setHoraInicio( servicoDia );
         dia3Dez2015.setNumHoras( numHoras );
         dia3Dez2015.setPeriodoId( periodoId );
-        dia3Dez2015.setElementoId( elementoId );
+        dia3Dez2015.setReforcoId( elementoId );
         dia3Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia3Dez2015.setElementoReforcoReforcadoId( null );
         dia3Dez2015.setReforcoNaoReforcado( null );
@@ -100,7 +101,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia4Dez2015.setHoraInicio( servicoNoite );
         dia4Dez2015.setNumHoras( numHoras );
         dia4Dez2015.setPeriodoId( periodoId );
-        dia4Dez2015.setElementoId( elementoId );
+        dia4Dez2015.setReforcoId( elementoId );
         dia4Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia4Dez2015.setElementoReforcoReforcadoId( null );
         dia4Dez2015.setReforcoNaoReforcado( null );
@@ -114,7 +115,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia7Dez2015.setHoraInicio( servicoDia );
         dia7Dez2015.setNumHoras( numHoras );
         dia7Dez2015.setPeriodoId( periodoId );
-        dia7Dez2015.setElementoId( elementoId );
+        dia7Dez2015.setReforcoId( elementoId );
         dia7Dez2015.setTipoPresencaId( "X" ); // Férias confirmadas
         dia7Dez2015.setElementoReforcoReforcadoId( null );
         dia7Dez2015.setReforcoNaoReforcado( null );
@@ -128,7 +129,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia8Dez2015.setHoraInicio( servicoNoite );
         dia8Dez2015.setNumHoras( numHoras );
         dia8Dez2015.setPeriodoId( periodoId );
-        dia8Dez2015.setElementoId( elementoId );
+        dia8Dez2015.setReforcoId( elementoId );
         dia8Dez2015.setTipoPresencaId( "S0" ); // Dispensa -> Troca
         dia8Dez2015.setElementoReforcoReforcadoId( 955632L ); // idInterno -> 519
         dia8Dez2015.setReforcoNaoReforcado( true );
@@ -142,7 +143,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia11Dez2015.setHoraInicio( servicoDia );
         dia11Dez2015.setNumHoras( numHoras );
         dia11Dez2015.setPeriodoId( periodoId );
-        dia11Dez2015.setElementoId( elementoId );
+        dia11Dez2015.setReforcoId( elementoId );
         dia11Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia11Dez2015.setElementoReforcoReforcadoId( null );
         dia11Dez2015.setReforcoNaoReforcado( null );
@@ -156,7 +157,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia12Dez2015.setHoraInicio( servicoNoite );
         dia12Dez2015.setNumHoras( numHoras );
         dia12Dez2015.setPeriodoId( periodoId );
-        dia12Dez2015.setElementoId( elementoId );
+        dia12Dez2015.setReforcoId( elementoId );
         dia12Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia12Dez2015.setElementoReforcoReforcadoId( null );
         dia12Dez2015.setReforcoNaoReforcado( null );
@@ -170,7 +171,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia13Dez2015.setHoraInicio( servicoNoite );
         dia13Dez2015.setNumHoras( numHoras );
         dia13Dez2015.setPeriodoId( periodoId );
-        dia13Dez2015.setElementoId( elementoId );
+        dia13Dez2015.setReforcoId( elementoId );
         dia13Dez2015.setTipoPresencaId( "4S" ); // a dar troca
         dia13Dez2015.setElementoReforcoReforcadoId( 955492L ); // idInterno -> 441
         dia13Dez2015.setReforcoNaoReforcado( false );
@@ -184,7 +185,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia15Dez2015.setHoraInicio( servicoDia );
         dia15Dez2015.setNumHoras( numHoras );
         dia15Dez2015.setPeriodoId( periodoId );
-        dia15Dez2015.setElementoId( elementoId );
+        dia15Dez2015.setReforcoId( elementoId );
         dia15Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia15Dez2015.setElementoReforcoReforcadoId( null );
         dia15Dez2015.setReforcoNaoReforcado( null );
@@ -198,7 +199,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia16Dez2015.setHoraInicio( servicoNoite );
         dia16Dez2015.setNumHoras( numHoras );
         dia16Dez2015.setPeriodoId( periodoId );
-        dia16Dez2015.setElementoId( elementoId );
+        dia16Dez2015.setReforcoId( elementoId );
         dia16Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia16Dez2015.setElementoReforcoReforcadoId( null );
         dia16Dez2015.setReforcoNaoReforcado( null );
@@ -212,7 +213,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia19Dez2015.setHoraInicio( servicoDia );
         dia19Dez2015.setNumHoras( numHoras );
         dia19Dez2015.setPeriodoId( periodoId );
-        dia19Dez2015.setElementoId( elementoId );
+        dia19Dez2015.setReforcoId( elementoId );
         dia19Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia19Dez2015.setElementoReforcoReforcadoId( null );
         dia19Dez2015.setReforcoNaoReforcado( null );
@@ -226,7 +227,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia20Dez2015.setHoraInicio( servicoNoite );
         dia20Dez2015.setNumHoras( numHoras );
         dia20Dez2015.setPeriodoId( periodoId );
-        dia20Dez2015.setElementoId( elementoId );
+        dia20Dez2015.setReforcoId( elementoId );
         dia20Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia20Dez2015.setElementoReforcoReforcadoId( null );
         dia20Dez2015.setReforcoNaoReforcado( null );
@@ -240,7 +241,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia23Dez2015.setHoraInicio( servicoDia );
         dia23Dez2015.setNumHoras( numHoras );
         dia23Dez2015.setPeriodoId( periodoId );
-        dia23Dez2015.setElementoId( elementoId );
+        dia23Dez2015.setReforcoId( elementoId );
         dia23Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia23Dez2015.setElementoReforcoReforcadoId( null );
         dia23Dez2015.setReforcoNaoReforcado( null );
@@ -254,7 +255,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia24Dez2015.setHoraInicio( servicoNoite );
         dia24Dez2015.setNumHoras( numHoras );
         dia24Dez2015.setPeriodoId( periodoId );
-        dia24Dez2015.setElementoId( elementoId );
+        dia24Dez2015.setReforcoId( elementoId );
         dia24Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia24Dez2015.setElementoReforcoReforcadoId( null );
         dia24Dez2015.setReforcoNaoReforcado( null );
@@ -268,7 +269,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia27Dez2015.setHoraInicio( servicoDia );
         dia27Dez2015.setNumHoras( numHoras );
         dia27Dez2015.setPeriodoId( periodoId );
-        dia27Dez2015.setElementoId( elementoId );
+        dia27Dez2015.setReforcoId( elementoId );
         dia27Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia27Dez2015.setElementoReforcoReforcadoId( null );
         dia27Dez2015.setReforcoNaoReforcado( null );
@@ -282,7 +283,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia28Dez2015.setHoraInicio( servicoNoite );
         dia28Dez2015.setNumHoras( numHoras );
         dia28Dez2015.setPeriodoId( periodoId );
-        dia28Dez2015.setElementoId( elementoId );
+        dia28Dez2015.setReforcoId( elementoId );
         dia28Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia28Dez2015.setElementoReforcoReforcadoId( null );
         dia28Dez2015.setReforcoNaoReforcado( null );
@@ -296,7 +297,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia31Dez2015.setHoraInicio( servicoDia );
         dia31Dez2015.setNumHoras( numHoras );
         dia31Dez2015.setPeriodoId( periodoId );
-        dia31Dez2015.setElementoId( elementoId );
+        dia31Dez2015.setReforcoId( elementoId );
         dia31Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia31Dez2015.setElementoReforcoReforcadoId( null );
         dia31Dez2015.setReforcoNaoReforcado( null );
@@ -319,7 +320,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia1Dez2015.setHoraInicio( servicoDia );
         dia1Dez2015.setNumHoras( numHoras );
         dia1Dez2015.setPeriodoId( periodoId );
-        dia1Dez2015.setElementoId( elementoId );
+        dia1Dez2015.setReforcoId( elementoId );
         dia1Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia1Dez2015.setElementoReforcoReforcadoId( null );
         dia1Dez2015.setReforcoNaoReforcado( null );
@@ -333,7 +334,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia2Dez2015.setHoraInicio( servicoNoite );
         dia2Dez2015.setNumHoras( numHoras );
         dia2Dez2015.setPeriodoId( periodoId );
-        dia2Dez2015.setElementoId( elementoId );
+        dia2Dez2015.setReforcoId( elementoId );
         dia2Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia2Dez2015.setElementoReforcoReforcadoId( null );
         dia2Dez2015.setReforcoNaoReforcado( null );
@@ -347,7 +348,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia5Dez2015.setHoraInicio( servicoDia );
         dia5Dez2015.setNumHoras( numHoras );
         dia5Dez2015.setPeriodoId( periodoId );
-        dia5Dez2015.setElementoId( elementoId );
+        dia5Dez2015.setReforcoId( elementoId );
         dia5Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia5Dez2015.setElementoReforcoReforcadoId( null );
         dia5Dez2015.setReforcoNaoReforcado( null );
@@ -361,7 +362,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia6Dez2015.setHoraInicio( servicoNoite );
         dia6Dez2015.setNumHoras( numHoras );
         dia6Dez2015.setPeriodoId( periodoId );
-        dia6Dez2015.setElementoId( elementoId );
+        dia6Dez2015.setReforcoId( elementoId );
         dia6Dez2015.setTipoPresencaId( "S0" ); // Troca com o '666'
         dia6Dez2015.setElementoReforcoReforcadoId( 955490L );
         dia6Dez2015.setReforcoNaoReforcado( true );
@@ -375,7 +376,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia9Dez2015.setHoraInicio( servicoDia );
         dia9Dez2015.setNumHoras( numHoras );
         dia9Dez2015.setPeriodoId( periodoId );
-        dia9Dez2015.setElementoId( elementoId );
+        dia9Dez2015.setReforcoId( elementoId );
         dia9Dez2015.setTipoPresencaId( "S0" ); // Troca com o '571'
         dia9Dez2015.setElementoReforcoReforcadoId( 955603L );
         dia9Dez2015.setReforcoNaoReforcado( true );
@@ -389,7 +390,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia10Dez2015.setHoraInicio( servicoNoite );
         dia10Dez2015.setNumHoras( numHoras );
         dia10Dez2015.setPeriodoId( periodoId );
-        dia10Dez2015.setElementoId( elementoId );
+        dia10Dez2015.setReforcoId( elementoId );
         dia10Dez2015.setTipoPresencaId( "S0" ); // Troca com o '666'
         dia10Dez2015.setElementoReforcoReforcadoId( 955490L );
         dia10Dez2015.setReforcoNaoReforcado( true );
@@ -403,7 +404,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia13Dez2015_503.setHoraInicio( servicoDia );
         dia13Dez2015_503.setNumHoras( numHoras );
         dia13Dez2015_503.setPeriodoId( periodoId );
-        dia13Dez2015_503.setElementoId( elementoId );
+        dia13Dez2015_503.setReforcoId( elementoId );
         dia13Dez2015_503.setTipoPresencaId( tipoPresencaId_default );
         dia13Dez2015_503.setElementoReforcoReforcadoId( null );
         dia13Dez2015_503.setReforcoNaoReforcado( null );
@@ -417,7 +418,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia14Dez2015.setHoraInicio( servicoNoite );
         dia14Dez2015.setNumHoras( numHoras );
         dia14Dez2015.setPeriodoId( periodoId );
-        dia14Dez2015.setElementoId( elementoId );
+        dia14Dez2015.setReforcoId( elementoId );
         dia14Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia14Dez2015.setElementoReforcoReforcadoId( null );
         dia14Dez2015.setReforcoNaoReforcado( null );
@@ -431,7 +432,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia17Dez2015.setHoraInicio( servicoDia );
         dia17Dez2015.setNumHoras( numHoras );
         dia17Dez2015.setPeriodoId( periodoId );
-        dia17Dez2015.setElementoId( elementoId );
+        dia17Dez2015.setReforcoId( elementoId );
         dia17Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia17Dez2015.setElementoReforcoReforcadoId( null );
         dia17Dez2015.setReforcoNaoReforcado( null );
@@ -445,7 +446,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia18Dez2015.setHoraInicio( servicoNoite );
         dia18Dez2015.setNumHoras( numHoras );
         dia18Dez2015.setPeriodoId( periodoId );
-        dia18Dez2015.setElementoId( elementoId );
+        dia18Dez2015.setReforcoId( elementoId );
         dia18Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia18Dez2015.setElementoReforcoReforcadoId( null );
         dia18Dez2015.setReforcoNaoReforcado( null );
@@ -459,7 +460,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia21Dez2015.setHoraInicio( servicoDia );
         dia21Dez2015.setNumHoras( numHoras );
         dia21Dez2015.setPeriodoId( periodoId );
-        dia21Dez2015.setElementoId( elementoId );
+        dia21Dez2015.setReforcoId( elementoId );
         dia21Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia21Dez2015.setElementoReforcoReforcadoId( null );
         dia21Dez2015.setReforcoNaoReforcado( null );
@@ -473,7 +474,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia22Dez2015.setHoraInicio( servicoDia );
         dia22Dez2015.setNumHoras( numHoras );
         dia22Dez2015.setPeriodoId( periodoId );
-        dia22Dez2015.setElementoId( elementoId );
+        dia22Dez2015.setReforcoId( elementoId );
         dia22Dez2015.setTipoPresencaId( "S0" ); // Dispensa
         dia22Dez2015.setElementoReforcoReforcadoId( null );
         dia22Dez2015.setReforcoNaoReforcado( null );
@@ -487,7 +488,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia25Dez2015.setHoraInicio( servicoDia );
         dia25Dez2015.setNumHoras( numHoras );
         dia25Dez2015.setPeriodoId( periodoId );
-        dia25Dez2015.setElementoId( elementoId );
+        dia25Dez2015.setReforcoId( elementoId );
         dia25Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia25Dez2015.setElementoReforcoReforcadoId( null );
         dia25Dez2015.setReforcoNaoReforcado( null );
@@ -501,7 +502,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia26Dez2015.setHoraInicio( servicoNoite );
         dia26Dez2015.setNumHoras( numHoras );
         dia26Dez2015.setPeriodoId( periodoId );
-        dia26Dez2015.setElementoId( elementoId );
+        dia26Dez2015.setReforcoId( elementoId );
         dia26Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia26Dez2015.setElementoReforcoReforcadoId( null );
         dia26Dez2015.setReforcoNaoReforcado( null );
@@ -515,7 +516,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia26Dez2015_troca.setHoraInicio( servicoNoite );
         dia26Dez2015_troca.setNumHoras( numHoras );
         dia26Dez2015_troca.setPeriodoId( periodoId );
-        dia26Dez2015_troca.setElementoId( elementoId );
+        dia26Dez2015_troca.setReforcoId( elementoId );
         dia26Dez2015_troca.setTipoPresencaId( "4S" );
         dia26Dez2015_troca.setElementoReforcoReforcadoId( 955511L ); // troca pelo '567'
         dia26Dez2015_troca.setReforcoNaoReforcado( false );
@@ -529,7 +530,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia29Dez2015_troca.setHoraInicio( servicoNoite );
         dia29Dez2015_troca.setNumHoras( numHoras );
         dia29Dez2015_troca.setPeriodoId( periodoId );
-        dia29Dez2015_troca.setElementoId( elementoId );
+        dia29Dez2015_troca.setReforcoId( elementoId );
         dia29Dez2015_troca.setTipoPresencaId( "4S" );
         dia29Dez2015_troca.setElementoReforcoReforcadoId( 955603L ); // troca pelo '571'
         dia29Dez2015_troca.setReforcoNaoReforcado( false );
@@ -543,7 +544,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia29Dez2015.setHoraInicio( servicoDia );
         dia29Dez2015.setNumHoras( numHoras );
         dia29Dez2015.setPeriodoId( periodoId );
-        dia29Dez2015.setElementoId( elementoId );
+        dia29Dez2015.setReforcoId( elementoId );
         dia29Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia29Dez2015.setElementoReforcoReforcadoId( null );
         dia29Dez2015.setReforcoNaoReforcado( null );
@@ -557,7 +558,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia30Dez2015.setHoraInicio( servicoNoite );
         dia30Dez2015.setNumHoras( numHoras );
         dia30Dez2015.setPeriodoId( periodoId );
-        dia30Dez2015.setElementoId( elementoId );
+        dia30Dez2015.setReforcoId( elementoId );
         dia30Dez2015.setTipoPresencaId( tipoPresencaId_default );
         dia30Dez2015.setElementoReforcoReforcadoId( null );
         dia30Dez2015.setReforcoNaoReforcado( null );
@@ -571,7 +572,7 @@ public class PresencasMemRepo implements IPresencasRepository {
         dia30Dez2015_troca.setHoraInicio( servicoNoite );
         dia30Dez2015_troca.setNumHoras( numHoras );
         dia30Dez2015_troca.setPeriodoId( periodoId );
-        dia30Dez2015_troca.setElementoId( elementoId );
+        dia30Dez2015_troca.setReforcoId( elementoId );
         dia30Dez2015_troca.setTipoPresencaId( "4S" );
         dia30Dez2015_troca.setElementoReforcoReforcadoId( 764009L ); // troca pelo '900'
         dia30Dez2015_troca.setReforcoNaoReforcado( false );
@@ -589,6 +590,16 @@ public class PresencasMemRepo implements IPresencasRepository {
 
     @Override
     public Collection<Presenca> selectPresencasByPeriodoAndInstalacao(Long periodoId, Long InstalacaoId) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean registarTroca(Long presencaId, Long elementoReforcoId) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Collection<Elemento> selectElemeReforcos(Long presencaId) {
         throw new NotImplementedException();
     }
 }

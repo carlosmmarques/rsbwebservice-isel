@@ -108,7 +108,7 @@ public class TiposUnidadeEstruturalWebService extends AbstractWebService impleme
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( TipoUnidadeEstrutural aLong ) {
         throw new NotImplementedException();
     }
 }

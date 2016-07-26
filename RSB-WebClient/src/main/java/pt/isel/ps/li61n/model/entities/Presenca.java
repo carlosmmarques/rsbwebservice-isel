@@ -188,14 +188,15 @@ public class Presenca extends Identity< Long > {
         this.elemento = elemento;
     }
     */
-
+    /*
     @Override
     public String toString(){
+
         return this.getData().toString() +  " - "
                 + this.horaInicio.toString() + " - "
                 + this.getTurno().toString();
     }
-
+    */
     public Elemento getElementoReforcoReforcadoId() {
         return elementoReforcoReforcado;
     }

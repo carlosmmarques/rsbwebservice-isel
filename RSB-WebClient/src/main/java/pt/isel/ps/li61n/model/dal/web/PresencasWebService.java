@@ -14,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.PRESENCAS_URL;
+import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.PRESENCA_URL;
 
 /**
  * Created on 27/06/2016.
@@ -24,8 +25,135 @@ import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.PRESENCAS_URL;
 @Component
 public class PresencasWebService extends AbstractWebService implements IPresencasRepository {
 
-    public PresencasWebService() {
-        System.out.println( "New PrsencasWebService" );
+    //public PresencasWebService() {
+    //    System.out.println( "New PrsencasWebService" );
+    //}
+
+    /*
+    Date    data
+    Float   numhoras
+    Long    periodo_id
+    Long    turno_id
+    Long    instalacao_id
+    Long    postofuncional_id
+
+    String  tipopresenca_id
+    Long    elementodopessoal_id
+    Long    elementoreforco_id
+    Long    elementorefocado_id
+     */
+
+    @Override
+    public void update( Presenca presenca ) {
+
+        List< Param > parameters = new LinkedList<>();
+
+        // Atributo data
+        LocalDate dataValue = presenca.getData();
+        String dataStr = dataValue == null ? "" : dataValue.toString() ;
+        Param data = new Param( "data", dataStr );
+        parameters.add( data );
+
+        // Atributo numHoras
+        Float numHorasValue = presenca.getNumHoras();
+        String numHorasStr = numHorasValue == null ? "" : numHorasValue.toString();
+        Param numHoras= new Param( "numhoras", numHorasStr );
+        parameters.add( numHoras );
+
+        // Atributo periodo_id
+        Periodo p = presenca.getPeriodo();
+        Long periodoValue = null;
+        if( p != null ){
+            periodoValue = p.getId();
+        }
+        String periodoValueStr = periodoValue == null ? "" : periodoValue.toString();
+        Param periodo= new Param( "periodo_id", periodoValueStr );
+        parameters.add( periodo );
+
+        // Atributo turno_id
+        Turno t = presenca.getTurno();
+        Long turnoValue = null;
+        if( t != null ){
+            turnoValue = t.getId();
+        }
+        String turnoValueStr = turnoValue == null ? "" : turnoValue.toString();
+        Param turno = new Param( "turno_id", turnoValueStr );
+        parameters.add( turno );
+
+        // Atributo instalacao_id
+        Instalacao i = presenca.getInstalacao();
+        Long instalacaoValue = null;
+        if( i != null ){
+            instalacaoValue = i.getId();
+        }
+        String instalacaoValueStr = instalacaoValue == null ? "" : instalacaoValue.toString();
+        Param instalacao = new Param( "instalacao_id", instalacaoValueStr );
+        parameters.add( instalacao );
+
+        // Atributo postofuncional_id
+        PostoFuncional pf = presenca.getPostoFuncional();
+        Long postoFuncionalValue = null;
+        if( pf != null ){
+            postoFuncionalValue = pf.getId();
+        }
+        String postoFuncionalValueStr = postoFuncionalValue == null ? "" : postoFuncionalValue.toString();
+        Param postoFuncional = new Param( "postofuncional_id", postoFuncionalValueStr );
+        parameters.add( postoFuncional );
+
+        // Atributo tipopresenca_id
+        String tipoPresencaValue = presenca.getTipoPresencaId();
+        Param tipoPresenca = new Param( "tipopresenca_id", tipoPresencaValue );
+        parameters.add( tipoPresenca );
+
+        // Atributo elementodopessoal_id
+        Elemento elem = presenca.getElemento();
+        Long elemValue = null;
+        if( elem != null ){
+            elemValue = elem.getId();
+        }
+        String elemValueStr = elemValue == null ? "" : elemValue.toString();
+        Param elemento = new Param( "elementodopessoal_id", elemValueStr );
+        parameters.add( elemento );
+
+        // Atributo elementoReforcoReforcado
+        Boolean isElementoReforcoReforcado = presenca.getReforcoNaoReforcado();
+        Param elementoReforco;
+        Param elementoReforcado;
+        if( isElementoReforcoReforcado == null ){
+            elementoReforco = new Param( "elementoreforco_id", "" );
+            elementoReforcado = new Param( "elementoreforcado_id", "" );
+        }
+        else{
+            if( isElementoReforcoReforcado ){
+                Long elemReforco = presenca.getElementoReforcoReforcado().getId();
+                elementoReforco = new Param( "elementoreforco_id", elemReforco.toString() );
+                elementoReforcado = new Param( "elementoreforcado_id", "" );
+            }
+            else{
+                Long elemReforcado = presenca.getElementoReforcoReforcado().getId();
+                elementoReforco = new Param( "elementoreforco_id", "" );
+                elementoReforcado = new Param( "elementoreforcado_id", elemReforcado.toString() );
+            }
+        }
+        parameters.add( elementoReforco );
+        parameters.add( elementoReforcado );
+
+        CompletableFuture< PresencaDto > updatePresenca =  RsbWebServiceAsync.callPutActionAndConvert(
+                                        PresencaDto.class
+                                        ,parameters
+                                        ,PRESENCA_URL
+                                        ,presenca.getId().toString()
+        );
+
+        PresencaDto dto = null;
+
+        try {
+            dto = updatePresenca.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            throw new RuntimeException( e );
+        }
+
     }
 
     @Override
@@ -34,8 +162,22 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     }
 
     @Override
-    public Presenca selectOne( Long aLong ) {
-        throw new NotImplementedException();
+    public Presenca selectOne( Long presencaId ) {
+
+        PresencaDto dto = null;
+        try {
+            dto = RsbWebServiceAsync
+                    .callActionAndConvert(
+                            PresencaDto.class
+                            ,PRESENCA_URL
+                            ,presencaId.toString()
+                    )
+                    .get();
+        } catch( InterruptedException | ExecutionException e) {
+            throw new RuntimeException( e );
+        }
+        Presenca presenca = convertFromDto( dto );
+        return presenca;
     }
 
     @Override
@@ -70,12 +212,7 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
 
 
     @Override
-    public void delete(Long aLong) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void update(Long aLong) {
+    public void delete( Long aLong ) {
         throw new NotImplementedException();
     }
 
@@ -101,6 +238,8 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
         return result;
     }
 
+
+
     private Collection< Presenca > getPresencas( List< Param > parameters ){
         CompletableFuture< PresencaDto[] > getPresencas =
                 RsbWebServiceAsync
@@ -115,9 +254,55 @@ public class PresencasWebService extends AbstractWebService implements IPresenca
     }
 
 
+    @Override
+    public boolean registarTroca( Long presencaId, Long elementoReforcoId ) {
+        List< Param > parameters = new LinkedList<>();
+        parameters.add( new Param( "elementodereforco_id", elementoReforcoId.toString() ) );
 
+        PresencaDto dto = null;
+        try {
+            dto = RsbWebServiceAsync
+                        .callPostActionAndConvert(
+                                    PresencaDto.class
+                                    ,parameters
+                                    ,PRESENCA_URL + "/realizarreforco"
+                                    ,presencaId.toString()
+                        )
+                        .get();
+        } catch( InterruptedException | ExecutionException e) {
+            throw new RuntimeException( e );
+        }
+        boolean result = dto.id != null ;
+        return result;
+    }
 
+    @Override
+    public Collection< Elemento > selectElemeReforcos(Long presencaId) {
+        CompletableFuture< ElementoDto[] > getPessoal =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                ElementoDto[].class
+                                ,PRESENCAS_URL + "/%s/pessoalreforco"
+                                ,presencaId.toString()
+                        );
+        ElementoDto[] pessoal = null;
 
+        try {
+            pessoal = getPessoal.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            throw new RuntimeException( e );
+        }
+
+        Collection<Elemento> result = new LinkedList<>();
+
+        // Converter ElementoDto -> Elemento
+        for( ElementoDto dto : pessoal ) {
+            Elemento elemento = PessoalWebService.convertDtoToModel(dto, false);
+            result.add( elemento );
+        }
+        return result;
+    }
 
 
     private static Presenca convertFromDto( PresencaDto dto ){

@@ -160,7 +160,7 @@ public class UnidadesEstruturaisWebService extends AbstractWebService implements
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( UnidadeEstrutural aLong ) {
         throw new NotImplementedException();
     }
 

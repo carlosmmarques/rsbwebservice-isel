@@ -266,7 +266,7 @@ public class PessoalWebService extends AbstractWebService implements IPessoalRep
     }
 
     @Override
-    public void update(Long aLong) {
+    public void update( Elemento aLong) {
         throw new NotImplementedException();
     }
 
