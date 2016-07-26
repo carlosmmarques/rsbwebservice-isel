@@ -454,10 +454,10 @@ public class MapaForcaViewModel {
 
     }
 
-    public static void main( String[] args ) {
-
-        testAddTurno();
-        // testMetodo_getDimensao();
-
-    }
+//    public static void main( String[] args ) {
+//
+//        testAddTurno();
+//        // testMetodo_getDimensao();
+//
+//    }
 }

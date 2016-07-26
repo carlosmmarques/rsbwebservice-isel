@@ -11,8 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
 
 jar {
 	baseName = 'rsbwebclient'
@@ -23,6 +22,8 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
 }
 
 dependencies {
@@ -44,11 +45,4 @@ dependencies {
 
 	runtime("com.h2database:h2")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-}
-
-eclipse {
-	classpath {
-		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.viewModel.launcher.StandardVMType/JavaSE-1.8'
-	}
 }

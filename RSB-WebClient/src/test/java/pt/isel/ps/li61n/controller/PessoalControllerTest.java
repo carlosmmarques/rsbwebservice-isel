@@ -7,19 +7,16 @@ import pt.isel.ps.li61n.model.IPessoalLogic;
 import pt.isel.ps.li61n.model.IPresencasLogic;
 import pt.isel.ps.li61n.model.ITurnosLogic;
 import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
-import pt.isel.ps.li61n.model.entities.Elemento;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static pt.isel.ps.li61n.RsbWebClientApplication.DATE_FORMATTER;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static pt.isel.ps.li61n.RsbWebClientApplication.PESSOAL_URL;
 
 /**
@@ -71,54 +68,54 @@ public class PessoalControllerTest {
     // Validar que ao fazer um POST com dados válidos, o cliente é redirecionado para a página com
     //  os detalhes do recurso gerado.
     //
-    @Test public void testRegistoElemento() throws Exception {
-
-        //
-        // Arrange
-        //
-        String nome = "João Alberto Jardim";
-        LocalDate dataNascimento = LocalDate.of( 1943, Month.FEBRUARY, 4 );
-        int numMecanografico = 123456;
-        int matricula = 1234;
-        //String idInterno = "123";
-        //String postoFuncionalId = "1";
-
-        Elemento unsaved = new Elemento();
-        unsaved.setNome( nome );
-        unsaved.setDataNascimento( dataNascimento );
-        unsaved.setNumMecanografico( numMecanografico );
-        unsaved.setMatricula( 1234 );
-
-        Long idReturned = 1L;
-
-        when( _mockPessoalLogic.create( unsaved ) ).thenReturn( idReturned );
-
-        PessoalController controller = new PessoalController(
-                                                _mockPessoalLogic
-                                                ,_mockUnidadesEstruturaisLogic
-                                                ,_mockPresencasLogic
-                                                ,_mockTurnoLogic
-        );
-        MockMvc mockMvc = standaloneSetup( controller ).build();
-
-        //
-        // Act & Assert
-        //
-        mockMvc.perform(
-                    post( PESSOAL_URL )
-                        .param( "numMecanografico", Integer.toString( numMecanografico ) )
-                        .param( "nome", nome )
-                        .param( "matricula", Integer.toString( matricula ) )
-                        .param( "dataNascimento", dataNascimento.format( DATE_FORMATTER ) )
-                )
-                .andExpect( status().is3xxRedirection() )
-                //.andExpect( redirectedUrl( UrlGenerator.detalhesPessoal( idReturned ) ) )
-        ;
-
-
-        // verificar que o método 'create' é chamado pelo menos uma vez
-        verify( _mockPessoalLogic, atLeastOnce() ).create( unsaved );
-    }
+//    @Test public void testRegistoElemento() throws Exception {
+//
+//        //
+//        // Arrange
+//        //
+//        String nome = "João Alberto Jardim";
+//        LocalDate dataNascimento = LocalDate.of( 1943, Month.FEBRUARY, 4 );
+//        int numMecanografico = 123456;
+//        int matricula = 1234;
+//        //String idInterno = "123";
+//        //String postoFuncionalId = "1";
+//
+//        Elemento unsaved = new Elemento();
+//        unsaved.setNome( nome );
+//        unsaved.setDataNascimento( dataNascimento );
+//        unsaved.setNumMecanografico( numMecanografico );
+//        unsaved.setMatricula( 1234 );
+//
+//        Long idReturned = 1L;
+//
+//        when( _mockPessoalLogic.create( unsaved ) ).thenReturn( idReturned );
+//
+//        PessoalController controller = new PessoalController(
+//                                                _mockPessoalLogic
+//                                                ,_mockUnidadesEstruturaisLogic
+//                                                ,_mockPresencasLogic
+//                                                ,_mockTurnoLogic
+//        );
+//        MockMvc mockMvc = standaloneSetup( controller ).build();
+//
+//        //
+//        // Act & Assert
+//        //
+//        mockMvc.perform(
+//                    post( PESSOAL_URL )
+//                        .param( "numMecanografico", Integer.toString( numMecanografico ) )
+//                        .param( "nome", nome )
+//                        .param( "matricula", Integer.toString( matricula ) )
+//                        .param( "dataNascimento", dataNascimento.format( DATE_FORMATTER ) )
+//                )
+//                .andExpect( status().is3xxRedirection() )
+//                //.andExpect( redirectedUrl( UrlGenerator.detalhesPessoal( idReturned ) ) )
+//        ;
+//
+//
+//        // verificar que o método 'create' é chamado pelo menos uma vez
+//        verify( _mockPessoalLogic, atLeastOnce() ).create( unsaved );
+//    }
 
 
     @Test public void datepPattern(){
