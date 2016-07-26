@@ -202,7 +202,7 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> EliminarUnidadeEstrutural(
+    public Callable<?> eliminarUnidadeEstrutural(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -396,7 +396,7 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }
@@ -607,7 +607,7 @@ public class UnidadeEstruturalController extends RsbBaseController<UnidadeEstrut
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }

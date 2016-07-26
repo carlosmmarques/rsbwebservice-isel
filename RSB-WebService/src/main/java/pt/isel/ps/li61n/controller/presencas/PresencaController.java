@@ -271,7 +271,7 @@ public class PresencaController extends RsbBaseController<Presenca> {
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> EliminarPresenca(
+    public Callable<?> eliminarPresenca(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {

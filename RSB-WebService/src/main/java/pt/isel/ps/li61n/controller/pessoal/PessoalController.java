@@ -490,7 +490,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> EliminarElementoDoPessoal(
+    public Callable<?> eliminarElementoDoPessoal(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -500,7 +500,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             ElementoDoPessoal elemento = pessoalService.EliminarElementoDoPessoal(
                     id
             );
-            return new ResponseEntity<>(new ElementoDoPessoalDTO(elemento, request, ModeloDeRepresentacao.Normal.class), HttpStatus.OK);
+            return new ResponseEntity<>(new ElementoDoPessoalDTO(elemento, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
         };
     }
 
@@ -666,7 +666,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
             Categoria categoria = pessoalService.eliminarCategoria(
                     id
             );
-            return new ResponseEntity<>(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.CREATED);
+            return new ResponseEntity<>(new CategoriaDTO(categoria, request, ModeloDeRepresentacao.Verboso.class), HttpStatus.OK);
         };
     }
 
@@ -843,7 +843,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     request,
                     ModeloDeRepresentacao.Verboso.class
             );
-            return new ResponseEntity<>(postoFuncionalDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(postoFuncionalDTO, HttpStatus.OK);
         };
     }
 
@@ -1026,7 +1026,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     request,
                     ModeloDeRepresentacao.Verboso.class
             );
-            return new ResponseEntity<>(formacaoDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(formacaoDTO, HttpStatus.OK);
         };
     }
 
@@ -1224,7 +1224,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     request,
                     ModeloDeRepresentacao.Verboso.class
             );
-            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.OK);
         };
     }
 
@@ -1330,7 +1330,7 @@ public class PessoalController extends RsbBaseController<ElementoDoPessoal> {
                     request,
                     ModeloDeRepresentacao.Verboso.class
             );
-            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(responsabilidadeOperacionalDTO, HttpStatus.OK);
         };
     }
 

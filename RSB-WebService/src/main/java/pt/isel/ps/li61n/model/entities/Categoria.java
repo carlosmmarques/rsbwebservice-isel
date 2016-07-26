@@ -100,6 +100,6 @@ public class Categoria extends EntidadeAbstractaComIdentificador {
      * Tiago Venturinha - tventurinha@gmail.com
      */
     public enum Quadro {
-        COMANDO, BOMBEIRO, OUTRO
+        COMANDO, BOMBEIRO, CIVIL, OUTRO
     }
 }

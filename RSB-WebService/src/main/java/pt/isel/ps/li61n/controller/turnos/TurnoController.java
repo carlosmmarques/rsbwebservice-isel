@@ -204,7 +204,7 @@ public class TurnoController extends RsbBaseController<Turno> {
     @JsonView(ModeloDeRepresentacao.Verboso.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody //Retorno do método no corpo da resposta
-    public Callable<?> EliminarTurno(
+    public Callable<?> eliminarTurno(
             @PathVariable Long id,
             HttpServletRequest request
     ) throws Exception {
@@ -393,7 +393,7 @@ public class TurnoController extends RsbBaseController<Turno> {
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }
@@ -593,7 +593,7 @@ public class TurnoController extends RsbBaseController<Turno> {
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }

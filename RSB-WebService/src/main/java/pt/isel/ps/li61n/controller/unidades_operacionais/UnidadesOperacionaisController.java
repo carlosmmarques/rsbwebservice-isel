@@ -383,7 +383,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }
@@ -582,7 +582,7 @@ public class UnidadesOperacionaisController extends RsbBaseController<UnidadeOpe
                             request,
                             ModeloDeRepresentacao.Verboso.class
                     ),
-                    HttpStatus.CREATED
+                    HttpStatus.OK
             );
         };
     }
