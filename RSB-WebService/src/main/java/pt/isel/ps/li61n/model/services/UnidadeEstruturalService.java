@@ -52,12 +52,27 @@ public class UnidadeEstruturalService implements IUnidadeEstruturalService {
     /**
      * @return Colecção de Unidades Estruturais
      * @throws Exception
+     * @param designacao
+     * @param tipounidadeestrutural_id
+     * @param unidadeestruturalmae_id
+     * @param nivelhierarquico
      */
     @Override
     @Transactional(readOnly = true)
-    public Collection<UnidadeEstrutural> obterUnidadesEstruturais() throws Exception {
+    public Collection<UnidadeEstrutural> obterUnidadesEstruturais(
+            Optional<String> designacao,
+            Optional<Long> tipounidadeestrutural_id,
+            Optional<Long> unidadeestruturalmae_id,
+            Optional<Integer> nivelhierarquico
+    ) throws Exception {
         return unidadeEstruturalRepo.findAll().stream()
-                .filter(ue -> ue.getEliminado() != null && !ue.getEliminado())
+                .filter( ue -> designacao.map(v -> v.equals(ue.getDesignacao())).orElse(true))
+                .filter( ue -> tipounidadeestrutural_id.map(v -> v.equals(ue.getTipoUnidadeEstrutural().getId())).orElse(true))
+                .filter( ue -> unidadeestruturalmae_id.map(v -> {
+                    if(ue.getUnidadeEstruturalMae() == null) return false;
+                    return v.equals(ue.getUnidadeEstruturalMae().getId());
+                }).orElse(true))
+                .filter( ue -> nivelhierarquico.map(v -> v.equals(ue.getNivelHierarquico())).orElse(true))
                 .collect(Collectors.toList());
     }
 

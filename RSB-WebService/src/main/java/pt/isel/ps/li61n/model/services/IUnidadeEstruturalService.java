@@ -22,10 +22,22 @@ public interface IUnidadeEstruturalService {
     /**
      * @return Colecção de Unidades Estruturais
      * @throws Exception
+     * @param designacao Designação
+     * @param tipounidadeestrutural_id Identificador do tipo da Unidade Estrutural
+     * @param unidadeestruturalmae_id Identificador do tipo da Unidade Estrutural Mãe
+     * @param nivelhierarquico Nível Hierárquico
      */
     Collection<UnidadeEstrutural> obterUnidadesEstruturais(
+            Optional<String> designacao,
+            Optional<Long> tipounidadeestrutural_id,
+            Optional<Long> unidadeestruturalmae_id,
+            Optional<Integer> nivelhierarquico
     ) throws Exception;
 
+
+    /**
+     *
+     */
 
     /**
      * @param id Identificador da Unidade Estrutural
