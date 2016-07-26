@@ -76,26 +76,12 @@ public class UnidadeEstruturalController {
         //obter o elemento com 'id'
         UnidadeEstrutural ue = _logic.getOne( id );
 
-        /*
-        if( ue != null ){
-            // obter o tipo se a ue não tiver
-            if( ue.getTipo() == null ){
-                ue.setTipo( _logic.getTipo( ue.getTipo_id() ) );
-            }
+        Collection< UnidadeEstrutural > subUnidades = _logic.getSubunidadesEstruturais( id );
+        ue.setSubunidades( subUnidades );
 
-            // obter as subunidaes ou actualizar
-            // TODO: Criar género de flag a dizer q precisa de ser actualizado pa não estar smp a fazer o pedido
-            ue.setSubunidades( _logic.getSubunidadesEstruturais( ue.getId() ) );
-        }
-        else{
-            return "/error";
-        }
+        Collection< Instalacao > instalacaos = _logic.getAllInstalacoes( id );
+        ue.setInstalacoes( instalacaos );
 
-        /*if(  ue == null ){
-            // 204
-            return "/error";
-            //, HttpStatus.NO_CONTENT ) ;
-        }*/
         model.addAttribute( MODEL_UE_ELEMENT, ue );
         return VIEW_NAME_UE_DETAILS;
     }

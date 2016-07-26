@@ -166,7 +166,17 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
         try {
             result = _ueRepo.selectAll()
                                     .stream()
-                                    .filter( el -> ueId.equals( el.getUnidadeEstruturalMae_id() ) )
+                                    .filter(
+                                        el ->{
+                                            UnidadeEstrutural ueMae = el.getUnidadeEstruturalMae();
+                                            if( ueMae == null ){
+                                                return false;
+                                            }
+                                            //System.out.println( "Ue mae: " + u );
+                                            Long ueMaeId = ueMae.getId();
+                                            System.out.println( "UE mae id : " + ueMaeId );
+                                            return ueId.equals( ueMaeId );
+                                    } )
                                     .collect( Collectors.toList() );
         }
         catch (RepositoryException e) {

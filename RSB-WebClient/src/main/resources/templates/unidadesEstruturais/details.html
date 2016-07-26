@@ -40,6 +40,19 @@
                 </li>
             </ul>
         </div>
+        <h3>Lista das instalações:</h3>
+        <div th:if="${ ue.getInstalacoes() == null || ue.getInstalacoes().size() == 0 }">
+            Não tem instalações.
+        </div>
+        <div th:unless="${ #lists.isEmpty( ue.getInstalacoes() ) }">
+            <ul>
+                <li th:each="sub : ${ ue.getInstalacoes() }">
+                    <a href="#" th:href="@{/unidadesEstruturais/{id}(id=${sub.getId()})}">
+                        <span th:text="${sub.getDesignacao()}">Nome da instalação</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- OPERAÇÕES -->
