@@ -51,7 +51,7 @@ public class TipoPresencaDTO {
                 this.id);
         this.uri_tipopresencaemreforco =
                 tipoPresenca.getTipoPresencaEmReforco() == null ? "" :
-                String.format("%s/pessoal/tipo/%s",
+                String.format("%s/presenca/tipo/%s",
                 this.baseUrl,
                 tipoPresenca.getTipoPresencaEmReforco().getId());
     }

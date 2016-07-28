@@ -4,19 +4,30 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+//		jcenter()
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//		classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+//		classpath "eu.appsatori:gradle-fatjar-plugin:0.3"
 	}
 }
 
 apply plugin: 'java'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
+//apply plugin: 'com.github.johnrengelman.shadow'
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+	options.compilerArgs << "-Xlint:unchecked"
+}
 
 jar {
+//	manifest {attributes 'Main-Class':'pt.isel.ps.li61n.RsbWebserviceApplication'}
 	baseName = 'rsb-webservice'
 	version = '0.0.1-SNAPSHOT'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -53,9 +64,3 @@ dependencies {
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
 }
-
-compileJava.options.encoding = 'UTF-8'
-
-//tasks.withType(JavaCompile) {
-//	options.encoding = 'UTF-8'
-//}
