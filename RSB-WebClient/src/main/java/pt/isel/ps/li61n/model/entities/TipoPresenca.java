@@ -19,6 +19,9 @@ public class TipoPresenca extends Identity< String > {
     // FK TipoPresenca
     private String tipoPresencaReforcoId;
 
+    private TipoPresenca tipoPresencaReforco;
+
+
     public TipoPresenca() {
     }
 
@@ -60,5 +63,14 @@ public class TipoPresenca extends Identity< String > {
 
     public void setTipoPresencaReforcoId(String tipoPresencaReforcoId) {
         this.tipoPresencaReforcoId = tipoPresencaReforcoId;
+    }
+
+    public TipoPresenca getTipoPresencaReforco() {
+        return tipoPresencaReforco;
+    }
+
+    public void setTipoPresencaReforco( TipoPresenca tipoPresencaReforco ) {
+        this.tipoPresencaReforco = tipoPresencaReforco;
+        this.tipoPresencaReforcoId = tipoPresencaReforco.getId();
     }
 }

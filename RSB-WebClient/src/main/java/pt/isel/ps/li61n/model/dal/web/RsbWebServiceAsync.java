@@ -21,12 +21,10 @@ import org.asynchttpclient.Response;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.web.dtos.ErrorDto;
 import pt.isel.ps.li61n.model.dal.web.exceptions.WebServiceException;
-import pt.isel.ps.li61n.model.entities.Presenca;
 import pt.isel.ps.li61n.util.web.HttpAsync;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -52,6 +50,8 @@ public class RsbWebServiceAsync {
         ,INSTALACOES_URL = "/unidadeestrutural/%s/instalacao"
         ,INSTALACAO_URL = "/unidadeestrutural/%s/instalacao/%s"
         ,TURNOS_URL = "/turno"
+        ,UNIDADES_OPERACIONAIS_URL = "/unidadeoperacional"
+        ,GUARNICAO_URL = "/unidadeoperacional/%s/guarnicao"
     ;
 
     //TODO: MELHORAR
@@ -265,7 +265,7 @@ public class RsbWebServiceAsync {
                 result = callAndConvert( klass, uri ).get();
             }
             catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException( e );
             }
         }
         return result;

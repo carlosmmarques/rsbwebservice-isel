@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class BasicInsertViewModel {
 
     @NotEmpty( message = ErrorsMsg.Geral.Designacao.NOT_NULL )
-    @Size( max = 50, message = ErrorsMsg.Geral.Designacao.SIZE )
+    @Size( max = 32, message = ErrorsMsg.Geral.Designacao.SIZE )
     private String designacao;
 
     public String getDesignacao() {

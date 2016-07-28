@@ -14,9 +14,18 @@ import java.util.LinkedList;
  */
 public class CreateUnidadeEstruturalViewModel  extends BasicInsertViewModel{
 
+    private Long tipoId;
+
+    private Long unidadeEstruturalMaeId;
+
     public final Collection<TipoUnidadeEstrutural> tiposUnidadesEstruturais;
 
     public final Collection<UnidadeEstrutural> unidadesEstruturaisMae;
+
+    public CreateUnidadeEstruturalViewModel() {
+        this.unidadesEstruturaisMae = new LinkedList<>();
+        this.tiposUnidadesEstruturais = new LinkedList<>();
+    }
 
     public CreateUnidadeEstruturalViewModel(
             Collection<TipoUnidadeEstrutural> tiposUnidadesEstruturais,
@@ -31,7 +40,21 @@ public class CreateUnidadeEstruturalViewModel  extends BasicInsertViewModel{
 
         this.unidadesEstruturaisMae = ues;
         this.tiposUnidadesEstruturais = tiposUnidadesEstruturais;
+    }
 
+    public Long getTipoId() {
+        return tipoId;
+    }
 
+    public void setTipoId(Long tipoId) {
+        this.tipoId = tipoId;
+    }
+
+    public Long getUnidadeEstruturalMaeId() {
+        return unidadeEstruturalMaeId;
+    }
+
+    public void setUnidadeEstruturalMaeId(Long unidadeEstruturalMaeId) {
+        this.unidadeEstruturalMaeId = unidadeEstruturalMaeId;
     }
 }

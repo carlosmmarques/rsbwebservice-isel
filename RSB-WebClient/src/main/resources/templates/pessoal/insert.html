@@ -65,15 +65,8 @@
                 <br></br>
 
                 <!-- Instalaaco ... -->
-                <span>Instalação (por omissão):
-                    <select th:field="*{instalacaoId}" >
-                        <option th:each="instalacao:${instalacoes}"
-                                th:value="${instalacao.getId()}"
-                                th:text="${instalacao.getDesignacao()}"
-                        >Lista de Instalações</option>
-                    </select>
-                    <br></br>
-                </span>
+                Instalação (por omissão):
+                <span th:replace="templates :: instalacoesList"></span>
                 <br></br>
 
                 <!-- Tipo de presença ... -->
@@ -89,17 +82,9 @@
                 <br></br>
 
                 <!-- Turno ... -->
-                <span>Turno (por omissão):
-                    <select th:field="*{turnoId}" >
-                        <option th:each="turno:${turnos}"
-                                th:value="${turno.getId()}"
-                                th:text="${turno.getDesignacao()}"
-                        >Lista de turnos</option>
-                    </select>
-                    <br></br>
-                </span>
+                Turno (por omissão):
+                <span th:replace="templates :: turnosList"></span>
                 <br></br>
-
 
                 <input type="submit" value="Registar"></input>
             </form>

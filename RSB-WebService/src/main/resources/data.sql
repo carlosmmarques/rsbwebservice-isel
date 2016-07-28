@@ -150,13 +150,13 @@ ON CONFLICT DO NOTHING
 ;
 
 -- TIPOS DE UNIDADES OPERACIONAIS
-INSERT INTO  tipo_unidade_operacional(id, descricao, designacao, version) VALUES
-  ('1', 'VLCI', '', 0),
-  ('2', 'VUCI', '', 0),
-  ('3', 'VE', '', 0),
-  ('4', 'VTTU', '', 0),
-  ('5', 'VOPE', '', 0),
-  ('6', 'VCOT', '', 0),
+INSERT INTO  tipo_unidade_operacional(id, designacao, descricao, version) VALUES
+  ('1', 'VLCI', 'Veículo Ligeiro de Combate a Incêndios', 0),
+  ('2', 'VUCI', 'Veículo Urbano de Combate a Incêndios', 0),
+  ('3', 'VE', 'Veículo Escada', 0),
+  ('4', 'VTTU', 'Veículo Tanque Táctico Urbano', 0),
+  ('5', 'VOPE', 'Veículo Para Operações Específicas', 0),
+  ('6', 'VCOT', 'Veículo de Comando Táctico', 0),
   ('7', 'OPDAE', '', 0),
   ('8', 'COZINHA', '', 0),
   ('9', 'BAR', '', 0),
@@ -275,11 +275,13 @@ INSERT INTO elemento (id, matricula, abreviatura, data_nascimento, e_mail, facto
   ('108', '4471', '', '10-05-1978', 'nuno.ramos@cm-lisboa.pt', '0', '1037', '216229871', 'Nuno Filipe dos Santos Ramos', '11242945', '0', '966167219', '', 'BilheteIdentidade', '2', '5', 'S4', '3', 0)
 ON CONFLICT DO NOTHING
 ;
+/*
 INSERT INTO elemento (id, matricula, abreviatura, data_ingresso, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificacao, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id, version) VALUES
   ('109', '3961', '', '11-12-1983', '01-03-1960', 'joao.curto@cm-lisboa.pt', '0', '0', '142670995', 'João Manuel Curto', '4455167', '374102', '913463261', '', 'BilheteIdentidade', '1', '15', '0', '9', 0),
   ('110', '4135', '', '01-04-1987', '13-04-1964', 'jose.m.oliveira@cm-lisboa.pt', '0', '0', '122263952', 'José Manuel Moleira de Oliveira', '7759924', '497757', '916410788', '', 'BilheteIdentidade', '1', '12', 'S1', '4', 0)
 ON CONFLICT DO NOTHING
 ;
+
 INSERT INTO elemento (id, matricula, abreviatura, data_nascimento, e_mail, factor_elegibilidade, id_interno, nif, nome, num_doc_identificacao, num_mecanografico, telefone1, telefone2, tipo_doc_identificacao, instalacao_id, posto_funcional_id, tipo_presenca_id, turno_id, version) VALUES
   ('111', '', '', '01-01-1970', '', '0', '0', '', '', '', '1', '', '', 'BilheteIdentidade', '1', '6', 'S', '2', 0),
   ('112', '', '', '01-01-1970', '', '0', '0', '', '', '', '2', '', '', 'BilheteIdentidade', '1', '12', 'S1', '9', 0),
@@ -313,13 +315,8 @@ INSERT INTO elemento (id, matricula, abreviatura, data_nascimento, e_mail, facto
   ('140', '', '', '01-01-1970', '', '0', '736', '', '', '', '30', '', '', 'BilheteIdentidade', '1', '5', 'S5', '4', 0)
 ON CONFLICT DO NOTHING
 ;
+*/
 
--- PERIODOS:
-INSERT INTO periodo (id, dt_fim, dt_inicio, version) VALUES
-  ('1', '31-12-2015', '01-12-2015', 0),
-  ('2', '31-01-2016', '01-01-2016', 0)
-ON CONFLICT DO NOTHING
-;
 
 -- CATEGORIAS
 INSERT INTO categoria (id, abreviatura, descricao, nivel_hierarquico, quadro, version) VALUES
@@ -513,7 +510,7 @@ INSERT INTO atribuicao_categoria (id, classificacao_formacao, data_atribuicao_ca
   ('105', '0', '01-01-1970', '11', '105', 0),
   ('106', '0', '01-01-1970', '11', '106', 0),
   ('107', '0', '01-01-1970', '11', '107', 0),
-  ('108', '0', '01-01-1970', '11', '108', 0),
+  ('108', '0', '01-01-1970', '11', '108', 0)/*,
   ('109', '0', '01-01-1970', '7', '109', 0),
   ('110', '0', '01-01-1970', '8', '110', 0),
   ('111', '0', '01-01-1970', '7', '111', 0),
@@ -545,7 +542,7 @@ INSERT INTO atribuicao_categoria (id, classificacao_formacao, data_atribuicao_ca
   ('137', '0', '01-01-1970', '13', '137', 0),
   ('138', '0', '01-01-1970', '13', '138', 0),
   ('139', '0', '01-01-1970', '13', '139', 0),
-  ('140', '0', '01-01-1970', '13', '140', 0)
+  ('140', '0', '01-01-1970', '13', '140', 0)*/
 ON CONFLICT DO NOTHING
 ;
 
@@ -570,6 +567,15 @@ INSERT INTO registo_formacao(id, data_aquisicao_formacao, data_caducidade_formac
   ('17', '01-01-1970', '01-01-2020', '5', '13', 0)
 ON CONFLICT DO NOTHING
 ;
+
+/*
+-- PERIODOS:
+INSERT INTO periodo (id, dt_fim, dt_inicio, version) VALUES
+  ('1', '31-12-2015', '01-12-2015', 0),
+  ('2', '31-01-2016', '01-01-2016', 0)
+ON CONFLICT DO NOTHING
+;
+
 
 -- PRESENÇAS
 INSERT INTO presenca (id, data, hora_inicio, num_horas, instalacao_efectiva_id, periodo_id, elemento_id, posto_funcional_efectivo_id, tipo_presenca_efectiva_id, turno_efectivo_id, version) VALUES
@@ -701,7 +707,7 @@ ON CONFLICT DO NOTHING
 INSERT INTO presenca (id, data, hora_inicio, num_horas, elemento_reforcado_id, instalacao_efectiva_id, periodo_id, elemento_id, posto_funcional_efectivo_id, tipo_presenca_efectiva_id, turno_efectivo_id, version) VALUES
   ('122', '01-12-2015', '20:00', '12', '16', '1', '1', '13', '9', '5S', '2', 0)
 ON CONFLICT DO NOTHING
-;
+;*/
 
 -- ACTUALIZA AS SEQUENCIAS DE ID:
 SELECT SETVAL('public.algoritmo_calculo_turno_id_seq', COALESCE(MAX(id), 1) ) FROM public.algoritmo_calculo_turno;

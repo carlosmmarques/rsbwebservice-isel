@@ -17,8 +17,27 @@
             </ul>
         </div>
 
+        <!-- lista de instalações -->
+        <span th:fragment="instalacoesList">
+            <select th:field="*{instalacaoId}" >
+                <option th:each="instalacao:${instalacoes}"
+                        th:value="${instalacao.getId()}"
+                        th:text="${instalacao.getDesignacao()}"
+                >Lista de Instalações</option>
+            </select>
+            <br></br>
+        </span>
 
-
+        <!-- lista de instalações -->
+        <span th:fragment="turnosList">
+            <select th:field="*{turnoId}" >
+                <option th:each="turno:${turnos}"
+                        th:value="${turno.getId()}"
+                        th:text="${turno.getDesignacao()}"
+                >Lista de turnos</option>
+            </select>
+            <br></br>
+        </span>
 
         <footer th:fragment="footer" >
             <br></br>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
+    <title>Gestão de escalas</title>
+</head>
+<body>
+    <h1>Gestão de Escalas de Serviço</h1>
+
+    <h3>
+        <a href="gerar.html" th:href="@{/escalas/gerar}">Gerar escala de serviço?</a>
+    </h3>
+
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+</body>
+</html>

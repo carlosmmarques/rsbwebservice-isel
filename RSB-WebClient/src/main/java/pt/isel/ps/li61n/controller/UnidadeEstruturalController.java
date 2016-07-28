@@ -96,28 +96,54 @@ public class UnidadeEstruturalController {
     )
     public String insertView( Model model ){
 
-        CreateUnidadeEstruturalViewModel viewModel = new CreateUnidadeEstruturalViewModel(
-            _logic.getAllTipos()
-            ,_logic.getAll()
-        );
+        CreateUnidadeEstruturalViewModel viewModel = new CreateUnidadeEstruturalViewModel();
 
-        model.addAttribute( "viewModel", viewModel );
+        populateViewModel( viewModel );
+
+        model.addAttribute( viewModel );
+
         return VIEW_NAME_UE_INSERT;
     }
 
-    /**
-     *
-     * @param ue
-     * @return
-     */
+    private void populateViewModel( CreateUnidadeEstruturalViewModel viewModel ){
+        viewModel.tiposUnidadesEstruturais.addAll( _logic.getAllTipos() );
+        viewModel.unidadesEstruturaisMae.addAll( _logic.getAll() );
+    }
+
     @RequestMapping( method = RequestMethod.POST )
-    public String insert( UnidadeEstrutural ue ) throws PropertyEntityException {
+    public String insert(
+            @Valid CreateUnidadeEstruturalViewModel form
+            ,Errors errors
+            ,HttpServletResponse response
+            ,Model model
+    )  {
+
+        if( errors.hasErrors() ) {
+            populateViewModel( form );
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return VIEW_NAME_UE_INSERT;
+        }
+
+        UnidadeEstrutural ue = new UnidadeEstrutural();
+        ue.setDesignacao( form.getDesignacao() );
+        ue.setTipo_id( form.getTipoId() );
+        ue.setUnidadeEstruturalMae_id( form.getUnidadeEstruturalMaeId() );
 
         // Representação de "Nenhuma"
-        if( ue.getUnidadeEstruturalMae_id() == -1L )
-            ue.setUnidadeEstruturalMae_id( null );
+        if( form.getUnidadeEstruturalMaeId() == -1L ) {
+            ue.setUnidadeEstruturalMae_id(null);
+        }
 
-        Long id = _logic.create( ue );
+        Long id = null;
+        try {
+            id = _logic.create( ue );
+        }
+        catch( PropertyEntityException e ){
+            errors.rejectValue( e.fieldName, "", e.getMessage() );
+            populateViewModel( form );
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return VIEW_NAME_UE_INSERT;
+        }
 
         return "redirect:/unidadesEstruturais/" + id.toString();
     }

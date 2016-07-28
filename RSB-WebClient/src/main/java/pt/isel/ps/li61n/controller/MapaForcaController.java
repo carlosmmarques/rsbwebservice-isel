@@ -101,10 +101,30 @@ public class MapaForcaController {
 
         Periodo periodo = _logicMf.getOnePeriodo( periodoId );
 
-        // seleccionar a unidade estrutural e obter as suas instalacoes
+        // seleccionar a unidade estrutural, obter subunidades e respectivas instalacoes
         UnidadeEstrutural ue = _logicUe.getOne( ueId );
-        Collection< Instalacao > instalacaos = _logicUe.getAllInstalacoes( ueId );
-        ue.setInstalacoes( instalacaos );
+
+        Collection< Instalacao > instalacaos = new LinkedList<>();
+
+        // registo de ues encontrados para mais tarde ir buscar instalações
+        LinkedList< Long > ueIds = new LinkedList<>();
+        do{
+            // obter instalacoes e adicionar ao resultado
+            Collection< Instalacao > instalacaosAux = _logicUe.getAllInstalacoes( ueId );
+            instalacaos.addAll( instalacaosAux );
+
+            // Verificar se há subUnidades e, em caso afirmativo,
+            Collection< UnidadeEstrutural > subUnidades = _logicUe.getSubunidadesEstruturais( ueId );
+            for( UnidadeEstrutural subUe : subUnidades ) {
+                Long id = subUe.getId();
+                ueIds.add( id );
+            }
+            // obter o próximo id
+            ueId = ueIds.pollFirst();
+        }
+        while( ueId != null );
+
+        //ue.setInstalacoes( instalacaos );
 
         Collection< Presenca > presencas = new LinkedList<>();
 

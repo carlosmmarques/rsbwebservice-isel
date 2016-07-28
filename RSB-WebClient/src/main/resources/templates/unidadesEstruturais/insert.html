@@ -4,28 +4,41 @@
 >
     <head>
         <meta charset="UTF-8"></meta>
+        <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
         <title>Criar Unidade Estrutural</title>
     </head>
     <body>
         <h1>Criar uma unidade estrutural</h1>
         <!-- Formulário para criar uma unidade estrutural -->
         <div>
-            <form action="/unidadesEstruturais" method="POST">
-                Designação: <input type="text" name="designacao"></input><br></br>
-                Tipo:
+            <form action="/unidadesEstruturais" method="POST" th:object="${createUnidadeEstruturalViewModel}">
+                <!-- Lista de erros -->
+                <div th:replace="templates :: errorsDiv"></div>
+
+                <!-- Designação -->
+                <label th:class="${#fields.hasErrors('designacao')} ? 'error'">Designação:</label>
+                <input type="text"
+                       th:field="*{designacao}"
+                       th:class="${#fields.hasErrors('designacao')} ? 'error'"
+                ></input>
+                <br></br>
+
+                <!-- Tipo -->
+                <label th:class="${#fields.hasErrors('tipoId')} ? 'error'">Tipo:</label>
                 <span>
-                    <select name="tipo_id" >
-                        <option th:each="tipo:${viewModel.tiposUnidadesEstruturais}"
+                    <select  th:field="*{tipoId}" >
+                        <option th:each="tipo:*{tiposUnidadesEstruturais}"
                                 th:value="${tipo.getId()}"
                                 th:text="${tipo.getDesignacao()}"
                         >Tipos de Unidades estruturais</option>
                     </select>
                     <br></br>
                 </span>
-                <span th:unless="${#lists.isEmpty(viewModel.unidadesEstruturaisMae)}">
-                    Unidade Estrutural Mãe:
-                    <select name="unidadeEstruturalMae_id" >
-                        <option th:each="ue : ${ viewModel.unidadesEstruturaisMae }"
+                <span th:unless="${#lists.isEmpty(createUnidadeEstruturalViewModel.unidadesEstruturaisMae)}">
+                    <!-- Unidade Estrutural Mãe -->
+                    <label th:class="${#fields.hasErrors('unidadeEstruturalMaeId')} ? 'error'">Unidade Estrutural Mãe:</label>
+                    <select th:field="*{unidadeEstruturalMaeId}" >
+                        <option th:each="ue : *{ unidadesEstruturaisMae }"
                                 th:value="${ ue.getId() }"
                                 th:text="${ ue.getDesignacao() }">
                         </option>
@@ -36,6 +49,8 @@
             </form>
         </div>
 
+        <!-- footer -->
+        <div th:replace="templates :: footer"></div>
 
     </body>
 </html>

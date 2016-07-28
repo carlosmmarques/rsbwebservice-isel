@@ -61,10 +61,10 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
 
 
     @Override
-    public Long create( UnidadeEstrutural element ) {
+    public Long create( UnidadeEstrutural element ) throws PropertyEntityException {
 
         // atributos obrigatórios
-        if( element.getDesignacao() == null
+        if( element.getDesignacao() == null // TODO: Separar em throws diferentes para poder especificar campo
                 || element.getTipo_id() == null
         ){
             throw new RuntimeException( "Campos por preencher" );
@@ -75,13 +75,13 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
             tipo = _tipoUeRep.selectOne( element.getTipo_id() );
         }
         catch( RepositoryException e ){
-            throw new RuntimeException( e );
+            throw new PropertyEntityException( "tipo", e.getMessage() );
         }
 
         //TODO: Criar exception para gerar página de erro
-        if( tipo == null ){
-            throw new RuntimeException( "Invalid tipo!" );
-        }
+        //if( tipo == null ){
+        //    throw new RuntimeException( "Invalid tipo!" );
+        //}
 
         Long ueMae_id = element.getUnidadeEstruturalMae_id();
 
@@ -106,7 +106,7 @@ public class UnidadesEstruturaisLogic implements IUnidadesEstruturaisLogic {
 
                 // verificar que tem um nivel hierarquico superior (valor menor)
                 if( nivelHierarquico <= nivelHierarquicoMae ) {
-                    throw new RuntimeException( "Hierarquia incompativel" );
+                    throw new PropertyEntityException( "unidadeEstruturalMaeId", "Hierarquia incompativel" );
                 }
                 element.setUnidadeEstruturalMae( ueMae );
             }

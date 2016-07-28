@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public class ViewModelConverter {
 
-    public static Collection<PeriodoUi> convertPeriodos(Collection< Periodo > periodos ){
+    public static Collection<PeriodoUi> convertPeriodos( Collection< Periodo > periodos ){
         Collection<PeriodoUi> periodosUI = new ArrayList<>( periodos.size() );
 
         for( Periodo p : periodos ){

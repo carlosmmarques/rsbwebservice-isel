@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
+    <title>Gerar escala</title>
+</head>
+<body>
+    <h1>Gerar Escala de Serviço</h1>
+
+    <div>
+        <form th:action="${action}" method="GET" th:object="${escalaFormViewModel}">
+            <h2>Seleccione a instalação, turno e data para qual pretende gerar a escala de serviço:</h2>
+
+            <label>Instalação:</label>
+            <span th:replace="templates :: instalacoesList"></span><br></br>
+
+            <label>Turno:</label>
+            <span th:replace="templates :: turnosList"></span><br></br>
+
+            <label>Data:</label>
+            <input type="date" th:field="*{data}"></input><br></br>
+
+            <input type="submit" value="Registar"></input>
+        </form>
+    </div>
+    <!-- footer -->
+    <div th:replace="templates :: footer"></div>
+</body>
+</html>
