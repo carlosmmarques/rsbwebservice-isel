@@ -19,8 +19,8 @@
 
         <!-- lista de instalações -->
         <div th:fragment="instalacoesList" class="form-group">
-            <label for="instalacaoId" class="col-sm-3 control-label">Instalação (por omissão):</label>
-            <div class="col-sm-9">
+            <label for="instalacaoId" class="col-sm-2 control-label">Instalação (por omissão):</label>
+            <div class="col-sm-10">
                 <select th:field="*{instalacaoId}" id="instalacaoId" name="instalacaoId" class="form-control">
                     <option th:each="instalacao:${instalacoes}"
                             th:value="${instalacao.getId()}"
@@ -32,8 +32,8 @@
 
         <!-- lista de turnos -->
         <div th:fragment="turnosList" class="form-group">
-            <label for="turnoId" class="col-sm-3 control-label">Turno (por omissão):</label>
-            <div class="col-sm-9">
+            <label for="turnoId" class="col-sm-2 control-label">Turno (por omissão):</label>
+            <div class="col-sm-10">
                 <select th:field="*{turnoId}" id="turnoId" name="turnoId" class="form-control">
                     <option th:each="turno:${turnos}"
                             th:value="${turno.getId()}"

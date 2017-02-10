@@ -46,9 +46,9 @@
 
                     <!-- Nome completo -->
                     <div class="form-group">
-                        <label th:class="${#fields.hasErrors('nome')} ? 'col-sm-3 control-label error' : 'col-sm-3 control-label'"
-                               for="nome" class="col-sm-3 control-label">Nome completo:</label>
-                        <div class="col-sm-9">
+                        <label th:class="${#fields.hasErrors('nome')} ? 'col-sm-2 control-label error' : 'col-sm-2 control-label'"
+                               for="nome" class="col-sm-2 control-label">Nome completo:</label>
+                        <div class="col-sm-10">
                             <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo"
                                    th:field="*{nome}" th:class="${#fields.hasErrors('nome')} ? 'error form-control' : 'form-control'" ></input>
                         </div>
@@ -56,20 +56,21 @@
 
                     <!-- Data de nascimento -->
                     <div class="form-group">
-                        <label th:class="${#fields.hasErrors('dataNascimento')} ? 'error col-sm-3 control-label' : 'col-sm-3 control-label'"
-                               for="dataNascimento" class="col-sm-3 control-label">Data de nascimento:</label>
-                        <div class="col-sm-9">
+                        <label th:class="${#fields.hasErrors('dataNascimento')} ? 'error col-sm-2 control-label' : 'col-sm-2 control-label'"
+                               for="dataNascimento" class="col-sm-2 control-label">Data de nascimento:</label>
+                        <div class="col-sm-10">
                             <input th:class="${#fields.hasErrors('dataNascimento')} ? 'error form-control' : 'form-control'"
-                                   type="text" class="form-control" id="dataNascimento" name="dataNascimento" placeholder="Data de nascimento"
+                                   type="text" class="form-control" id="dataNascimento" name="dataNascimento"
+                                   placeholder="Data de nascimento (dd/mm/aaaa)"
                                    th:field="*{dataNascimento}"></input>
                         </div>
                     </div>
 
                     <!-- Número mecanográfico -->
                     <div class="form-group">
-                        <label th:class="${#fields.hasErrors('numMecanografico')} ? 'error col-sm-3 control-label' : 'col-sm-3 control-label'"
-                                for="numMecanografico" class="col-sm-3 control-label">Número mecanográfico:</label>
-                        <div class="col-sm-9">
+                        <label th:class="${#fields.hasErrors('numMecanografico')} ? 'error col-sm-2 control-label' : 'col-sm-2 control-label'"
+                                for="numMecanografico" class="col-sm-2 control-label">Número mecanográfico:</label>
+                        <div class="col-sm-10">
                             <input th:class="${#fields.hasErrors('numMecanografico')} ? 'error form-control' : 'form-control'"
                                     type="number" class="form-control" id="numMecanografico" name="numMecanografico"
                                    th:field="*{numMecanografico}" placeholder="Número mecanográfico"></input>
@@ -78,9 +79,9 @@
 
                     <!-- Matrícula -->
                     <div class="form-group">
-                        <label th:class="${#fields.hasErrors('matricula')} ? 'error col-sm-3 control-label' : 'col-sm-3 control-label'"
-                               for="numMecanografico" class="col-sm-3 control-label">Matrícula:</label>
-                        <div class="col-sm-9">
+                        <label th:class="${#fields.hasErrors('matricula')} ? 'error col-sm-2 control-label' : 'col-sm-2 control-label'"
+                               for="numMecanografico" class="col-sm-2 control-label">Matrícula:</label>
+                        <div class="col-sm-10">
                             <input th:class="${#fields.hasErrors('matricula')} ? 'error form-control' : 'form-control'"
                                    th:field="*{matricula}" type="number" class="form-control" id="matricula"
                                    name="matricula" placeholder="Matrícula"></input>
@@ -89,12 +90,12 @@
 
                     <!-- Data de ingresso -->
                     <div class="form-group">
-                        <label th:class="${#fields.hasErrors('dataIngresso')} ? 'error col-sm-3 control-label' : 'col-sm-3 control-label'"
-                                for="dataIngresso" class="col-sm-3 control-label">Data de ingresso:</label>
-                        <div class="col-sm-9">
+                        <label th:class="${#fields.hasErrors('dataIngresso')} ? 'error col-sm-2 control-label' : 'col-sm-2 control-label'"
+                                for="dataIngresso" class="col-sm-2 control-label">Data de ingresso:</label>
+                        <div class="col-sm-10">
                             <input th:class="${#fields.hasErrors('dataIngresso')} ? 'error form-control' : 'form-control'"
                                    type="text" class="form-control" id="dataIngresso" name="dataIngresso"
-                                   placeholder="Data de ingresso" th:field="*{dataIngresso}">
+                                   placeholder="Data de ingresso (dd/mm/aaaa)" th:field="*{dataIngresso}">
                             </input>
                         </div>
                     </div>
@@ -105,8 +106,8 @@
 
                     <!-- Categoria -->
                     <div class="form-group">
-                        <label for="categoriaId" class="col-sm-3 control-label">Categoria:</label>
-                        <div class="col-sm-9">
+                        <label for="categoriaId" class="col-sm-2 control-label">Categoria:</label>
+                        <div class="col-sm-10">
                             <select id="categoriaId" name="categoriaId" class="form-control" th:field="*{categoriaId}">
                                 <option th:each="categoria:${categorias}"
                                         th:value="${categoria.getId()}"
@@ -118,8 +119,8 @@
 
                     <!-- Posto Funcional ... -->
                     <div class="form-group">
-                        <label for="postoFuncionalId" class="col-sm-3 control-label">Posto funcional (por omissão):</label>
-                        <div class="col-sm-9">
+                        <label for="postoFuncionalId" class="col-sm-2 control-label">Posto funcional (por omissão):</label>
+                        <div class="col-sm-10">
                             <select id="postoFuncionalId" name="postoFuncionalId" class="form-control"
                                     th:field="*{postoFuncionalId}">
                                 <option th:each="posto:${postos}"
@@ -136,8 +137,8 @@
 
                     <!-- Tipo de presença -->
                     <div class="form-group">
-                        <label for="tipoPresencaId" class="col-sm-3 control-label">Tipo de presença (por omissão):</label>
-                        <div class="col-sm-9">
+                        <label for="tipoPresencaId" class="col-sm-2 control-label">Tipo de presença (por omissão):</label>
+                        <div class="col-sm-10">
                             <select th:field="*{tipoPresencaId}" id="tipoPresencaId" name="tipoPresencaId"
                                     class="form-control">
                                 <option th:each="tipo:${tiposPresenca}"
