@@ -108,13 +108,25 @@ public class PessoalController {
             return "redirect:/error";
         }
 
+        //TODO: Melhorar
+        String dataIngresso = "";
+        if( elemento.getDataIngresso() != null ){
+            dataIngresso = elemento.getDataIngresso().toString();
+        }
+        String dataNascimento = "";
+        if( elemento.getDataNascimento() != null ){
+            dataNascimento = elemento.getDataNascimento().toString();
+        }
+
         PessoalUI pessoa = new PessoalUI(
                                 elemento.getId()
                                 ,elemento.getIdInterno()
                                 ,elemento.getNome()
                                 ,elemento.getCategoria().getDescricao()
-                                , UrlGenerator.detalhesPessoal( elemento.getId() )
-                                , elemento.getNumMecanografico()
+                                ,UrlGenerator.detalhesPessoal( elemento.getId() )
+                                ,elemento.getNumMecanografico()
+                                ,dataNascimento
+                                ,dataIngresso
                             );
 
         model.addAttribute( "pessoa", pessoa );

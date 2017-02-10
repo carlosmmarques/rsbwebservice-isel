@@ -359,6 +359,18 @@ public class PessoalWebService extends AbstractWebService implements IPessoalRep
             }
 
             elemento.setCategoria(categoria);
+
+            String dataIngresso = dto.dataIngresso;
+
+            if( dataIngresso != null && !dataIngresso.isEmpty() ){
+                elemento.setDataIngresso( LocalDate.parse( dataIngresso ) );
+            }
+
+            String dataNascimento = dto.dataNascimento;
+
+            if( dataNascimento != null && !dataNascimento.isEmpty() ){
+                elemento.setDataNascimento( LocalDate.parse( dataNascimento ) );
+            }
         }
         return elemento;
     }

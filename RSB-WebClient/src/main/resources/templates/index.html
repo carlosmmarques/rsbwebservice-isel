@@ -1,19 +1,35 @@
 <!DOCTYPE html>
-<html lang="pt"
+<html lang="pt-pt"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
 >
     <head>
-        <meta charset="UTF-8"></meta>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <!-- The above 3 meta tags *must* come first in the head; any other
+        head content must come *after* these tags -->
+
+       <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"></link>
+
+        <!-- Custom styles for this template -->
+        <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>
+
         <title>Aplicação Cliente RSB</title>
     </head>
     <body>
-        <h1>Bem-vindo à aplicação do RSB</h1>
-        <p>O que é que pretende fazer?</p>
-        <a href="http://localhost:1234">Aceder ao Service Web (teste)?</a><br></br>
-        <a href="/pessoal"> Lista de Pessoal?</a><br></br>
-        <a href="/unidadesEstruturais" th:href="@{/unidadesEstruturais}"> Gestão de Unidades Estruturais?</a><br></br>
-        <a href="/mapaForca" th:href="@{/mapaForca}"> Mapa da Força?</a><br></br>
-        <a href="/escalas" th:href="@{/escalas}">Gestão de escalas?</a><br></br>
+
+        <nav th:replace="templates :: navbar"></nav>
+
+        <div class="container">
+            <div class="jumbotron bg-info">
+                <h1>Bem-vindo à aplicação do RSB</h1>
+                <p>Utilize a barra de navegação para escolher as operações que pretende.</p>
+            </div>
+        </div>
+
+
+        <div th:replace="templates :: scripts"></div>
     </body>
 </html>

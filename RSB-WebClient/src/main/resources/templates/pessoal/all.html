@@ -2,65 +2,81 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other
+    head content must come *after* these tags -->
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>
     <title>Lista do Pessoal</title>
 </head>
 <body>
-    <!-- Lista do Elemento -->
-    <div th:unless="${#lists.isEmpty(pessoal)}">
 
-        <h2> Lista do pessoal.</h2>
+    <nav th:replace="templates :: navbar"></nav>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>N.º/Nome</th>
-                    <th>Categoria</th>
-                    <th>Nome</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p : ${pessoal}">
-                    <td>
-                        <span th:text="${p.idInterno}">p.idInterno</span>
-                    </td>
-                    <td>
-                        <span th:text="${p.categoria}">categoria</span>
-                    </td>
-                    <td>
-                        <a href="details.html" th:href="${p.uri_pessoa}">
-                            <span th:text="${p.nome}">p.name</span>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" id="sidebar-ops">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="">Pessoal<span class="sr-only">(current)</span></a></li>
+                    <li><a href="/insert" th:href="@{/pessoal/registar}">Registar um elemento</a></li>
+                    <!--<li><a href="#">Analytics</a></li>
+                    <li><a href="#">Export</a></li>
+                  </ul>
+                  <ul class="nav nav-sidebar">
+                    <li><a href="">Nav item</a></li>
+                    <li><a href="">Nav item again</a></li>
+                    <li><a href="">One more nav</a></li>
+                    <li><a href="">Another nav item</a></li>
+                    <li><a href="">More navigation</a></li>
+                  </ul>
+                  <ul class="nav nav-sidebar">
+                    <li><a href="">Nav item again</a></li>
+                    <li><a href="">One more nav</a></li>
+                    <li><a href="">Another nav item</a></li>-->
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">Lista de pessoal</h1>
+                <div th:unless="${#lists.isEmpty(pessoal)}">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>N.º/Nome</th>
+                                    <th>Categoria</th>
+                                    <th>Nome</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="p : ${pessoal}">
+                                    <td>
+                                        <span th:text="${p.idInterno}">p.idInterno</span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${p.categoria}">categoria</span>
+                                    </td>
+                                    <td>
+                                        <a href="details.html" th:href="${p.uri_pessoa}">
+                                            <span th:text="${p.nome}">p.name</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(pessoal)}">
+                    <h2>Não existe pessoal!</h2>
+                </div>
+            </div>
+        </div>
     </div>
-    <div th:if="${#lists.isEmpty(pessoal)}">
-        <h2>Não existe pessoal!</h2>
-    </div>
-
-    <!-- OPERAÇÕES -->
-    <div>
-        <h3>Nesta página poderá fazer:</h3>
-        <ul>
-            <li><!-- Registar uma pessoa -->
-                <a href="/insert" th:href="@{/pessoal/registar}">
-                    Registar um elemento.
-                </a>
-            </li>
-
-            <!-- Atribuir a um elemento uma Instalação -->
-            <!--
-            <li>
-                <a href="#">
-                    Atribuir um elemento a uma Instalação.
-                </a>
-            </li>
-            -->
-        </ul>
-    </div>
-    <!-- footer -->
-    <div th:replace="templates :: footer"></div>
+    <div th:replace="templates :: scripts"></div>
 </body>
 </html>

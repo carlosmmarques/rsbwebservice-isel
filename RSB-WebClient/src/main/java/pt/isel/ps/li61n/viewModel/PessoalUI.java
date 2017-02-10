@@ -23,6 +23,10 @@ public class PessoalUI {
 
     public final Long id;
 
+    public final String dataNascimento;
+
+    public final String dataIngresso;
+
     public PessoalUI(
             Long id
             ,String idInterno
@@ -30,7 +34,7 @@ public class PessoalUI {
             ,String categoria
             ,String uri_pessoa
     ){
-        this( id, idInterno, nome, categoria, uri_pessoa, -1 );
+        this( id, idInterno, nome, categoria, uri_pessoa, -1, null, null );
     }
 
     public PessoalUI(
@@ -41,16 +45,28 @@ public class PessoalUI {
             ,String uri_pessoa
             ,int numMecanografico
     ){
+        this( id, idInterno, nome, categoria, uri_pessoa, numMecanografico, null, null );
+    }
+
+    public PessoalUI(
+            Long id
+            ,String idInterno
+            ,String nome
+            ,String categoria
+            ,String uri_pessoa
+            ,int numMecanografico
+            ,String dataNascimento
+            ,String dataIngresso
+    ){
         this.id = id;
         this.idInterno = idInterno;
-        this.nome = nome;
         this.uri_pessoa = uri_pessoa;
-
+        this.nome = nome;
         this.categoria = categoria;
-
         this.numMecanografico = numMecanografico;
         this.operacaoTroca = uri_pessoa + "/presencas";
 
-
+        this.dataNascimento = dataNascimento;
+        this.dataIngresso = dataIngresso;
     }
 }

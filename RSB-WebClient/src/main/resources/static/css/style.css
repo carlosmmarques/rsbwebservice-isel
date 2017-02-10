@@ -1,3 +1,7 @@
+/**
+ * Mapa da forca v1
+ */
+/*
 table#mapaforca {
     width: 100%;
     border: 2px solid black;
@@ -9,13 +13,14 @@ td, th{
     text-align: center;
     width: auto;
 }
-
-
-/* teste de layout */
-/*
-td, th{ border: 1px solid red }
 */
-
+/**
+ * Mapa da forca v2
+ */
+table#mapaforca * {
+    vertical-align: middle;
+    text-align: center;
+}
 
 /* Erros nos formulários */
 div.errors{
@@ -30,3 +35,4 @@ label.error{
 input.error{
     background-color: #ffcccc;
 }
+

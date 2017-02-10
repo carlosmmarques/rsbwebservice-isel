@@ -2,53 +2,89 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other
+    head content must come *after* these tags -->
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"  rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>
+
     <title>Detalhe de pessoa</title>
 </head>
 <body>
-    <!-- Detalhes de uma pessoa -->
-    <div>
-        <h2><span th:text="${pessoa.nome}">Nome do Bombeiro</span></h2>
-        <h3>Número mecanográfico: </h3> <span th:text="${pessoa.numMecanografico}">1234</span>
-        <h3>Identificador Interno: </h3> <span th:text="${pessoa.idInterno}">1234</span>
-        <h3>Categoria: </h3> <span th:text="${pessoa.categoria}">B.Sapador</span>
 
+    <nav th:replace="templates :: navbar"></nav>
+
+    <!-- Lista do Elemento -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" id="sidebar-ops">
+                <ul class="nav nav-sidebar">
+                    <li><a href="/pessoal">Pessoal</a></li>
+                    <li><a href="/registar">Registar elemento</a></li>
+                    <!--<li><a href="#">Analytics</a></li>
+                    <li><a href="#">Export</a></li>
+                  </ul>
+                  <ul class="nav nav-sidebar">
+                    <li><a href="">Nav item</a></li>
+                    <li><a href="">Nav item again</a></li>
+                    <li><a href="">One more nav</a></li>
+                    <li><a href="">Another nav item</a></li>
+                    <li><a href="">More navigation</a></li>
+                  </ul>
+                  <ul class="nav nav-sidebar">
+                    <li><a href="">Nav item again</a></li>
+                    <li><a href="">One more nav</a></li>
+                    <li><a href="">Another nav item</a></li>-->
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h2 class="page-header">Dados pessoais</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-sm-4 col-md-3 col-lg-2">
+                            <a href="" class="thumbnail">
+                                <img src="../images/foto.png"></img>
+                            </a>
+                        </div>
+                        <div class="col-sm-8 col-md-9 col-lg-10">
+                            <h3>
+                                <b><span th:text="${pessoa.nome}">Nome do Bombeiro</span></b>
+                            </h3>
+                            <h4><b>Data de Nascimento: </b><span th:text="${pessoa.dataNascimento}">10-11-1988</span></h4>
+                            <!--<h4><b>BI/CC: </b><span>12345678</span></h4>
+                            <h4><b>NIF: </b><span>123456789</span></h4>-->
+                        </div>
+                    </div>
+                </div>
+                <h2 class="page-header">Dados profissionais</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4><b>N.º Mecanográfico: </b><span th:text="${pessoa.numMecanografico}">1234</span></h4>
+                        <h4><b>Data de Ingresso: </b><span th:text="${pessoa.dataIngresso}">29-11-2010</span></h4>
+                        <h4><b>Categoria: </b><span th:text="${pessoa.categoria}">B.Sapador</span></h4>
+                        <h4><b>Identificador Interno: </b><span th:text="${pessoa.idInterno}">1234</span></h4>
+                    </div>
+                </div>
+                <h3 class="page-header">Operações</h3>
+                <ul class="list-unstyled">
+                    <!--<li><a href=""><span class="glyphicon glyphicon-wrench"><h4>Editar detalhes</h4></span></a></li>-->
+                    <li><a href="#" th:href="${pessoa.operacaoTroca}">
+                        <h4><span class="glyphicon glyphicon-random"></span>  Pedir troca de serviço</h4>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <!-- Operações -->
-    <div>
-        <h3>Nesta página poderá fazer:</h3>
-        <ul>
-            <!--
-            <li> Editar detalhes
-                <a href="#">
-                    Editar detalhes.
-                </a>
-            </li>
-            -->
-            <!--
-            <li> Marcar Férias
-                <a href="#">
-                    Marcar Férias.
-                </a>
-            </li>
-            -->
-            <li><!-- Fazer Troca -->
-                <a href="#" th:href="${pessoa.operacaoTroca}">
-                    Pedir uma troca de serviço?
-                </a>
-            </li>
-            <!--
-            <li> Pedir dispensa
-                 <a href="#">
-                Pedir dispensa.
-                </a>
-
-            </li>-->
-        </ul>
-    </div>
     <!-- footer -->
     <div th:replace="templates :: footer"></div>
 
+    <div th:replace="templates :: scripts"></div>
 </body>
 </html>

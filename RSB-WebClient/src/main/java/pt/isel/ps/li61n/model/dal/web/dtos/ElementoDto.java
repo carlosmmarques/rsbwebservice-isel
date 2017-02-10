@@ -21,6 +21,7 @@ public class ElementoDto {
                     ,nome
                     ,dataIngresso
                     ,numMecanografico // converter para inteiro
+                    ,dataNascimento
     ;
 
     public ElementoDto(
@@ -35,6 +36,7 @@ public class ElementoDto {
             ,String nome
             ,String dataIngresso
             ,String numMecanografico
+            ,String dataNascimento
     ) {
         this.id = id;
         this.uri_pessoa = uri_pessoa;
@@ -47,5 +49,6 @@ public class ElementoDto {
         this.nome = nome;
         this.dataIngresso = dataIngresso;
         this.numMecanografico = numMecanografico;
+        this.dataNascimento = dataNascimento;
     }
 }

@@ -10,7 +10,7 @@
     <body>
 
         <!-- Lista de erros -->
-        <div th:fragment="errorsDiv" class="errors" th:if="${#fields.hasAnyErrors()}">
+        <div th:fragment="errorsDiv" class="errors panel panel-default" th:if="${#fields.hasAnyErrors()}">
             <ul>
                 <li th:each="err : ${#fields.allErrors()}"
                     th:text="${err}">Erros de input</li>
@@ -18,26 +18,30 @@
         </div>
 
         <!-- lista de instalações -->
-        <span th:fragment="instalacoesList">
-            <select th:field="*{instalacaoId}" >
-                <option th:each="instalacao:${instalacoes}"
-                        th:value="${instalacao.getId()}"
-                        th:text="${instalacao.getDesignacao()}"
-                >Lista de Instalações</option>
-            </select>
-            <br></br>
-        </span>
+        <div th:fragment="instalacoesList" class="form-group">
+            <label for="instalacaoId" class="col-sm-3 control-label">Instalação (por omissão):</label>
+            <div class="col-sm-9">
+                <select th:field="*{instalacaoId}" id="instalacaoId" name="instalacaoId" class="form-control">
+                    <option th:each="instalacao:${instalacoes}"
+                            th:value="${instalacao.getId()}"
+                            th:text="${instalacao.getDesignacao()}"
+                    >Lista de Instalações</option>
+                </select>
+            </div>
+        </div>
 
-        <!-- lista de instalações -->
-        <span th:fragment="turnosList">
-            <select th:field="*{turnoId}" >
-                <option th:each="turno:${turnos}"
-                        th:value="${turno.getId()}"
-                        th:text="${turno.getDesignacao()}"
-                >Lista de turnos</option>
-            </select>
-            <br></br>
-        </span>
+        <!-- lista de turnos -->
+        <div th:fragment="turnosList" class="form-group">
+            <label for="turnoId" class="col-sm-3 control-label">Turno (por omissão):</label>
+            <div class="col-sm-9">
+                <select th:field="*{turnoId}" id="turnoId" name="turnoId" class="form-control">
+                    <option th:each="turno:${turnos}"
+                            th:value="${turno.getId()}"
+                            th:text="${turno.getDesignacao()}"
+                    >Lista de turnos</option>
+                </select>
+            </div>
+        </div>
 
         <footer th:fragment="footer" >
             <br></br>
@@ -85,6 +89,49 @@
             </ul>
 
         </div>
+
+        <span th:fragment="scripts">
+            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+            <script src="js/jquery-1.12.4.min.js" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+            <!-- Include all compiled plugins (below), or include individual files as needed -->
+            <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+        </span>
+
+        <!-- navbar -->
+        <nav th:fragment="navbar" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand">RSB</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">Link</a></li>-->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestão<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/pessoal">Pessoal</a></li>
+                                <li><a href="/unidadesEstruturais">Unidades Estruturais</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/mapaForca">Mapa da Força</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav> <!-- Header -->
+
 
     </body>
 </html>
