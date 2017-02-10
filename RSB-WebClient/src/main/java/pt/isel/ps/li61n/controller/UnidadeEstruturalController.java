@@ -102,6 +102,9 @@ public class UnidadeEstruturalController {
 
         model.addAttribute( viewModel );
 
+        String action = UNIDADES_ESTRUTURAIS_URL;
+        model.addAttribute( "action", action );
+
         return VIEW_NAME_UE_INSERT;
     }
 

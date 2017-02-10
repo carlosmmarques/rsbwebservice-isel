@@ -1,73 +1,108 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
-    <meta charset="UTF-8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other
+    head content must come *after* these tags -->
     <title>Detalhes de uma Unidade Estrutural</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"></link>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
-    <!-- Detalhes de uma Unidade Estrutural -->
-    <div th:object="${ue}">
-        <h1>Detalhes da unidade estrutural</h1>
-        <h2>
-            <span th:text="*{getDesignacao()}">Nome da Unidade Estrutural</span>
-            (<span th:text="*{getTipo().getDesignacao()}">Tipo da Unidade Estrutural</span>)
-        </h2>
 
-        <h3>Unidade Estrutural Mãe:
-            <span th:if=" *{getUnidadeEstruturalMae() != null}">
-                <a href="#"
-                    th:href="@{/unidadesEstruturais/{id}(id=*{getUnidadeEstruturalMae().getId()})}"
-                    th:text="*{getUnidadeEstruturalMae().getDesignacao()}"
-                >
-                Uma unidade estrutural mãe
-                </a>
-            </span>
-            <span th:if=" *{getUnidadeEstruturalMae() == null}">
-                Não tem unidade estrutural mãe.
-            </span>
-        </h3>
-        <h3>Lista das subunidades:</h3>
-        <div th:if="${ ue.getSubunidades() == null || ue.getSubunidades().size() == 0 }">
-            Não tem subunidades.
-        </div>
-        <div th:unless="${ #lists.isEmpty( ue.getSubunidades() ) }">
-            <ul>
-                <li th:each="sub : ${ ue.getSubunidades() }">
-                    <a href="#" th:href="@{/unidadesEstruturais/{id}(id=${sub.getId()})}">
-                        <span th:text="${sub.getDesignacao()}">Nome da Unidade Estrutural</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <h3>Lista das instalações:</h3>
-        <div th:if="${ ue.getInstalacoes() == null || ue.getInstalacoes().size() == 0 }">
-            Não tem instalações.
-        </div>
-        <div th:unless="${ #lists.isEmpty( ue.getInstalacoes() ) }">
-            <ul>
-                <li th:each="sub : ${ ue.getInstalacoes() }">
-                    <a href="#" th:href="@{/unidadesEstruturais/{id}(id=${sub.getId()})}">
-                        <span th:text="${sub.getDesignacao()}">Nome da instalação</span>
-                    </a>
-                </li>
-            </ul>
+    <nav th:replace="templates :: navbar"></nav>
+
+    <!-- Lista do Elemento -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" id="sidebar-ops">
+                <ul class="nav nav-sidebar">
+                    <li><a href="all.html" th:href="@{/unidadesEstruturais}">Unidades Estruturais</a></li>
+                    <li><a href="/insert" th:href="@{/unidadesEstruturais/criar}">Criar uma Unidade Estrutural</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" th:object="${ue}">
+                <h2 class="page-header">
+                    <span th:text="*{getDesignacao()}">Nome da Unidade Estrutural</span>
+                    (<span th:text="*{getTipo().getDesignacao()}">Tipo da Unidade Estrutural</span>)
+                </h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <h3><b>Unidade Estrutural Mãe:</b>
+                            <span th:if=" *{getUnidadeEstruturalMae() != null}">
+                                <a href="#"
+                                    th:href="@{/unidadesEstruturais/{id}(id=*{getUnidadeEstruturalMae().getId()})}"
+                                    th:text="*{getUnidadeEstruturalMae().getDesignacao()}"
+                                >Uma unidade estrutural mãe</a>
+                            </span>
+                            <span th:if=" *{getUnidadeEstruturalMae() == null}"
+                            >Não tem unidade estrutural mãe.</span>
+                        </h3>
+                        <!-- Subunidades -->
+                        <h3><b>Lista das subunidades:</b></h3>
+                        <div th:if="${ ue.getSubunidades() == null || ue.getSubunidades().size() == 0 }">
+                            <h4>Não tem subunidades.</h4>
+                        </div>
+                        <div th:unless="${ #lists.isEmpty( ue.getSubunidades() ) }">
+                            <ul>
+                                <li th:each="sub : ${ ue.getSubunidades() }">
+                                    <h4>
+                                        <a href="#" th:href="@{/unidadesEstruturais/{id}(id=${sub.getId()})}">
+                                            <span th:text="${sub.getDesignacao()}">Nome da Unidade Estrutural</span>
+                                        </a>
+                                    </h4>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Instalações -->
+                        <h3><b>Lista das instalações:</b></h3>
+                        <div th:if="${ ue.getInstalacoes() == null || ue.getInstalacoes().size() == 0 }">
+                            <h4>Não tem instalações.</h4>
+                        </div>
+                        <div th:unless="${ #lists.isEmpty( ue.getInstalacoes() ) }">
+                            <ul>
+                                <li th:each="sub : ${ ue.getInstalacoes() }">
+                                    <h4>
+                                        <a href="#"
+                                           th:href="@{/unidadesEstruturais/{ue_id}/instalacoes/{id}(ue_id=${ue.getId()},id=${sub.getId()})}">
+                                            <span th:text="${sub.getDesignacao()}">Nome da instalação</span>
+                                        </a>
+                                    </h4>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="page-header">Operações</h3>
+                <ul class="list-unstyled">
+                        <!--<li><a href=""><span class="glyphicon glyphicon-wrench"><h4>Editar detalhes</h4></span></a></li>-->
+                        <li><!-- Adicionar uma instalação -->
+                            <a href="/instalacoes/insert.html" th:href="@{/unidadesEstruturais/{id}/instalacoes/criar(id=${ue.getId()})}">
+                            <h4><span class="glyphicon glyphicon-plus-sign"></span> Adicionar uma instalação</h4>
+                            </a>
+                        </li>
+                    </ul>
+            </div><!-- main -->
         </div>
     </div>
-
-    <!-- OPERAÇÕES -->
-    <div>
-        <h3>Nesta página poderá fazer:</h3>
-        <ul>
-            <li><!-- Adicionar uma instalação -->
-                <a href="/instalacoes/ainsert.html" th:href="@{/unidadesEstruturais/{id}/instalacoes/criar(id=${ue.getId()})}">
-                    Adicionar uma instalação.
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- footer -->
-    <div th:replace="templates :: footer"></div>
-
+    <div th:replace="templates :: scripts"></div>
 </body>
 </html>
