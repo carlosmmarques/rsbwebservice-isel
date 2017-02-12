@@ -51,6 +51,7 @@ public class RsbWebServiceAsync {
         ,INSTALACAO_URL = "/unidadeestrutural/%s/instalacao/%s"
         ,TURNOS_URL = "/turno"
         ,UNIDADES_OPERACIONAIS_URL = "/unidadeoperacional"
+        ,TIPOS_UNIDADES_OPERACIONAIS_URL = "/unidadeoperacional/tipo"
         ,GUARNICAO_URL = "/unidadeoperacional/%s/guarnicao"
     ;
 

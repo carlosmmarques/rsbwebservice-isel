@@ -1,15 +1,15 @@
 package pt.isel.ps.li61n.model.dal.web;
 
+import org.asynchttpclient.Param;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.IUnidadesOperacionaisRepository;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.dal.web.dtos.*;
+import pt.isel.ps.li61n.model.dal.web.exceptions.WebServiceException;
 import pt.isel.ps.li61n.model.entities.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -26,13 +26,99 @@ import static pt.isel.ps.li61n.model.dal.web.RsbWebServiceAsync.UNIDADES_OPERACI
 public class UnidadesOperacionaisWebService extends AbstractWebService implements IUnidadesOperacionaisRepository {
 
     @Override
-    public Long insert(UnidadeOperacional element) throws RepositoryException {
-        throw new NotImplementedException();
+    public Long insert( UnidadeOperacional newElemento ) throws RepositoryException {
+
+        Long result = null;
+
+        if( newElemento != null ){
+
+            List< Param > parameters = new LinkedList<>();
+
+            /*
+            @RequestParam(value = "designacao", required = true) String designacao,
+            @RequestParam(value = "tipounidadeoperacional_id", required = true) Long tipounidadeoperacional_id,
+            @RequestParam(value = "operacional", required = true) Boolean operacional,
+            @RequestParam(value = "instalacao_id", required = true) Long instalacao_id,
+             */
+
+            //designacao - obrigatorio (server)
+            String designacaoValue = newElemento.getDesignacao();
+            if( designacaoValue == null ){
+                designacaoValue = "";
+            }
+            Param designacao = new Param( "designacao", designacaoValue );
+            parameters.add( designacao );
+
+
+            // Id do tipo de unidade operacional (FK) - obrigatorio
+            Long tipoUnidadeEstruturalId = newElemento.getTipoUnidadeOperacionalId();
+        //    if( tipoUnidadeEstruturalId == null ){
+        //        tipoUnidadeEstruturalId = 4L; // secção
+        //    }
+            Param tipoUnidadede = new Param( "tipounidadeoperacional_id", tipoUnidadeEstruturalId.toString() );
+            parameters.add( tipoUnidadede );
+
+            // Id da instalacao (FK) - obrigatorio
+            Long instalacaoId = newElemento.getInstalacaoId();
+
+            Param instalacao = new Param( "instalacao_id", instalacaoId.toString() );
+            parameters.add( instalacao );
+
+
+            // operacional
+            Boolean isOperacional = newElemento.getOperacional();
+            Param operacional = new Param( "operacional" , isOperacional.toString() );
+            parameters.add( operacional );
+
+            try {
+                UnidadeEstruturalDto dto = RsbWebServiceAsync.callPostActionAndConvert(
+                        UnidadeEstruturalDto.class
+                        ,parameters
+                        ,UNIDADES_OPERACIONAIS_URL
+                ).get();  //TODO retorna o objecto
+
+                result = dto.id;
+            }
+            catch( InterruptedException | ExecutionException e ) {
+                Throwable exception = e.getCause();
+                if( exception.getClass().equals( WebServiceException.class ) ){
+                    WebServiceException webServiceException = (WebServiceException) exception;
+                    throw new RepositoryException( webServiceException.getMessage() );
+                }
+                else {
+                    throw new RuntimeException( e );
+                }
+
+            }
+        }
+        return result;
     }
 
     @Override
-    public UnidadeOperacional selectOne(Long aLong) throws RepositoryException {
-        throw new NotImplementedException();
+    public UnidadeOperacional selectOne( Long aLong ) throws RepositoryException {
+
+        CompletableFuture< UnidadeOperacionalDto > getUnidadeOperacional =
+                RsbWebServiceAsync
+                        .callActionAndConvert(
+                                UnidadeOperacionalDto.class
+                                , UNIDADES_OPERACIONAIS_URL + "/%s"
+                                , aLong.toString()
+                        )
+                ;
+        UnidadeOperacionalDto dto = null;
+
+        try{
+            dto = getUnidadeOperacional.get();
+        }
+        catch( InterruptedException | ExecutionException e ) {
+            throw new RepositoryException( e.getMessage() );
+        }
+
+        // TODO: Arranjar outra solucao
+        HashMap map = new HashMap<>();
+        UnidadeOperacional result = convertFromDto( dto, map, map );
+
+        return result;
     }
 
     @Override
@@ -47,6 +133,7 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
 
     @Override
     public Collection< UnidadeOperacional > selectAll() throws RepositoryException {
+
         CompletableFuture< UnidadeOperacionalDto[] > getUnOps;
 
         getUnOps = RsbWebServiceAsync
@@ -67,6 +154,55 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
         return result;
     }
 
+    private UnidadeOperacional convertFromDto(
+            UnidadeOperacionalDto dto
+            ,HashMap<String, Instalacao> cacheInstalacao
+            , HashMap<String, TipoUnidadeOperacionalDto> cacheTipo
+    ){
+
+        UnidadeOperacional unOp = new UnidadeOperacional();
+
+        unOp.setId( dto.id );
+
+        unOp.setDesignacao( dto.designacao );
+
+        unOp.setOperacional( dto.operacional );
+
+        // Obter o tipo unidade operacional
+        String uriTipo = dto.uri_tipoUnidadeOperacional;
+        TipoUnidadeOperacionalDto tipoDto = cacheTipo.get( uriTipo );
+
+        if( tipoDto == null ){
+            tipoDto = RsbWebServiceAsync.getResource(
+                    uriTipo,
+                    TipoUnidadeOperacionalDto.class
+            );
+            if( tipoDto != null ){
+                cacheTipo.put( uriTipo, tipoDto );
+            }
+        }
+        unOp.setTipoUnidadeOperacionalId( tipoDto.id );
+
+        // obter a instalação
+        String uriInstalacao = dto.uri_instalacao;
+        Instalacao instalacao = cacheInstalacao.get( uriInstalacao );
+        if( instalacao == null ){
+
+            InstalacaoDto instalacaoDto = RsbWebServiceAsync
+                    .getResource(
+                            uriInstalacao
+                            ,InstalacaoDto.class );
+
+            instalacao = UnidadesEstruturaisWebService.convertInstalacaoFromDto( instalacaoDto, null );
+
+            cacheInstalacao.put( uriInstalacao, instalacao );
+        }
+        unOp.setInstalacao( instalacao );
+
+        return unOp;
+    }
+
+
     private Collection< UnidadeOperacional > convertFromDto( UnidadeOperacionalDto[] dtos ) throws RepositoryException {
 
         Collection< UnidadeOperacional > result = new ArrayList<>( dtos.length );
@@ -77,44 +213,7 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
 
         for( UnidadeOperacionalDto dto : dtos ){
 
-            UnidadeOperacional unOp = new UnidadeOperacional();
-
-            unOp.setId( dto.id );
-
-            unOp.setDesignacao( dto.designacao );
-
-            unOp.setOperacional( dto.operacional );
-
-            // Obter o tipo unidade operacional
-            String uriTipo = dto.uri_tipoUnidadeOperacional;
-            TipoUnidadeOperacionalDto tipoDto = cacheTipo.get( uriTipo );
-
-            if( tipoDto == null ){
-                tipoDto = RsbWebServiceAsync.getResource(
-                        uriTipo,
-                        TipoUnidadeOperacionalDto.class
-                );
-                if( tipoDto != null ){
-                    cacheTipo.put( uriTipo, tipoDto );
-                }
-            }
-            unOp.setTipoUnidadeOperacional( tipoDto.designacao );
-
-            // obter a instalação
-            String uriInstalacao = dto.uri_instalacao;
-            Instalacao instalacao = cacheInstalacao.get( uriInstalacao );
-            if( instalacao == null ){
-
-                InstalacaoDto instalacaoDto = RsbWebServiceAsync
-                        .getResource(
-                                uriInstalacao
-                                ,InstalacaoDto.class );
-
-                instalacao = UnidadesEstruturaisWebService.convertInstalacaoFromDto( instalacaoDto, null );
-
-                cacheInstalacao.put( uriInstalacao, instalacao );
-            }
-            unOp.setInstalacao( instalacao );
+            UnidadeOperacional unOp = convertFromDto( dto, cacheInstalacao, cacheTipo );
 
             result.add( unOp );
         }
@@ -122,7 +221,7 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
     }
 
     @Override
-    public Collection< Guarnicao > selectGuarnicaoOfUnidadeOperacional( Long unidadeOperacionalId ) {
+    public Collection< Guarnicao > selectGuarnicao( Long unidadeOperacionalId ) {
 
         CompletableFuture< GuarnicaoDto[] > getGuarnicoes;
 

@@ -1,6 +1,7 @@
 package pt.isel.ps.li61n.model;
 
 import pt.isel.ps.li61n.model.entities.Guarnicao;
+import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
 import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
 
 import java.util.Collection;
@@ -12,6 +13,8 @@ import java.util.Collection;
  *         Tiago Venturinha - tventurinha@gmail.com
  */
 public interface IUnidadesOperacionaisLogic extends ILogic< Long, UnidadeOperacional > {
+
+    Collection<TipoUnidadeOperacional> getAllTipos();
 
     Collection< UnidadeOperacional > getAllByInstalacao( Long instalacaoId );
 

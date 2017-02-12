@@ -2,12 +2,13 @@ package pt.isel.ps.li61n.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pt.isel.ps.li61n.model.dal.ITiposUnidadesOperacionaisRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadesOperacionaisRepository;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
 import pt.isel.ps.li61n.model.entities.Guarnicao;
+import pt.isel.ps.li61n.model.entities.TipoUnidadeOperacional;
 import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -22,26 +23,87 @@ import java.util.stream.Collectors;
 public class UnidadesOperacionaisLogic implements IUnidadesOperacionaisLogic{
 
     private IUnidadesOperacionaisRepository _unOpsRepo;
-
+    private ITiposUnidadesOperacionaisRepository _tpUnOpsRepo;
 
     @Autowired
-    public UnidadesOperacionaisLogic( IUnidadesOperacionaisRepository _unOpsRepo ){
-        this._unOpsRepo = _unOpsRepo;
+    public UnidadesOperacionaisLogic(
+                IUnidadesOperacionaisRepository unOpsRepo
+                ,ITiposUnidadesOperacionaisRepository tpUnOpsRepo
+    ){
+        this._unOpsRepo = unOpsRepo;
+        this._tpUnOpsRepo = tpUnOpsRepo;
     }
 
     @Override
-    public Collection<UnidadeOperacional> getAll() {
-        throw new NotImplementedException();
+    public Collection< UnidadeOperacional > getAll() {
+
+        Collection< UnidadeOperacional > res = null;
+
+        try {
+            res =  _unOpsRepo.selectAll();
+        }
+        catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     @Override
     public UnidadeOperacional getOne( Long aLong) {
-        throw new NotImplementedException();
+        UnidadeOperacional uo = null;
+        try {
+            uo = _unOpsRepo.selectOne( aLong );
+        }
+        catch( RepositoryException e ) {
+            throw new RuntimeException( e );
+        }
+        return uo;
     }
 
     @Override
     public Long create( UnidadeOperacional element ) throws PropertyEntityException {
-        throw new NotImplementedException();
+
+        // atributos obrigatórios
+        if( element.getDesignacao() == null // TODO: Separar em throws diferentes para poder especificar campo
+                || element.getTipoUnidadeOperacionalId() == null
+                ){
+            throw new RuntimeException( "Campos por preencher" );
+        }
+
+        TipoUnidadeOperacional tipo = null;
+        try {
+            tipo = _tpUnOpsRepo.selectOne( element.getTipoUnidadeOperacionalId() );
+        }
+        catch( RepositoryException e ){
+            throw new PropertyEntityException( "tipo", e.getMessage() );
+        }
+
+        //TODO: Criar exception para gerar página de erro
+        //if( tipo == null ){
+        //    throw new RuntimeException( "Invalid tipo!" );
+        //}
+
+        element.setTipo( tipo );
+
+        try {
+            return _unOpsRepo.insert( element );
+        }
+        catch (RepositoryException e) {
+            throw new RuntimeException( e );
+        }
+    }
+
+    @Override
+    public Collection< TipoUnidadeOperacional > getAllTipos() {
+
+        Collection< TipoUnidadeOperacional > result = null;
+        try {
+            result =  _tpUnOpsRepo.selectAll();
+        }
+        catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -61,6 +123,7 @@ public class UnidadesOperacionaisLogic implements IUnidadesOperacionaisLogic{
     @Override
     public Collection<Guarnicao> getGuarnicao( Long unidadeOperacionalId ) {
 
-        return _unOpsRepo.selectGuarnicaoOfUnidadeOperacional( unidadeOperacionalId );
+        return _unOpsRepo.selectGuarnicao( unidadeOperacionalId );
     }
+
 }

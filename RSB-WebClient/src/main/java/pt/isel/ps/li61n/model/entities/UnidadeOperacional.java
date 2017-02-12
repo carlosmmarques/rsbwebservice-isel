@@ -12,13 +12,20 @@ public class UnidadeOperacional extends Identity< Long >{
 
     private Instalacao instalacao;
 
-    private String tipoUnidadeOperacional;
+    private Long instalacaoId;
+
+    private Long tipoUnidadeOperacionalId;
 
     private String designacao;
 
-    private Boolean operacional;
+    private boolean operacional;
 
     private Collection< Guarnicao > guarnicao;
+
+    // ADDED
+    private boolean ePrioritario;
+
+    private TipoUnidadeOperacional tipo;
 
     //
     //  Getters & Setters
@@ -32,12 +39,12 @@ public class UnidadeOperacional extends Identity< Long >{
         this.instalacao = instalacao;
     }
 
-    public String getTipoUnidadeOperacional() {
-        return tipoUnidadeOperacional;
+    public Long getTipoUnidadeOperacionalId() {
+        return tipoUnidadeOperacionalId;
     }
 
-    public void setTipoUnidadeOperacional(String tipoUnidadeOperacional) {
-        this.tipoUnidadeOperacional = tipoUnidadeOperacional;
+    public void setTipoUnidadeOperacionalId(Long tipoUnidadeOperacionalId) {
+        this.tipoUnidadeOperacionalId = tipoUnidadeOperacionalId;
     }
 
     public String getDesignacao() {
@@ -48,11 +55,11 @@ public class UnidadeOperacional extends Identity< Long >{
         this.designacao = designacao;
     }
 
-    public Boolean getOperacional() {
+    public boolean getOperacional() {
         return operacional;
     }
 
-    public void setOperacional(Boolean operacional) {
+    public void setOperacional( boolean operacional ) {
         this.operacional = operacional;
     }
 
@@ -62,5 +69,31 @@ public class UnidadeOperacional extends Identity< Long >{
 
     public void setGuarnicao( Collection<Guarnicao> guarnicao ) {
         this.guarnicao = guarnicao;
+    }
+
+
+    // Added
+    public boolean isePrioritario() {
+        return ePrioritario;
+    }
+
+    public void setePrioritario( boolean ePrioritario ) {
+        this.ePrioritario = ePrioritario;
+    }
+
+    public TipoUnidadeOperacional getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUnidadeOperacional tipo) {
+        this.tipo = tipo;
+    }
+
+    public Long getInstalacaoId() {
+        return instalacaoId;
+    }
+
+    public void setInstalacaoId(Long instalacaoId) {
+        this.instalacaoId = instalacaoId;
     }
 }

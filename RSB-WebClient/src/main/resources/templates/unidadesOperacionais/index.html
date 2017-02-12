@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other
+    head content must come *after* these tags -->
+    <title>Lista de Unidades Operacionais</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet"></link>
+
+</head>
+<body>
+
+    <nav th:replace="templates :: navbar"></nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" id="sidebar-ops">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="">Unidades Operacionais<span class="sr-only">(current)</span></a></li>
+                    <li><a href="/insert" th:href="@{/unidadesOperacionais/criar}">Criar uma Unidade Operacional</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">Lista de unidades operacionais</h1>
+                <div th:unless="${#lists.isEmpty(uos)}">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Designação</th>
+                                <th>Aquartelados em</th>
+                                <th>Está Operacional?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="uo : ${uos}">
+                                <td>
+                                    <a href="details.html" th:href="@{/unidadesOperacionais/{id}(id=${uo.getId()})}">
+                                        <span th:text="${uo.getDesignacao()}">VUCI</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span th:if="${uo.getInstalacao() != null }"
+                                      th:text="${uo.getInstalacao().getDesignacao()}">Quartel Alvalade</span>
+                                </td>
+                                <td>
+                                    <span th:text="${uo.getOperacional()}? 'Sim':'Não'">Sim</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(uos)}">
+                    <h2>Não existe unidades operacionais a apresentar!</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="templates :: scripts"></div>
+</body>
+</html>

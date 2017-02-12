@@ -13,5 +13,5 @@ import java.util.Collection;
  */
 public interface IUnidadesOperacionaisRepository extends IRepository< Long, UnidadeOperacional > {
 
-    Collection< Guarnicao > selectGuarnicaoOfUnidadeOperacional( Long unidadeOperacionalId );
+    Collection< Guarnicao > selectGuarnicao( Long unidadeOperacionalId );
 }
