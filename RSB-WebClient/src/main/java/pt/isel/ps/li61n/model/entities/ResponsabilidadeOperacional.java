@@ -10,6 +10,8 @@ public class ResponsabilidadeOperacional extends Identity<Long> {
 
     private TipoPresenca tipoPresenca;
 
+    private String designacao;
+
     //
     //  Getters & Setters
     //
@@ -20,5 +22,13 @@ public class ResponsabilidadeOperacional extends Identity<Long> {
 
     public void setTipoPresenca(TipoPresenca tipoPresenca) {
         this.tipoPresenca = tipoPresenca;
+    }
+
+    public String getDesignacao() {
+        return designacao;
+    }
+
+    public void setDesignacao(String designacao) {
+        this.designacao = designacao;
     }
 }

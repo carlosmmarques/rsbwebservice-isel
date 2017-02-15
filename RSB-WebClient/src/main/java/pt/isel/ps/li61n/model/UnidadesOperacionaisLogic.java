@@ -3,6 +3,7 @@ package pt.isel.ps.li61n.model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pt.isel.ps.li61n.model.dal.ITiposUnidadesOperacionaisRepository;
+import pt.isel.ps.li61n.model.dal.IUnidadesEstruturaisRepository;
 import pt.isel.ps.li61n.model.dal.IUnidadesOperacionaisRepository;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
 import pt.isel.ps.li61n.model.dal.exceptions.RepositoryException;
@@ -24,6 +25,7 @@ public class UnidadesOperacionaisLogic implements IUnidadesOperacionaisLogic{
 
     private IUnidadesOperacionaisRepository _unOpsRepo;
     private ITiposUnidadesOperacionaisRepository _tpUnOpsRepo;
+    private IUnidadesEstruturaisRepository _unEstRepo;
 
     @Autowired
     public UnidadesOperacionaisLogic(
@@ -49,9 +51,10 @@ public class UnidadesOperacionaisLogic implements IUnidadesOperacionaisLogic{
     }
 
     @Override
-    public UnidadeOperacional getOne( Long aLong) {
+    public UnidadeOperacional getOne( Long aLong ) {
         UnidadeOperacional uo = null;
         try {
+            // obter detalhes de UnOp (inclui tipo e instalacao)
             uo = _unOpsRepo.selectOne( aLong );
         }
         catch( RepositoryException e ) {

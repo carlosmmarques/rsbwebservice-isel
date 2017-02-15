@@ -37,16 +37,64 @@
                     <li><a href="/insert" th:href="@{/unidadesOperacionais/criar}">Criar uma Unidade Operacional</a></li>
                 </ul>
             </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" th:object="${uo}">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" th:object="${viewModel}">
                 <h2 class="page-header">
-                    <span th:text="*{getDesignacao()}">Nome da Unidade Operacional</span>
+                    <span th:text="*{designacao}">Nome da Unidade Operacional</span>
                     <!--(<span th:text="*{getTipo().getDesignacao()}">Tipo da Unidade Operacional</span>)-->
                 </h2>
                 <div class="panel panel-default">
                     <div class="panel-body">
-
+                        <!-- Tipo UnOp -->
+                        <h3>
+                            <b>Tipo:</b>
+                            <span th:text="*{tipo}">O tipo da Unidade Operacional</span>
+                        </h3>
+                        <!-- Instalação da UnOp -->
+                        <h3>
+                            <b>Instalação:</b>
+                            <span th:text="*{instalacao}">Instalacao da Unidade Operacional</span>
+                        </h3>
+                        <h3>
+                            <b>Está Operacional?</b>
+                            <span th:text="*{operacional}">Sim</span>
+                        </h3>
                     </div>
+                </div> <!-- panel -->
+                <!-- Guarnicao -->
+                <h3 class="page-header">Guarnição:</h3>
+                <div th:unless="*{temGuarnicao}">
+                    <h4>Não tem guarnição.</h4>
                 </div>
+                <div class="panel panel-default" th:if="*{temGuarnicao}">
+                    <table class="table">
+                        <tr>
+                            <th>Responsabilidade</th>
+                            <th>N.º Elementos mínimo</th>
+                            <th>N.º Elementos máximo</th>
+                        </tr>
+                        <tr th:each="g : *{guarnicao}">
+                            <td>
+                                <span th:text="${g.getResponsabilidadeOperacional().getDesignacao()}">Linha</span>
+                            </td>
+                            <td><span th:text="${g.getMinimo()}">2</span></td>
+                            <td><span th:text="${g.getMaximo()}">3</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Operacações -->
+                <!--
+                <h3 class="page-header">Operações</h3>
+                <ul class="list-unstyled">
+
+                    <li><a href=""><span class="glyphicon glyphicon-wrench"><h4>Editar detalhes</h4></span></a></li>
+                    <li>
+                        <a href="/instalacoes/insert.html"
+                           th:href="@{/unidadesEstruturais/{id}/instalacoes/criar(id=${ue.getId()})}">
+                            <h4><span class="glyphicon glyphicon-plus-sign"></span> Adicionar uma instalação</h4>
+                        </a>
+                    </li>
+                </ul>
+                -->
             </div><!-- main -->
         </div>
     </div>

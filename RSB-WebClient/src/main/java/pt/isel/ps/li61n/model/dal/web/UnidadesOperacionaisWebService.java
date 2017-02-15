@@ -183,6 +183,9 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
         }
         unOp.setTipoUnidadeOperacionalId( tipoDto.id );
 
+        // Added
+        unOp.setTipo( TiposUnidadeOperacionalWebService.convertFromDto( tipoDto ) );
+
         // obter a instalação
         String uriInstalacao = dto.uri_instalacao;
         Instalacao instalacao = cacheInstalacao.get( uriInstalacao );
@@ -317,8 +320,11 @@ public class UnidadesOperacionaisWebService extends AbstractWebService implement
         tipoPresenca.setTipoPresencaReforcoId( dtoReforco.id );
 
         respOper.setTipoPresenca( tipoPresenca );
+        respOper.setDesignacao( respOpDto.designacao );
 
         // TODO: Acrescentar restantes propriedades de ResponsabilidadeOperacional
+
+
 
         return respOper;
     }

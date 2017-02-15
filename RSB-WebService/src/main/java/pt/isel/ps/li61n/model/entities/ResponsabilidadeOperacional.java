@@ -19,20 +19,25 @@ public class ResponsabilidadeOperacional extends EntidadeAbstractaComIdentificad
     @ManyToOne
     @JoinColumn(name = "tipoPresenca_id")
     private TipoPresenca tipoPresenca;
+
     @ManyToMany
     @JoinTable(
             name = "responsabilidade_formacao",
             joinColumns = @JoinColumn(name = "responsabilidade_operacional_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "formacao_id", referencedColumnName = "id"))
     private List<Formacao> formacoes;
+
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Column(length = 32)
     private String sigla;
+
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Enumerated(EnumType.STRING)
     private TipoServico tipoServico;
+
     @JsonView({ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     private Boolean dependeFactorElegibilidade;
+
     @JsonView({ModeloDeRepresentacao.Sumario.class, ModeloDeRepresentacao.Normal.class, ModeloDeRepresentacao.Verboso.class})
     @Column(length = 64)
     private String designacao;

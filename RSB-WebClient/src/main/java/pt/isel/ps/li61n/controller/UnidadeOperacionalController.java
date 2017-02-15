@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pt.isel.ps.li61n.model.IUnidadesEstruturaisLogic;
 import pt.isel.ps.li61n.model.IUnidadesOperacionaisLogic;
 import pt.isel.ps.li61n.model.dal.exceptions.PropertyEntityException;
+import pt.isel.ps.li61n.model.entities.Guarnicao;
 import pt.isel.ps.li61n.model.entities.UnidadeOperacional;
 import pt.isel.ps.li61n.viewModel.CreateUnidadeOperacionalViewModel;
+import pt.isel.ps.li61n.viewModel.UnOpsViewModel;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -128,7 +130,16 @@ public class UnidadeOperacionalController {
         //obter o elemento com 'id'
         UnidadeOperacional uo = _logic.getOne( id );
 
-        model.addAttribute( MODEL_UO_ELEMENT, uo );
+        Collection< Guarnicao > guarnicao = _logic.getGuarnicao( id );
+        uo.setGuarnicao( guarnicao );
+
+        UnOpsViewModel viewModel = new UnOpsViewModel(
+            uo
+            ,guarnicao
+        );
+
+        model.addAttribute( "viewModel", viewModel );
+
         return VIEW_NAME_UO_DETAILS;
     }
 }
