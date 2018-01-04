@@ -1,5 +1,12 @@
-**Projecto de Sistema de Gestão para Corpos de Bombeiros Sapadores**
+**Sistema de Gestão para Corpos de Bombeiros**
 ====================================================================
+
+Aplicação WEB desenvolvida em Java8 usando a framework Pivotal Spring. consiste de:
+
+ - Serviço Web rico e devidamente documentado (v/ Wiki), expondo todos os serviços através de API REST.
+ - Aplicação Cliente para teste do serviço.
+
+
 
 Configurações
 ---
