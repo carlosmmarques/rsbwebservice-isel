@@ -4,7 +4,7 @@
 Aplicação WEB desenvolvida em Java8 usando a framework Pivotal Spring. consiste de:
 
  - Serviço Web rico e devidamente documentado (v/ Wiki), expondo todos os serviços através de API REST.
- - Aplicação Cliente para teste do serviço.
+ - Aplicação Cliente mínima para teste do serviço.
 
 
 
@@ -19,13 +19,12 @@ Para uma correcta utilização, após criação de cada módulo (via *build.grad
 - O módulo **RSB-WebClient** executa no porto **8080** (http://localhost:8080);
 - Se pretender utilizar outras configurações, terá de alterar manualmente o ficheiro **/src/main/resources/application.properties** do respectivo módulo.
 
-Para mais detalhes consultar a página *wiki* do projecto (https://github.com/isel-leic-ps/s1516v39/wiki).
 
 ___
 
-Projecto desenvolvido, no âmbito da Unidade Curricular Projecto e Seminário (Semestre de Verão 2015/2016), por:
-- Carlos Marques n.º 25993
-- Tiago Venturinha n.º 31531
+Projecto desenvolvido por:
+- Carlos Marques
+- Tiago Venturinha
  
 
 
